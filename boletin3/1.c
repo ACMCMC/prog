@@ -1,3 +1,8 @@
+/*Autor: Aldán Creo Mariño
+Data: 30 de setembro de 2019
+Versión: 1
+Este programa encontra o promedio de dous números*/
+
 #define EXIT_SUCCESS 0
 
 #include <stdio.h>
