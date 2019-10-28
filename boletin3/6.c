@@ -8,3 +8,16 @@ entón debe aparecer no arquivo de saída:
 3hUa#CDDUYX
 Empregar unha función para o encriptado.*/
 
+/*Autor: Aldán Creo Mariño
+Data: 28 de outubro de 2019
+Versión: 1
+Este programa traballa con datos encriptados*/
+
+#define EXIT_SUCCESS 0
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+  return(EXIT_SUCCESS);
+}
