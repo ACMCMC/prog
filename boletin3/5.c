@@ -1,4 +1,5 @@
 /*ENUNCIADO
+
 Escribir un programa cunha función que determine a media dos valores dunha secuencia de
 enteiros almacenada nun arquivo. Lede os datos do arquivo e ideos gardando nun vector. Facede a
 lectura ata chegar ao final o arquivo (nese momento feof(ptf)!=0). No arquivo cabeceira stdlib.h
