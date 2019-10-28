@@ -1,4 +1,6 @@
-/*Escribir un programa que lea un arquivo de texto e que garde noutro arquivo ese texto encriptado
+/*ENUNCIADO
+
+Escribir un programa que lea un arquivo de texto e que garde noutro arquivo ese texto encriptado
 da seguinte forma: o primeiro carácter imprímeo tal como foi lido, nos demais casos, cada carácter é
 substituído polo carácter na posición da táboa ASCII que corresponde ao módulo 128 da suma do
 código ASCII do carácter actual máis o do carácter lido previamente. Exemplo: Se tivésemos no
