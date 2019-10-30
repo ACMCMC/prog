@@ -18,11 +18,15 @@ Este programa determina a media dos valores dunha secuencia de enteiros almacena
 
 int main(){
   FILE *arch;
-  if(arch = fopen("arquivo.txt","r") != NULL) {
+  int num[100], i;
+  if(arch = fopen("arquivo.txt","r") == NULL) {
     printf("Erro abrindo o arquivo");
-    return(1);
+    exit(1);
   }
-  fscanf(arch,);
+  for(i = 0;feof(arch) == 0;i++) {
+      fscanf(arch,"%d",&num[i]);
+      printf("%d",num[i]);
+   }
   
   return(EXIT_SUCCESS);
 }
