@@ -16,7 +16,8 @@ Este programa determina a media dos valores dunha secuencia de enteiros almacena
 #include <stdio.h>
 #include <stdlib.h>
 
-float media(int *nums, int cantidad_nums) {
+float media(int *nums, int cantidad_nums)
+{
   float media = 0;
 
   for (int i = 0; i < cantidad_nums; i++)
@@ -25,24 +26,26 @@ float media(int *nums, int cantidad_nums) {
   }
 
   media = (media / cantidad_nums);
-  
 
   return media;
 }
 
-int main(){
+int main()
+{
   FILE *arch;
   int num[100], i;
-  if((arch = fopen("data.txt","r")) == NULL) {
+  if ((arch = fopen("data.txt", "r")) == NULL)
+  {
     printf("Erro abrindo o arquivo");
     exit(1);
   }
-  for(i = 0;feof(arch) == 0;i++) {
-      fscanf(arch,"%d",&num[i]);
-      printf("Numero %d: %d\n",i,num[i]);
-   }
-  
-  printf("A media dos valores e %f", media(num,i));
+  for (i = 0; feof(arch) == 0; i++)
+  {
+    fscanf(arch, "%d", &num[i]);
+    printf("Numero %d: %d\n", i, num[i]);
+  }
 
-  return(EXIT_SUCCESS);
+  printf("A media dos valores e %f", media(num, i));
+
+  return (EXIT_SUCCESS);
 }
