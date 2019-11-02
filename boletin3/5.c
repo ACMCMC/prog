@@ -47,5 +47,7 @@ int main()
 
   printf("A media dos valores e %f", media(num, i));
 
+  fclose(arch);
+
   return (EXIT_SUCCESS);
 }
