@@ -19,7 +19,35 @@ Este programa traballa con datos encriptados*/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+void encriptar(char *string, char *encriptado) {
+
+  encriptado[0] = string[0];
+
+  for (int i = 1; i < strlen(string) ; i++)
+  {
+    encriptado[i] = (string[i] + string[i-1]) % 128;
+  }
+  encriptado[strlen(string)] = '\0';
+}
 
 int main(){
+
+  char string[100] = "35 Abacates", encriptado[100];
+  FILE *arch;
+
+  if ((arch = fopen("encriptado.txt","w")) == NULL) {
+    printf("Erro de apertura do arquivo.");
+    exit(1);
+  }
+
+  encriptar(string,encriptado);
+
+  printf("%s, %d caracteres\n",string,strlen(string));
+  printf("%s",encriptado);
+  
+  fprintf(arch,"%s",encriptado);
+
   return(EXIT_SUCCESS);
 }
