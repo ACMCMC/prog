@@ -8,7 +8,7 @@
 int Hamming(char *vec1, char *vec2) {
   if (!(strlen(vec1) == strlen(vec2))) {
     printf("Os vectores non se poden comparar porque teñen distinta lonxitude");
-    exit(1);
+    return(-1);
   }
 
   int hamming = 0;
