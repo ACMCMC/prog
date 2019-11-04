@@ -34,11 +34,10 @@ int main(){
   char encriptado[100], desencriptado[100];
   FILE *arch, *arch_saida;
 
-  if (((arch = fopen("encriptado.txt","r")) == NULL) ||
-  ((arch_saida = fopen("desencriptado.txt","w")) == NULL)) {
-    printf("Erro de apertura do arquivo.");
-    exit(1);
-  }
+  printf("Introduza o nome do arquivo co texto encriptado: ");
+  arch = abrir_arquivo("r");
+  printf("Introduza o nome do arquivo de saida: ");
+  arch_saida = abrir_arquivo("w");
 
   fgets(encriptado,100,arch);
   
@@ -51,6 +50,7 @@ int main(){
   fprintf(arch_saida,"%s",desencriptado);
 
   fclose(arch);
+  fclose(arch_saida);
 
   return(EXIT_SUCCESS);
 }
