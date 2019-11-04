@@ -6,7 +6,7 @@
 FILE* abrir_arquivo(char *modo)
 {
 
-  char nome_arquivo[20], final[4];
+  char nome_arquivo[20], final[5];
 
   scanf("%s", nome_arquivo);
 
