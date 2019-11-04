@@ -14,7 +14,43 @@ Este programa traballa con datos encriptados*/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lib_aldan.h"
+
+void desencriptar(char *encriptado, char *desencriptado) {
+
+  desencriptado[0] = encriptado[0];
+
+  for (int i = 1; i < strlen(encriptado) ; i++)
+  {
+    desencriptado[i] = (encriptado[i] - desencriptado[i-1] + 128) % 128;
+  }
+  desencriptado[strlen(encriptado)] = '\0';
+}
 
 int main(){
+
+  char encriptado[100], desencriptado[100];
+  FILE *arch, *arch_saida;
+
+  if (((arch = fopen("encriptado.txt","r")) == NULL) ||
+  ((arch_saida = fopen("desencriptado.txt","w")) == NULL)) {
+    printf("Erro de apertura do arquivo.");
+    exit(1);
+  }
+
+  fgets(encriptado,100,arch);
+  
+  printf("%s, %d caracteres\n",encriptado,strlen(encriptado));
+
+  desencriptar(encriptado,desencriptado);
+
+  printf("%s",desencriptado);
+
+  fprintf(arch_saida,"%s",desencriptado);
+
+  fclose(arch);
+
   return(EXIT_SUCCESS);
 }

@@ -20,34 +20,55 @@ Este programa traballa con datos encriptados*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-void encriptar(char *string, char *encriptado) {
+#include "lib_aldan.h"
+
+void encriptar(char *string, char *encriptado)
+{
 
   encriptado[0] = string[0];
 
-  for (int i = 1; i < strlen(string) ; i++)
+  for (int i = 1; i < strlen(string); i++)
   {
-    encriptado[i] = (string[i] + string[i-1]) % 128;
+    encriptado[i] = (string[i] + string[i - 1]) % 128;
   }
   encriptado[strlen(string)] = '\0';
 }
 
-int main(){
+int main()
+{
 
-  char string[100] = "35 Abacates", encriptado[100];
-  FILE *arch;
+  char string[100], encriptado[100];
+  FILE *arch_saida, *arch_entrada;
 
-  if ((arch = fopen("encriptado.txt","w")) == NULL) {
-    printf("Erro de apertura do arquivo.");
-    exit(1);
+  printf("Introduza o nome do arquivo de texto plano: ");
+  abrir_arquivo(&arch_entrada, "r");  
+
+  printf("Introduza o nome do arquivo de saida: ");
+  abrir_arquivo(&arch_saida, "w");
+
+int i = 0;
+
+  while (feof(arch_entrada) == 0)
+  {
+    fscanf(arch_entrada,"%c",string[i]);
+    i++;
   }
-
-  encriptar(string,encriptado);
-
-  printf("%s, %d caracteres\n",string,strlen(string));
-  printf("%s",encriptado);
+  string[i+1] = '\0';
   
-  fprintf(arch,"%s",encriptado);
+  //fscanf(arch_entrada, "%s", string);
+  
+  printf("%s, %d caracteres\n", string, strlen(string));
 
-  return(EXIT_SUCCESS);
+  encriptar(string, encriptado);
+
+  printf("%s", encriptado);
+
+  fprintf(arch_saida, "%s", encriptado);
+
+  fclose(arch_saida);
+  fclose(arch_entrada);
+
+  return (EXIT_SUCCESS);
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 
 void abrir_arquivo(FILE *arquivo, char *modo)
 {
@@ -27,16 +28,14 @@ void abrir_arquivo(FILE *arquivo, char *modo)
     strcat(nome_arquivo, ".txt");
   }
 
-  FILE *arch;
-
-  if ((arch = fopen(nome_arquivo, modo)) == NULL)
+  if ((arquivo = fopen(nome_arquivo, modo)) == NULL)
   {
-    printf("Erro de apertura do arquivo.");
+    extern int errno;
+    printf("Erro: %s",strerror(errno));
     exit(1);
   }
   else
   {
     printf("Aberto: %s\n",nome_arquivo);
-    arquivo = arch;
   }
 }
