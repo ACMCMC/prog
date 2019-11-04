@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-void abrir_arquivo(FILE *arquivo, char *modo)
+FILE* abrir_arquivo(char *modo)
 {
 
   char nome_arquivo[20], final[4];
@@ -28,6 +28,8 @@ void abrir_arquivo(FILE *arquivo, char *modo)
     strcat(nome_arquivo, ".txt");
   }
 
+FILE *arquivo;
+
   if ((arquivo = fopen(nome_arquivo, modo)) == NULL)
   {
     extern int errno;
@@ -37,5 +39,6 @@ void abrir_arquivo(FILE *arquivo, char *modo)
   else
   {
     printf("Aberto: %s\n",nome_arquivo);
+    return(arquivo);
   }
 }

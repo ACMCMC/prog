@@ -43,23 +43,21 @@ int main()
   FILE *arch_saida, *arch_entrada;
 
   printf("Introduza o nome do arquivo de texto plano: ");
-  abrir_arquivo(&arch_entrada, "r");  
+  arch_entrada = abrir_arquivo("r");
 
   printf("Introduza o nome do arquivo de saida: ");
-  abrir_arquivo(&arch_saida, "w");
+  arch_saida = abrir_arquivo("w");
 
-int i = 0;
+  int i = 0;
 
   while (feof(arch_entrada) == 0)
   {
-    fscanf(arch_entrada,"%c",string[i]);
+    fscanf(arch_entrada, "%c", &string[i]);
     i++;
   }
-  string[i+1] = '\0';
-  
-  //fscanf(arch_entrada, "%s", string);
-  
-  printf("%s, %d caracteres\n", string, strlen(string));
+  string[i + 1] = '\0';
+
+  printf("Lido: %s, %d caracteres\n", string, strlen(string));
 
   encriptar(string, encriptado);
 
