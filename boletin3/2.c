@@ -4,7 +4,7 @@ Versión: 1
 
 Este programa devolve un vector de caracteres (que introduce o usuario), pero ó revés*/
 
-#define EXIT_SUCCESS 0;
+#define EXIT_SUCCESS 0
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,5 +36,5 @@ int main() {
     /*Dámoslle a volta á palabra*/
     backwards(palabra, num_caracteres, back);
     printf("%s", back);
-    return (EXIT_SUCCESS);
+    return(EXIT_SUCCESS);
 }
