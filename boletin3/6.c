@@ -24,18 +24,6 @@ Este programa traballa con datos encriptados*/
 
 #include "lib_aldan.h"
 
-void encriptar(char *string, char *encriptado)
-{
-
-  encriptado[0] = string[0];
-
-  for (int i = 1; i < strlen(string); i++)
-  {
-    encriptado[i] = (string[i] + string[i - 1]) % 128;
-  }
-  encriptado[strlen(string)] = '\0';
-}
-
 int main()
 {
 

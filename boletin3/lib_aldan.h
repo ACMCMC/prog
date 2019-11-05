@@ -3,6 +3,29 @@
 #include <stdlib.h>
 #include <errno.h>
 
+void encriptar(char *string, char *encriptado)
+{
+
+  encriptado[0] = string[0];
+
+  for (int i = 1; i < strlen(string); i++)
+  {
+    encriptado[i] = (string[i] + string[i - 1]) % 128;
+  }
+  encriptado[strlen(string)] = '\0';
+}
+
+void desencriptar(char *encriptado, char *desencriptado) {
+
+  desencriptado[0] = encriptado[0];
+
+  for (int i = 1; i < strlen(encriptado) ; i++)
+  {
+    desencriptado[i] = (encriptado[i] - desencriptado[i-1] + 128) % 128;
+  }
+  desencriptado[strlen(encriptado)] = '\0';
+}
+
 void ler_linha(FILE *arquivo, char *cadea_destino, int lonx_cadea) {
   fgets(cadea_destino,lonx_cadea,arquivo);
   //printf("%d, %d, %d, %d ",strlen(cadea_destino), cadea_destino[strlen(cadea_destino)], cadea_destino[strlen(cadea_destino)] - 1, cadea_destino[strlen(cadea_destino)] - 2);

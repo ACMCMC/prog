@@ -18,17 +18,6 @@ Este programa traballa con datos encriptados*/
 
 #include "lib_aldan.h"
 
-void desencriptar(char *encriptado, char *desencriptado) {
-
-  desencriptado[0] = encriptado[0];
-
-  for (int i = 1; i < strlen(encriptado) ; i++)
-  {
-    desencriptado[i] = (encriptado[i] - desencriptado[i-1] + 128) % 128;
-  }
-  desencriptado[strlen(encriptado)] = '\0';
-}
-
 int main(){
 
   char encriptado[100], desencriptado[100];
