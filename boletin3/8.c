@@ -33,7 +33,7 @@ int main() {
   gets(contrasena);
 
   while(feof(arch) == 0) {
-    lerLinha(arch,linha,N);
+    ler_linha(arch,linha,N);
     if(Hamming(linha,contrasena) == 0) {
       printf("Acceso garantido\n");
       break;
