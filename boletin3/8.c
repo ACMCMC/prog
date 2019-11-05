@@ -1,3 +1,21 @@
+/*ENUNCIADO
+
+Dados dous vectores U e V, defínese a distancia de Hamming, d(U,V), coma o número de posicións nas que
+difiren os vectores. Por exemplo, se U = 20001 e V = 10103,  d(U,V) = 3, xa que existen tres posicións
+nas cales os vectores teñen diferente valor. Escribide unha función, denominada Hamming, que reciba como
+parámetros dúas cadeas de caracteres e devolva un enteiro que indique a distancia Hamming entre elas. Se
+as cadeas non teñen lonxitudes iguais a función devolverá -1. Empregar esa función dentro dun programa en
+C que pida ao usuario unha chave de paso  (cadea de caracteres), e que a compare coas almacenadas nun arquivo
+denominado chaves.dat xa existente  e que, despois de chamar á función Hamming, amose por pantalla unha
+mensaxe indicando se a  cadea dada polo usuario coincide ou non con algunha das almacenadas no arquivo
+chaves.dat. Considerar que as chaves de paso do arquivo están encriptadas segundo o método anterior e que
+por tanto fai falta desencriptalas para facer a comparación.*/
+
+/*Autor: Aldán Creo Mariño
+Data: 4 de novembro de 2019
+Versión: 1
+Este programa traballa con datos encriptados*/
+
 #include "lib_aldan.h"
 #include <stdio.h>
 #include <stdlib.h>
