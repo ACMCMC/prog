@@ -1,9 +1,12 @@
 /*ENUNCIADO
 
-Nun almacén precísase gardar os datos necesarios para os distintos artigos dispoñibles nun ficheiro
-chamado invent.dat. Para cada elemento deben rexistrarse os seguintes datos: 
- codigo (enteiro) nome (cadea de ata 30 caracteres) prezo (número real), 
- cantidade (enteiro que indica a cantidade de unidades existente).
+ Nun almacén precísase gardar os datos necesarios para os distintos artigos dispoñibles nun ficheiro
+ chamado invent.dat. Para cada elemento deben rexistrarse os seguintes datos: 
+    codigo (enteiro)
+    nome (cadea de ata 30 caracteres)
+    prezo (número real), 
+    cantidade (enteiro que indica a cantidade de unidades existente).
+
  Escribir unha función chamada gravar_datos que poida gardar os datos de varios artigos no arquivo invent.dat.
  A escritura debe facerse en binario, gardando unha estrutura en cada operación. O código para cada artigo
  será xerado secuencialmente a partir do 1 e os restantes datos serán tecleados polo usuario, mentres que
@@ -31,3 +34,48 @@ chamado invent.dat. Para cada elemento deben rexistrarse os seguintes datos:
 #include <string.h>
 
 #define EXIT_SUCCESS 0
+#define N 30
+
+typedef struct {
+    int codigo;
+    char nome[N];
+    float precio;
+    int cantidade;
+} artigo;
+
+int gravar_datos(artigo artigo) {
+    int elementos_inseridos = 0;
+    return elementos_inseridos;
+}
+
+void ler_datos(FILE *arch, artigo *vector_artigos) {
+    int i;
+    while(feof(arch) == 0) {
+        fscanf(arch,"%d",&i);
+        vector_artigos[i].codigo = i+1;
+
+        fscanf(arch,"%s",vector_artigos[i].nome);
+        fscanf(arch,"%f",&vector_artigos[i].precio);
+        fscanf(arch,"%d",&vector_artigos[i].cantidade);
+    }
+}
+
+int venda_item(int codigo, int num_uds, artigo *vector_estruturas) {
+return(vector_estruturas[codigo].precio*num_uds);
+}
+
+int main() {
+    artigo vector_artigos[100];
+    FILE * arch = fopen("invent.dat","wb");
+
+    if(arch == NULL) {
+        printf("Erro abrindo a base de datos.");
+        exit(1);
+    }
+
+    ler_datos(arch, &vector_artigos);
+
+    fclose(arch);
+
+    return(EXIT_SUCCESS);
+}
