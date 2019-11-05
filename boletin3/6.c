@@ -43,7 +43,7 @@ int main()
     fscanf(arch_entrada, "%c", &string[i]);
     i++;
   }
-  string[i + 1] = '\0';
+  string[i-1] = '\0';
 
   printf("Lido: %s, %d caracteres\n", string, strlen(string));
 
