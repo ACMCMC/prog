@@ -46,7 +46,7 @@ void Derivar(t_polinomio pol, t_polinomio *der) {
 
 int main(int argc, char** argv) {
     int coe[6], grao;
-    printf("Introduza o grao do polinomio:");
+    printf("Introduza o grao do polinomio: ");
     scanf("%d", &grao);
     printf("\nIntroduza os valores dos coeficientes:\n");
     for (int i = 0; i <= grao; i++) {
@@ -55,9 +55,9 @@ int main(int argc, char** argv) {
     }
     t_polinomio miPolinomio;
     Crea(grao, coe, &miPolinomio);
-    printf("O polinomio orixinal é:\n");
+    printf("O polinomio orixinal e:\n");
     Mostrar(miPolinomio);
-    printf("O polinomio derivado é:\n");
+    printf("O polinomio derivado e:\n");
     t_polinomio der;
     Derivar(miPolinomio, &der);
     Mostrar(der);
