@@ -66,7 +66,7 @@ return(vector_estruturas[codigo].precio*num_uds);
 
 int main() {
     artigo vector_artigos[100];
-    FILE * arch = fopen("invent.dat","wb");
+    FILE * arch = fopen("invent.dat","r+b");
 
     if(arch == NULL) {
         printf("Erro abrindo a base de datos.");
