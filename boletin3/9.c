@@ -48,16 +48,13 @@ int gravar_datos(artigo artigo) {
     return elementos_inseridos;
 }
 
-void ler_datos(FILE *arch, artigo *vector_artigos) {
-    int i;
+int ler_datos(FILE *arch, artigo *vector_artigos) {
+    int i = 0;
     while(feof(arch) == 0) {
-        fscanf(arch,"%d",&i);
-        vector_artigos[i].codigo = i+1;
-
-        fscanf(arch,"%s",vector_artigos[i].nome);
-        fscanf(arch,"%f",&vector_artigos[i].precio);
-        fscanf(arch,"%d",&vector_artigos[i].cantidade);
+        fscanf(arch,"%d[^,], %s[^,], %f[^,], %d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
+        i++;
     }
+    return(i);
 }
 
 int venda_item(int codigo, int num_uds, artigo *vector_estruturas) {
@@ -73,7 +70,7 @@ int main() {
         exit(1);
     }
 
-    ler_datos(arch, &vector_artigos);
+    int num_artigos = ler_datos(arch, vector_artigos);
 
     fclose(arch);
 
