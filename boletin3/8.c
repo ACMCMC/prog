@@ -24,24 +24,24 @@ Este programa traballa con datos encriptados*/
 #define EXIT_SUCCESS 0
 #define N 30
 
-int Hamming(char *vec1, char *vec2)
+int Hamming(char *vec1, char *vec2) //Para facer a función Hamming, necesitamos dous vectores de caracteres que comparar
 {
-  if (!(strlen(vec1) == strlen(vec2)))
+  if (!(strlen(vec1) == strlen(vec2))) //Comparamos as lonxitudes dos vectores
   {
-    //printf("Os vectores non se poden comparar porque teñen distinta lonxitude");
+    //Os vectores non se poden comparar porque teñen distinta lonxitude, así que devolvemos -1
     return (-1);
   }
 
-  int hamming = 0;
+  int hamming = 0; //Se non hai ningún caracter distinto, a función valerá 0
 
-  for (int i = 0; i < strlen(vec1); i++)
+  for (int i = 0; i < strlen(vec1); i++) //Aumentamos de cada vez a posición que escaneamos nunha unidade
   {
-    if (vec1[i] != vec2[i])
+    if (vec1[i] != vec2[i]) //Se o carácter é distinto entre as dúas cadeas...
     {
-      hamming++;
+      hamming++; //...entón Hamming vale un máis
     }
   }
-  return hamming;
+  return hamming; //Devolvemos o número de posicións distintas
 }
 
 int main()
@@ -50,35 +50,43 @@ int main()
   char linha[N], contrasena[N];
 
   printf("Introduza o nome do arquivo de contrasenas: ");
-  arch = abrir_arquivo("r");
+  arch = abrir_arquivo("r"); //Abrimos o arquivo de contraseñas coa función abrir_arquivo, en modo lectura
 
   printf("\nIntroduza a sua contrasena: ");
-  getchar();
-  gets(contrasena);
+  getchar();        //Como o scanf anterior deixa un retorno de carro no búfer de lectura, quitamos o último caracter
+  gets(contrasena); //Escaneamos a contraseña que introduza o usuario
 
-char cont_cifrada[N];
+  char cont_cifrada[N];
 
-  encriptar(contrasena, cont_cifrada);
+  encriptar(contrasena, cont_cifrada); //Encriptamos a contraseña introducida para poder comparala
 
   int coinciden = 0;
 
-  while (feof(arch) == 0)
+  while (feof(arch) == 0) //Imos lendo todas as liñas do arquivo de claves para ver se algunha coincide
   {
     ler_linha(arch, linha, N);
     if (Hamming(linha, cont_cifrada) == 0)
     {
-      coinciden = 1;
+      coinciden = 1; //Se coinciden, saímos do bucle e asignámoslle verdadeiro á variable de control (int coinciden)
       break;
     }
   }
 
-  if(coinciden) {
+  if (coinciden)
+  {
     printf("\nAcceso garantido\n");
-  } else {
+  }
+  else
+  {
     printf("\nAcceso denegado\n");
   }
 
-  fclose(arch);
-
-  return (EXIT_SUCCESS);
+  if (fclose(arch))
+  { //Pechamos o arquivo antes de rematar
+    return (EXIT_FAILURE); //Se houbo un fallo ó pechalo, devolvemos fallo
+  }
+  else
+  {
+    return (EXIT_SUCCESS); //Devolvemos 0 se se pechou correctamente
+  }
 }
