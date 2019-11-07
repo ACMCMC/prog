@@ -46,11 +46,11 @@ int Hamming(char *vec1, char *vec2) //Para facer a función Hamming, necesitamos
 
 int main()
 {
-  FILE *arch;
+  FILE *arq;
   char linha[N], contrasena[N];
 
   printf("Introduza o nome do arquivo de contrasenas: ");
-  arch = abrir_arquivo("r"); //Abrimos o arquivo de contraseñas coa función abrir_arquivo, en modo lectura
+  arq = abrir_arquivo("r"); //Abrimos o arquivo de contraseñas coa función abrir_arquivo, en modo lectura
 
   printf("\nIntroduza a sua contrasena: ");
   getchar();        //Como o scanf anterior deixa un retorno de carro no búfer de lectura, quitamos o último caracter
@@ -62,9 +62,9 @@ int main()
 
   int coinciden = 0;
 
-  while (feof(arch) == 0) //Imos lendo todas as liñas do arquivo de claves para ver se algunha coincide
+  while (feof(arq) == 0) //Imos lendo todas as liñas do arquivo de claves para ver se algunha coincide
   {
-    ler_linha(arch, linha, N);
+    ler_linha(arq, linha, N);
     if (Hamming(linha, cont_cifrada) == 0)
     {
       coinciden = 1; //Se coinciden, saímos do bucle e asignámoslle verdadeiro á variable de control (int coinciden)
@@ -81,7 +81,7 @@ int main()
     printf("\nAcceso denegado\n");
   }
 
-  if (fclose(arch))
+  if (fclose(arq))
   { //Pechamos o arquivo antes de rematar
     return (EXIT_FAILURE); //Se houbo un fallo ó pechalo, devolvemos fallo
   }

@@ -32,22 +32,22 @@ float media(int *nums, int cantidad_nums)
 
 int main()
 {
-  FILE *arch;
+  FILE *arq;
   int num[100], i;
-  if ((arch = fopen("data.txt", "r")) == NULL)
+  if ((arq = fopen("data.txt", "r")) == NULL)
   {
     printf("Erro abrindo o arquivo");
     exit(1);
   }
-  for (i = 0; feof(arch) == 0; i++)
+  for (i = 0; feof(arq) == 0; i++)
   {
-    fscanf(arch, "%d", &num[i]);
+    fscanf(arq, "%d", &num[i]);
     printf("Numero %d: %d\n", i, num[i]);
   }
 
   printf("A media dos valores e %f", media(num, i));
 
-  fclose(arch);
+  fclose(arq);
 
   return (EXIT_SUCCESS);
 }

@@ -21,14 +21,14 @@ Este programa traballa con datos encriptados*/
 int main(){
 
   char encriptado[100], desencriptado[100];
-  FILE *arch, *arch_saida;
+  FILE *arq, *arch_saida;
 
   printf("Introduza o nome do arquivo co texto encriptado: ");
-  arch = abrir_arquivo("r");
+  arq = abrir_arquivo("r");
   printf("Introduza o nome do arquivo de saida: ");
   arch_saida = abrir_arquivo("w");
 
-  fgets(encriptado,100,arch);
+  fgets(encriptado,100,arq);
   
   printf("%s, %d caracteres\n",encriptado,strlen(encriptado));
 
@@ -38,7 +38,7 @@ int main(){
 
   fprintf(arch_saida,"%s",desencriptado);
 
-  fclose(arch);
+  fclose(arq);
   fclose(arch_saida);
 
   return(EXIT_SUCCESS);
