@@ -43,15 +43,18 @@ typedef struct {
     int cantidade;
 } artigo;
 
-int gravar_datos(artigo artigo) {
+int gravar_datos(artigo *vector_arts, int num_arts, FILE *arq) {
     int elementos_inseridos = 0;
+    for(int i = 0; i < num_arts; i++) {
+        fwrite(&vector_arts[i].codigo, sizeof (vector_arts[i].codigo),1,arq);
+    }
     return elementos_inseridos;
 }
 
-int ler_datos(FILE *arch, artigo *vector_artigos) {
+int ler_datos(FILE *arq, artigo *vector_artigos) {
     int i = 0;
-    while(feof(arch) == 0) {
-        fscanf(arch,"%d[^,],%s[^,],%f[^,],%d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
+    while(feof(arq) == 0) {
+        //fscanf(arq,"%d[^,],%s[^,],%f[^,],%d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
         i++;
     }
     return(i);
@@ -63,16 +66,16 @@ return(vector_estruturas[codigo].precio*num_uds);
 
 int main() {
     artigo vector_artigos[100];
-    FILE * arch = fopen("invent.dat","r+b");
+    FILE * arq = fopen("invent.dat","r+b");
 
-    if(arch == NULL) {
+    if(arq == NULL) {
         printf("Erro abrindo a base de datos.");
         exit(1);
     }
 
-    int num_artigos = ler_datos(arch, vector_artigos);
+    int num_artigos = ler_datos(arq, vector_artigos);
 
-    fclose(arch);
+    fclose(arq);
 
     return(EXIT_SUCCESS);
 }
