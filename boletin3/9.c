@@ -51,7 +51,7 @@ int gravar_datos(artigo artigo) {
 int ler_datos(FILE *arch, artigo *vector_artigos) {
     int i = 0;
     while(feof(arch) == 0) {
-        fscanf(arch,"%d[^,], %s[^,], %f[^,], %d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
+        fscanf(arch,"%d[^,],%s[^,],%f[^,],%d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
         i++;
     }
     return(i);
