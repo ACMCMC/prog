@@ -113,6 +113,24 @@ int main() {
         mostrar_artigo(vector_artigos[i]);
     }
 
+    int opcion = 0;
+
+    while (1) {
+        printf("Que desexa facer?\n\n\t1. Mostrar os artigos do inventario.\n\t2. Introducir os datos dun novo artigo.\n\t3. Vender un artigo.\n\t0. Sair.");
+        getchar();
+        scanf("%d",&opcion);
+        switch (opcion) {
+            case 0:
+            break;
+            case 1:
+            break;
+            case 2:
+            break;
+            default:
+            printf("Opcion non admitida.\n");
+        }
+    }
+
     fclose(arq);
 
     return(EXIT_SUCCESS);
