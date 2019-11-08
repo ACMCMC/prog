@@ -43,10 +43,17 @@ typedef struct {
     int cantidade;
 } artigo;
 
-int gravar_datos(artigo *vector_arts, int num_arts, FILE *arq) {
+void mostrar_artigo(artigo artigo) {
+    printf("O artigo %d e un %s, que costa %f. Hai %d unidades.\n", artigo.codigo,artigo.nome,artigo.precio,artigo.cantidade);
+}
+
+int gravar_datos(artigo *vector_artigos, int num_arts, FILE *arq) {
     int elementos_inseridos = 0;
     for(int i = 0; i < num_arts; i++) {
-        fwrite(&vector_arts[i].codigo, sizeof (vector_arts[i].codigo),1,arq);
+        fwrite(&vector_artigos[i].codigo, sizeof (vector_artigos[i].codigo),1,arq);
+        fwrite(vector_artigos[i].nome, sizeof (vector_artigos[i].nome),1,arq);
+        fwrite(&vector_artigos[i].precio, sizeof (vector_artigos[i].precio),1,arq);
+        fwrite(&vector_artigos[i].cantidade, sizeof (vector_artigos[i].cantidade),1,arq);
     }
     return elementos_inseridos;
 }
@@ -54,6 +61,10 @@ int gravar_datos(artigo *vector_arts, int num_arts, FILE *arq) {
 int ler_datos(FILE *arq, artigo *vector_artigos) {
     int i = 0;
     while(feof(arq) == 0) {
+        fread(&vector_artigos[i].codigo, sizeof (vector_artigos[i].codigo),1,arq);
+        fread(vector_artigos[i].nome, sizeof (vector_artigos[i].nome),1,arq);
+        fread(&vector_artigos[i].precio, sizeof (vector_artigos[i].precio),1,arq);
+        fread(&vector_artigos[i].cantidade, sizeof (vector_artigos[i].cantidade),1,arq);
         //fscanf(arq,"%d[^,],%s[^,],%f[^,],%d[^\n]\n",&vector_artigos[i].codigo,vector_artigos[i].nome,&vector_artigos[i].precio,&vector_artigos[i].cantidade);
         i++;
     }
@@ -73,7 +84,34 @@ int main() {
         exit(1);
     }
 
+    /*vector_artigos[0].codigo = 1;
+    vector_artigos[0].nome[0] = 'A';
+    vector_artigos[0].nome[1] = 'L';
+    vector_artigos[0].nome[2] = 'S';
+    vector_artigos[0].nome[3] = 'A';
+    vector_artigos[0].nome[4] = 'C';
+    vector_artigos[0].nome[5] = '\0';
+    vector_artigos[0].precio = 1.45;
+    vector_artigos[0].cantidade = 3;
+
+    vector_artigos[1].codigo = 2;
+    vector_artigos[1].nome[0] = 'G';
+    vector_artigos[1].nome[1] = 'H';
+    vector_artigos[1].nome[2] = 'D';
+    vector_artigos[1].nome[3] = 'Q';
+    vector_artigos[1].nome[4] = 'L';
+    vector_artigos[1].nome[5] = '\0';
+    vector_artigos[1].precio = 1.43;
+    vector_artigos[1].cantidade = 5;*/
+
+
+    //gravar_datos(vector_artigos,2,arq);
+
     int num_artigos = ler_datos(arq, vector_artigos);
+
+    for(int i = 0; i<2; i++) {
+        mostrar_artigo(vector_artigos[i]);
+    }
 
     fclose(arq);
 
