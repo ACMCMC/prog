@@ -65,7 +65,7 @@ int gravar_datos(artigo *vector_artigos, int num_arts, FILE *arq)
 
 int actualizar_artigo(artigo artigo, FILE *arq)
 {
-    fseek(arq, (artigo.codigo - 1) * sizeof(artigo), SEEK_SET);
+    fseek(arq, (artigo.codigo - 1) * (sizeof(artigo.cantidade) + sizeof(artigo.nome) + sizeof(artigo.codigo) + sizeof(artigo.precio)), SEEK_SET);
     fwrite(&artigo.codigo, sizeof(artigo.codigo), 1, arq);
     fwrite(artigo.nome, sizeof(artigo.nome), 1, arq);
     fwrite(&artigo.precio, sizeof(artigo.precio), 1, arq);
