@@ -65,15 +65,10 @@ int gravar_datos(artigo *vector_artigos, int num_arts, FILE *arq)
 
 int actualizar_artigo(artigo artigo, FILE *arq)
 {
-    fflush(stdin);
     fseek(arq, (artigo.codigo - 1) * sizeof(artigo), SEEK_SET);
-    fflush(stdin);
     fwrite(&artigo.codigo, sizeof(artigo.codigo), 1, arq);
-    fflush(stdin);
     fwrite(artigo.nome, sizeof(artigo.nome), 1, arq);
-    fflush(stdin);
     fwrite(&artigo.precio, sizeof(artigo.precio), 1, arq);
-    fflush(stdin);
     fwrite(&artigo.cantidade, sizeof(artigo.cantidade), 1, arq);
     return 1;
 }
@@ -94,16 +89,20 @@ int ler_datos(FILE *arq, artigo *vector_artigos)
 
 int venda_item(int codigo, int num_uds, artigo *vector_estruturas,FILE *arq)
 {
-    vector_estruturas[codigo - 1].cantidade = vector_estruturas[codigo - 1].cantidade - num_uds;
-    actualizar_artigo(vector_estruturas[codigo-1],arq);
-    return (vector_estruturas[codigo - 1].precio * num_uds);
+    if(vector_estruturas[codigo - 1].cantidade >= num_uds) {
+vector_estruturas[codigo - 1].cantidade = vector_estruturas[codigo - 1].cantidade - num_uds;
+actualizar_artigo(vector_estruturas[codigo-1],arq);
+return (vector_estruturas[codigo - 1].precio * num_uds);
+    } else {
+        return -1;
+    }
 }
 
 int main()
 {
     artigo vector_artigos[100], artigo;
     FILE *arq = fopen("invent.dat", "r+b");
-    int codigo, num_uds;
+    int codigo, num_uds, prezo;
 
     if (arq == NULL)
     {
@@ -149,16 +148,16 @@ int main()
         scanf("%d", &opcion);
         switch (opcion)
         {
-        case 0:
+        case 0: //sair do programa
             exit = 1;
             break;
-        case 1:
+        case 1: //listar os artigos
             for (int i = 0; i < num_artigos; i++)
             {
                 mostrar_artigo(vector_artigos[i]);
             }
             break;
-        case 2:
+        case 2: //engadir artigos
             do
             {
                 artigo.codigo = num_artigos + 1;
@@ -178,14 +177,18 @@ int main()
             } while (strcmp(artigo.nome, ""));
             printf("\nArtigos inseridos correctamente.");
             break;
-        case 3:
+        case 3: //vender un artigo
             printf("\nIntroduza o codigo do artigo: ");
             scanf("%d", &codigo);
             printf("Introduza a cantidade: ");
             scanf("%d", &num_uds);
-            printf("Prezo: %d euros", venda_item(codigo, num_uds, vector_artigos,arq));
+            if((prezo = venda_item(codigo, num_uds, vector_artigos,arq)) >= 0){
+            printf("Prezo: %d euros\n", prezo);
+            } else {
+            printf("Erro na venda do artigo.\n");
+            }
             break;
-        case 4:
+        case 4: //actualizar os datos dun ou varios artigos
             do
             {
                 printf("\nIntroduza o codigo do artigo a actualizar.\n\t(0 para sair)\n\nCodigo: ");
@@ -214,9 +217,9 @@ int main()
         default:
             printf("Opcion non admitida.\n");
         }
-    } while (exit == 0);
+    } while (exit == 0); //mostramos o menú principal mentres non seleccionemos a opcion de saida
 
-    fclose(arq);
+    fclose(arq); //pechamos o arquivo
 
     return (EXIT_SUCCESS);
 }
