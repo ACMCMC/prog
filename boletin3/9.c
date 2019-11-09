@@ -54,7 +54,7 @@ int gravar_datos(artigo *vector_artigos, int num_arts, FILE *arq)
     int elementos_inseridos = 0;
     for (int i = 0; i < num_arts; i++)
     {
-        fseek(arq, 0, SEEK_END);
+        fseek(arq, (vector_artigos[i].codigo - 1) * sizeof(artigo), SEEK_SET);
         fwrite(&vector_artigos[i].codigo, sizeof(int), 1, arq);
         fwrite(vector_artigos[i].nome, sizeof(vector_artigos[i].nome), 1, arq);
         fwrite(&vector_artigos[i].precio, sizeof(vector_artigos[i].precio), 1, arq);
@@ -65,7 +65,8 @@ int gravar_datos(artigo *vector_artigos, int num_arts, FILE *arq)
 
 int actualizar_artigo(artigo artigo, FILE *arq)
 {
-    fseek(arq, (artigo.codigo - 1) * (sizeof(artigo.cantidade) + sizeof(artigo.nome) + sizeof(artigo.codigo) + sizeof(artigo.precio)), SEEK_SET);
+    fseek(arq, (artigo.codigo - 1) * (sizeof(artigo)), SEEK_SET);
+    //fseek(arq, (artigo.codigo - 1) * (sizeof(artigo.cantidade) + sizeof(artigo.nome) + sizeof(artigo.codigo) + sizeof(artigo.precio)), SEEK_SET);
     fwrite(&artigo.codigo, sizeof(artigo.codigo), 1, arq);
     fwrite(artigo.nome, sizeof(artigo.nome), 1, arq);
     fwrite(&artigo.precio, sizeof(artigo.precio), 1, arq);
@@ -78,6 +79,7 @@ int ler_datos(FILE *arq, artigo *vector_artigos)
     int i;
     for (i = 0; feof(arq) == 0; i++)
     {
+    fseek(arq, (i) * (sizeof(vector_artigos[i])), SEEK_SET);
         fread(&vector_artigos[i].codigo, sizeof(vector_artigos[i].codigo), 1, arq);
         fread(vector_artigos[i].nome, sizeof(vector_artigos[i].nome), 1, arq);
         fread(&vector_artigos[i].precio, sizeof(vector_artigos[i].precio), 1, arq);
