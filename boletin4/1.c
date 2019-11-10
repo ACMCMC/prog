@@ -8,6 +8,7 @@ Versión: 1
 Este programa realiza operacións básicas con direccións de memoria*/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define EXIT_SUCCESS 0
 
