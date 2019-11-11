@@ -18,8 +18,28 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 char *CarCompartidos(char *cad1, char *cad2)
 {
-    char *cad_res = (char *)malloc(sizeof(char));
-    int cuenta = 0;
+    char *cad_res = (char *)malloc(0);
+
+    int cuenta = 0, shift = 0, correcto, i;
+
+    do {
+    correcto = 1;
+    for(i = 1; cad1[i] != '\0'; i++) {
+        if(cad1[i] < cad1[i-1]) {
+            cad1[i-shift] = cad1[i-1];
+            cad1[i-shift-1] = cad1[i];
+            correcto = 0;
+        } else if (cad1[i] == cad1[i-1]) {
+            
+            shift++;
+        } else {
+            cad1_ord[i-shift] = cad1[i];
+        }
+    }
+    } while(!correcto);
+
+    printf("%s",cad1);
+
     while ((*cad1 != '\0') && (*cad2 != '\0'))
     {
         if (*cad1 == *cad2)
@@ -41,7 +61,7 @@ int main()
 {
 
     printf("Iniciando busqueda...");
-    printf("\n%s", CarCompartidos("Trial", "Troal"));
+    printf("\n%s", CarCompartidos("dcba", "Troal"));
     printf("\nFin da busqueda.");
 
     return (EXIT_SUCCESS);

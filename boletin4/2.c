@@ -12,15 +12,16 @@ Este programa realiza operacións básicas con direccións de memoria*/
 
 #define EXIT_SUCCESS 0
 
-int main() {
+int main()
+{
     unsigned int num1 = 100;
-     unsigned char *punt = &num1; //como un int ten 4 bytes, asígnaselle o seu byte menos significativo (porque en memoria os bytes gárdanse de menos a máis significativo)
-     unsigned char punt2[3] = {'a','b','c','d'}; //en memoria, gardaranse en orde, como 4 bytes consecutivos
-     unsigned int *punt3 = punt2; //como os ints teñen 4 bytes, e se leen de menos a máis significativos, será o resultado de sumar ('d' * 2^24 + 'c' * 2^16 + 'b' * 2^8 + 'a' * 2^0)
-     printf("%d\n",num1); //isto imprime 100
-     printf("%c\n",*punt); //isto imprime tamén 100, porque estamos tendo só en conta o primeiro byte, e 100 cabe nese primeiro byte
-     printf("%s\n",punt2); //aquí imprime abcd, porque estamos lendo os bytes en orde coma se foran caracteres ASCII
-     printf("%d\n",*punt3); //aquí devolve o resultado da suma anterior, 1684234849, que en binario é 01100100 ('d') 01100011 ('c') 01100010 ('b') 01100001 ('a')
+    unsigned char *punt = &num1;                   //como un int ten 4 bytes, asígnaselle o seu byte menos significativo (porque en memoria os bytes gárdanse de menos a máis significativo)
+    unsigned char punt2[3] = {'a', 'b', 'c', 'd'}; //en memoria, gardaranse en orde, como 4 bytes consecutivos
+    unsigned int *punt3 = punt2;                   //como os ints teñen 4 bytes, e se leen de menos a máis significativos, será o resultado de sumar ('d' * 2^24 + 'c' * 2^16 + 'b' * 2^8 + 'a' * 2^0)
+    printf("%d\n", num1);                          //isto imprime 100
+    printf("%c\n", *punt);                         //isto imprime tamén 100, porque estamos tendo só en conta o primeiro byte, e 100 cabe nese primeiro byte
+    printf("%s\n", punt2);                         //aquí imprime abcd, porque estamos lendo os bytes en orde coma se foran caracteres ASCII
+    printf("%d\n", *punt3);                        //aquí devolve o resultado da suma anterior, 1684234849, que en binario é 01100100 ('d') 01100011 ('c') 01100010 ('b') 01100001 ('a')
 
-    return(EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 }

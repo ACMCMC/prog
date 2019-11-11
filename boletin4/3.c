@@ -18,11 +18,12 @@ int *posNegativo(int *vector)
     int *i = vector;
     printf("\n\nIniciando busqueda:\n");
     printf("Buscarase dende a posicion de memoria 0x%p ata a 0x%p, con incrementos de %d.\n\n",vector, vector + sizeof(vector) * N, sizeof(vector));
-    printf("Iteracion\tDireccion\t\tValor\n");
+    printf("Iteracion\tDireccion\t\tIndice\t\tValor\n");
 
     while (*i >= 0 && ((sizeof(vector) * N) > ((i - vector)*sizeof(vector))))
     {
-        printf("\n%d",(i-vector)*sizeof(vector));
+        printf("\n%d",i-vector+1);
+        printf("\t\t%d",(i-vector)*sizeof(vector));
         printf("\t\t0x%p",i);
         printf("\t\t%d",*i);
         i++;
@@ -47,9 +48,11 @@ int main()
         scanf("%d", &vector[i]);
     }
 
-    if (posNegativo(vector) != NULL)
+    int *posNeg = posNegativo(vector);
+
+    if (posNeg != NULL)
     {
-        printf("\n\nO valor gardado en 0x%p e %d", posNegativo(vector), *posNegativo(vector));
+        printf("\n\nO valor gardado en 0x%p e %d", posNeg, *posNeg);
     }
     else
     {
