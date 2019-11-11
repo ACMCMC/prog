@@ -16,28 +16,33 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 #define EXIT_SUCCESS 0
 
-char * CarCompartidos(char *cad1, char *cad2) {
+char *CarCompartidos(char *cad1, char *cad2)
+{
     char *cad_res = (char *)malloc(sizeof(char));
     int cuenta = 0;
-    while((*cad1 != '\0') && (*cad2 != '\0')) {
-        if(*cad1 == *cad2) {
-            printf("\n%c",*cad1);
+    while ((*cad1 != '\0') && (*cad2 != '\0'))
+    {
+        if (*cad1 == *cad2)
+        {
             cuenta++;
-            cad_res = realloc(cad_res,cuenta*sizeof(char));
+            cad_res = realloc(cad_res, cuenta * sizeof(char));
+            cad_res[cuenta - 1] = *cad1;
         }
-        cad1++;
-        cad2++;
+        cad1 += sizeof(char);
+        cad2 += sizeof(char);
     }
-    cad_res = realloc(cad_res,(cuenta+1)*sizeof(char));
+    cad_res = realloc(cad_res, (cuenta + 1) * sizeof(char));
     cad_res[cuenta] = '\0';
-    return(cad_res);
+
+    return (cad_res);
 }
 
-int main() {
+int main()
+{
 
     printf("Iniciando busqueda...");
-    printf("\n%s",CarCompartidos("Holaaa","Aorbal"));
+    printf("\n%s", CarCompartidos("Trial", "Troal"));
     printf("\nFin da busqueda.");
 
-    return(EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 }
