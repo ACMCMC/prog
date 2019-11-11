@@ -16,8 +16,20 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 #define EXIT_SUCCESS 0
 
+char * CarCompartidos(char *cad1, char *cad2) {
+    char *cad_res;
+    while((*cad1 != '\0') && (*cad2 != '\0')) {
+        if(*cad1 == *cad2) {
+            printf("%c",*cad1);
+        }
+        cad1++;
+        cad2++;
+    }
+}
+
 int main() {
 
+    CarCompartidos("Holaaa","Arbol");
 
     return(EXIT_SUCCESS);
 }
