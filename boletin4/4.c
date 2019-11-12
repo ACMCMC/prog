@@ -63,10 +63,10 @@ char *Ordear(char *cadea)
 
 char *CarCompartidos(char *cad1, char *cad2)
 {
-    char *cad1_ord = Ordear(cad1);
+    char *cad1_ord = Ordear(cad1); //Empezamos ordenando as cadeas e eliminando os caracteres duplicados
     char *cad2_ord = Ordear(cad2);
 
-    char *cad_res = (char *)malloc(0);
+    char *cad_res = (char *)malloc(0); //Asignamoslle un espazo de 0 bytes a cadea de resultado
     char *cad_busqueda, *caracter_act;
     int i, long_cad_res = 0;
     for (caracter_act = cad1_ord; *caracter_act != '\0'; caracter_act++)
