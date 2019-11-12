@@ -14,16 +14,17 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define EXIT_SUCCESS 0
 
 char *Ordear(char *cadea)
 {
     char caracter_swap;
-    char *cadea_ordeada = (char *)malloc(sizeof(*cadea)*(strlen(cadea) + 1));
+    char *cadea_ordeada = (char *)malloc(sizeof(*cadea) * (strlen(cadea) + 1));
     int correcto, i;
 
-    strcpy(cadea_ordeada,cadea);
+    strcpy(cadea_ordeada, cadea);
 
     do
     {
@@ -42,7 +43,6 @@ char *Ordear(char *cadea)
 
     int shift = 0;
 
-
     for (i = 1; cadea_ordeada[i] != '\0'; i++)
     {
 
@@ -56,55 +56,54 @@ char *Ordear(char *cadea)
         }
     }
 
-    cadea_ordeada[i-shift] = '\0';
+    cadea_ordeada[i - shift] = '\0';
 
     return (cadea_ordeada);
 }
 
 char *CarCompartidos(char *cad1, char *cad2)
 {
+    char *cad1_ord = Ordear(cad1);
+    char *cad2_ord = Ordear(cad2);
+
     char *cad_res = (char *)malloc(0);
-
-    int cuenta = 0, shift = 0, correcto, i;
-
-    do
+    char *cad_busqueda, *caracter_act;
+    int i, long_cad_res = 0;
+    for (caracter_act = cad1_ord; *caracter_act != '\0'; caracter_act++)
     {
-        correcto = 1;
-        for (i = 1; cad1[i] != '\0'; i++)
+        int mitad_cadea = (ceil(((double)strlen(cad2_ord)) / ((double)2)));
+
+        cad_busqueda = (char *)malloc(sizeof(*cad2_ord) * strlen(cad2_ord)); //creamos unha nova cadea de tamaño a metade da cadea 2
+
+        strcpy(cad_busqueda, cad2_ord);
+
+        while (strlen(cad_busqueda) > 1)
         {
-            if (cad1[i] < cad1[i - 1])
-            {
-                cad1[i - shift] = cad1[i - 1];
-                cad1[i - shift - 1] = cad1[i];
-                correcto = 0;
-            }
-            else if (cad1[i] == cad1[i - 1])
-            {
+            mitad_cadea = (ceil(((double)strlen(cad_busqueda)) / ((double)2)));
 
-                shift++;
-            }
-            else
+            if (*caracter_act > cad_busqueda[mitad_cadea])
             {
-                cad1[i - shift] = cad1[i];
+                for (i = 0; i < mitad_cadea + 1; i++)
+                {
+                    cad_busqueda[i] = cad_busqueda[mitad_cadea + i];
+                }
             }
+            cad_busqueda = realloc(cad_busqueda, sizeof(*cad2_ord) * (mitad_cadea + 1));
+
+            cad_busqueda[mitad_cadea] = '\0';
         }
-    } while (!correcto);
 
-    printf("%s", cad1);
-
-    while ((*cad1 != '\0') && (*cad2 != '\0'))
-    {
-        if (*cad1 == *cad2)
+        if (*cad_busqueda == *caracter_act)
         {
-            cuenta++;
-            cad_res = realloc(cad_res, cuenta * sizeof(char));
-            cad_res[cuenta - 1] = *cad1;
+            long_cad_res++;
+            cad_res = realloc(cad_res, sizeof(*cad_res) * long_cad_res);
+            cad_res[long_cad_res - 1] = *cad_busqueda;
         }
-        cad1 += sizeof(char);
-        cad2 += sizeof(char);
     }
-    cad_res = realloc(cad_res, (cuenta + 1) * sizeof(char));
-    cad_res[cuenta] = '\0';
+
+    long_cad_res++;
+    cad_res = realloc(cad_res, sizeof(*cad_res) * long_cad_res);
+    cad_res[long_cad_res - 1] = '\0';
 
     return (cad_res);
 }
@@ -113,7 +112,7 @@ int main()
 {
 
     printf("Iniciando busqueda...\n");
-    printf("\n%s", Ordear("dcbaaaui"));
+    printf("\n%s", CarCompartidos("dccccbaaaui","adasd"));
     printf("\nFin da busqueda.");
 
     return (EXIT_SUCCESS);
