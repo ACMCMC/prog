@@ -71,17 +71,20 @@ char *CarCompartidos(char *cad1, char *cad2)
     int i, long_cad_res = 0;
     for (caracter_act = cad1_ord; *caracter_act != '\0'; caracter_act++)
     {
+        //printf("Tomando o caracter: %c\n", *caracter_act);
+
         int mitad_cadea = (ceil(((double)strlen(cad2_ord)) / ((double)2)));
 
         cad_busqueda = (char *)malloc(sizeof(*cad2_ord) * strlen(cad2_ord)); //creamos unha nova cadea de tamaño a metade da cadea 2
 
         strcpy(cad_busqueda, cad2_ord);
+        //printf("\tCadea de busqueda: %s\n", cad_busqueda);
 
         while (strlen(cad_busqueda) > 1)
         {
             mitad_cadea = (ceil(((double)strlen(cad_busqueda)) / ((double)2)));
 
-            if (*caracter_act > cad_busqueda[mitad_cadea])
+            if (*caracter_act >= cad_busqueda[mitad_cadea])
             {
                 for (i = 0; i < mitad_cadea + 1; i++)
                 {
@@ -91,6 +94,7 @@ char *CarCompartidos(char *cad1, char *cad2)
             cad_busqueda = realloc(cad_busqueda, sizeof(*cad2_ord) * (mitad_cadea + 1));
 
             cad_busqueda[mitad_cadea] = '\0';
+            //printf("\tCadea de busqueda: %s\n", cad_busqueda);
         }
 
         if (*cad_busqueda == *caracter_act)
@@ -110,10 +114,39 @@ char *CarCompartidos(char *cad1, char *cad2)
 
 int main()
 {
+    char *cadea1, *cadea2;
+    int lonx_cadea1 = 0, lonx_cadea2 = 0;
+
+    cadea1 = malloc(0);
+    cadea2 = malloc(0);
+
+    printf("\nIntroduza a sua primeira cadea: ");
+
+    do {
+        lonx_cadea1++;
+        cadea1 = realloc(cadea1,sizeof(*cadea1)*lonx_cadea1);
+        cadea1[lonx_cadea1-1] = getchar();
+    } while(cadea1[lonx_cadea1-1] != '\n');
+
+    cadea1[lonx_cadea1-1] = '\0';
+
+    printf("\nLido: %s\n",cadea1);
+
+    printf("\nIntroduza a sua segunda cadea: ");
+
+    do {
+        lonx_cadea2++;
+        cadea2 = realloc(cadea2,sizeof(*cadea2)*lonx_cadea2);
+        cadea2[lonx_cadea2-1] = getchar();
+    } while(cadea2[lonx_cadea2-1] != '\n');
+
+    cadea2[lonx_cadea2-1] = '\0';
+
+    printf("\nLido: %s\n",cadea2);
 
     printf("Iniciando busqueda...\n");
-    printf("\n%s", CarCompartidos("dccccbaaaui","adasd"));
-    printf("\nFin da busqueda.");
+    printf("\n%s", CarCompartidos(cadea1, cadea2));
+    printf("\nFin da busqueda.\n");
 
     return (EXIT_SUCCESS);
 }
