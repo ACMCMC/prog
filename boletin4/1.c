@@ -17,9 +17,9 @@ int main() {
     int b = 1492;
     char c[] = "Hola";
 
-    printf("%lf esta gardado en 0x%p\n",a,&a);
-    printf("%d esta gardado en 0x%p\n",b,&b);
-    printf("%s esta gardado en 0x%p\n",c,&c);
+    printf("%lf esta gardado en %p\n",a,&a);
+    printf("%d esta gardado en %p\n",b,&b);
+    printf("%s esta gardado no rango %p - %p\n",c,c,c+strlen(c));
 
     return(EXIT_SUCCESS);
 }
