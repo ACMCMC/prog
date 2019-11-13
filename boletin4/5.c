@@ -16,23 +16,39 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #define EXIT_SUCCESS 0
+
+int *suma(int tam_vec, int *v1, int *v2)
+{
+    int *suma = (int *)malloc(sizeof(*v1) * tam_vec);
+    for (int i = 0; i < tam_vec; i++)
+    {
+        suma[i] = v1[i] + v2[i];
+    }
+    return (suma);
+}
 
 int main(int argc, char **argv)
 {
     if (argc < 2)
     {
-        printf("Precisase o nome do arquivo a abrir como un parametro do programa.\n");
+        printf("Precisase o nome do arquivo a abrir como un parametro do programa. Para obter axuda, escriba ? ou \"help\"\n");
         exit(1);
     }
 
-    printf("Abrindo: %s\n",argv[1]);
+    if((argv[1][0] == '?') || (strcmp(argv[1],"help") == 0)) {
+        printf("Para utilizar o programa, introduza o nome do arquivo binario que conten os datos dos vectores. Este arquivo debese atopar na carpeta de execucion do programa, e ter permisos de lectura. O arquivo debera ter extension \".dat\"\n");        
+        exit(EXIT_SUCCESS);
+    }
+
+    printf("Abrindo: %s\n", argv[1]);
     FILE *arq = fopen(argv[1], "rb");
-    printf("Non se puido abrir o arquivo.\n");
-    exit(1);
     if (arq == NULL)
     {
+        printf("Non se puido abrir o arquivo (%p %s)\n", errno, strerror(errno));
+        exit(1);
     }
 
     char *cadea1, *cadea2;
@@ -47,7 +63,7 @@ int main(int argc, char **argv)
     {
         lonx_cadea1++;
         cadea1 = realloc(cadea1, sizeof(*cadea1) * lonx_cadea1);
-        cadea1[lonx_cadea1 - 1] = getchar();
+        scanf("%d", cadea1[lonx_cadea1 - 1]);
     } while (cadea1[lonx_cadea1 - 1] != '\n');
 
     cadea1[lonx_cadea1 - 1] = '\0';
