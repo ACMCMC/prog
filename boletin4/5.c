@@ -20,6 +20,31 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 #define EXIT_SUCCESS 0
 
+char *corrixirNome(char *nome_arq) { //Esta funcion toma unha cadea de caracteres e comproba se acaba en ".dat"; se non, añadelle a extension e devolve a cadea corrixida
+
+    if (strlen(nome_arq) > 4) //Se a cadea non mide mais de 4 caracteres, non pode ser algo seguido de ".dat"
+    {
+        char final[5]; //Se a cadea ten mais de 4 caracteres, creamos unha cadea temporal para almacenar os ultimos 4 caracteres da cadea e comparalos para ver se son ".dat"
+
+        for (int i = 3; i >= 0; i--) //Insertamos os ultimos 4 caracteres da cadea orixinal na cadea temporal que se chama "final"
+        {
+            final[3 - i] = nome_arq[strlen(nome_arq) - i - 1];
+        }
+        final[4] = '\0'; //Rematamos o caracter final da cadea
+
+        if (strcmp(final, ".dat") != 0) //Se a cadea non acaba en ".dat"...
+        {
+            strcat(nome_arq, ".dat"); //Engadimoslle ".dat"
+        }
+    }
+    else
+    {
+        strcat(nome_arq, ".dat"); //Se a cadea non chega a media mais de 4 caracteres, non termina en ".dat" e hai que añadirllo
+    }
+
+    return nome_arq; //Devolvemos a cadea corrixida
+}
+
 int *suma(int tam_vec, int *v1, int *v2)
 {
     int *suma = (int *)malloc(sizeof(*v1) * tam_vec);
@@ -32,22 +57,32 @@ int *suma(int tam_vec, int *v1, int *v2)
 
 int main(int argc, char **argv)
 {
-    if (argc < 2)
+    if (argc < 2) //Non se especificou un nome de ficheiro como argumento
     {
-        printf("Precisase o nome do arquivo a abrir como un parametro do programa. Para obter axuda, escriba ? ou \"help\"\n");
+        printf("Precisase o nome do arquivo a abrir como un parametro do programa. Para obter axuda, escriba \"-help\"\n");
         exit(1);
     }
 
-    if((argv[1][0] == '?') || (strcmp(argv[1],"help") == 0)) {
-        printf("Para utilizar o programa, introduza o nome do arquivo binario que conten os datos dos vectores. Este arquivo debese atopar na carpeta de execucion do programa, e ter permisos de lectura. O arquivo debera ter extension \".dat\"\n");        
+    if (/*(argv[1][0] == '\?') ||*/ (strcmp(argv[1], "-help") == 0)) //O usuario introduce -help como argumento
+    {
+        printf("Para utilizar o programa, introduza o nome do arquivo binario que conten os datos dos vectores. Este arquivo debese atopar na carpeta de execucion do programa, e ter permisos de lectura. O arquivo debera ter extension \".dat\"\n");
         exit(EXIT_SUCCESS);
+    } else if (strcmp(argv[1],"-create_file") == 0) {
+        if ((argc > 2) && (argv[2][0] != '-')) {
+
+            exit(EXIT_SUCCESS);
+        } else {
+            exit(1);
+        }
     }
 
-    printf("Abrindo: %s\n", argv[1]);
-    FILE *arq = fopen(argv[1], "rb");
+    char *nome_corrixido = corrixirNome(argv[1]);
+
+    printf("Abrindo: %s\n", nome_corrixido);
+    FILE *arq = fopen(nome_corrixido, "rb");
     if (arq == NULL)
     {
-        printf("Non se puido abrir o arquivo (%p %s)\n", errno, strerror(errno));
+        printf("\nNon se puido abrir o arquivo (%p - %s)\n", errno, strerror(errno));
         exit(1);
     }
 
