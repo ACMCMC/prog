@@ -21,6 +21,12 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 #define EXIT_SUCCESS 0
 
+char *corrixirNome(char *nome_arq);
+
+void crear_arquivo_vectores(char *nome_arquivo)
+{
+}
+
 char *corrixirNome(char *nome_arq)
 { //Esta funcion toma unha cadea de caracteres e comproba se acaba en ".dat"; se non, añadelle a extension e devolve a cadea corrixida
 
@@ -59,6 +65,14 @@ int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
 
 int main(int argc, char **argv)
 {
+    int *cadea1, *cadea2;
+    int lonx_cadea1 = 0, lonx_cadea2 = 0;
+
+    cadea1 = malloc(0);
+    cadea2 = malloc(0);
+
+
+
     if (argc < 2) //Non se especificou un nome de ficheiro como argumento
     {
         printf("Precisase o nome do arquivo a abrir como un parametro do programa.\n\nPara obter axuda, use \"-help\".\n");
@@ -84,12 +98,6 @@ int main(int argc, char **argv)
                 printf("\nNon se puido crear o arquivo (%p - %s)\n", errno, strerror(errno));
                 exit(1);
             }
-
-            int *cadea1, *cadea2;
-            int lonx_cadea1 = 0, lonx_cadea2 = 0;
-
-            cadea1 = malloc(0);
-            cadea2 = malloc(0);
 
             char caracter_actual;
             int num_actual, i;
@@ -158,8 +166,6 @@ int main(int argc, char **argv)
             }
             printf(" %d )\n", cadea2[lonx_cadea2 - 1]);
 
-
-
             fwrite(&lonx_cadea1, sizeof(lonx_cadea1), 1, arq);
             fwrite(cadea1, sizeof(*cadea1), lonx_cadea1, arq);
             fwrite(&lonx_cadea2, sizeof(lonx_cadea2), 1, arq);
@@ -191,7 +197,28 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    fclose(arq);
+    fread(&lonx_cadea1,sizeof(lonx_cadea1),1,arq);
+    fread(cadea1,sizeof(*cadea1),lonx_cadea1,arq);
+    fread(&lonx_cadea2,sizeof(lonx_cadea2),1,arq);
+    fread(cadea2,sizeof(*cadea2),lonx_cadea2,arq);
+
+int i;
+
+    printf("Lido o vector: (");
+            for (i = 0; i < (lonx_cadea1 - 1); i++)
+            {
+                printf(" %d ,", cadea1[i]);
+            }
+            printf(" %d )\n", cadea1[lonx_cadea1 - 1]);
+    
+    printf("Lido o vector: (");
+            for (i = 0; i < (lonx_cadea2 - 1); i++)
+            {
+                printf(" %d ,", cadea2[i]);
+            }
+            printf(" %d )\n", cadea2[lonx_cadea2 - 1]);
+
+        fclose(arq);
 
     return (EXIT_SUCCESS);
 }
