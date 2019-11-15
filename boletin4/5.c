@@ -59,30 +59,34 @@ char *corrixirNome(char *nome_arq_orixinal)
     return nome_arq; //Devolvemos a cadea corrixida
 }
 
-int multip_escalar(int tam_vec, int *v1, int *v2) {
+int multip_escalar(int tam_vec, int *v1, int *v2)
+{
     int multip = 0;
 
-    
+    for (int i = 0; i < tam_vec; i++)
+    {
+        multip = multip + (v1[i] * v2[i]);
+    }
 
     return multip;
 }
 
-int **multip_tensorial(int tam_vec, int *v1, int *v2){
+int **multip_tensorial(int tam_vec, int *v1, int *v2)
+{
     int **multip = (int **)malloc(sizeof(*v1) * tam_vec);
     for (int i = 0; i < tam_vec; i++)
     {
-        multip[i] = (int *)malloc(sizeof(*v2)*tam_vec);
+        multip[i] = (int *)malloc(sizeof(*v2) * tam_vec);
         for (int j = 0; j < tam_vec; j++)
         {
-            multip[i][j] = v1[i]*v2[j];
+            multip[i][j] = v1[i] * v2[j];
         }
-        
     }
-    
+
     return multip;
 }
 
-int* suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
+int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
 {
     int *suma = (int *)malloc(sizeof(*v1) * tam_vec);
     for (int i = 0; i < tam_vec; i++)
@@ -267,14 +271,13 @@ int main(int argc, char **argv)
 
     int i;
 
-    printf("Lido o vector: (");
+    printf("Lidos os vectores: (");
     for (i = 0; i < (lonx_cadea1 - 1); i++)
     {
         printf(" %d ,", vector1[i]);
     }
-    printf(" %d )\n", vector1[lonx_cadea1 - 1]);
+    printf(" %d ) , (", vector1[lonx_cadea1 - 1]);
 
-    printf("Lido o vector: (");
     for (i = 0; i < (lonx_cadea2 - 1); i++)
     {
         printf(" %d ,", vector2[i]);
@@ -297,7 +300,7 @@ int main(int argc, char **argv)
           ((strlen(argv[1]) > 1) && (argv[1][0] == '-') && (argv[1][1] > '3') || (argv[1][1] < '1')))))
     {
         //O usuario non pasou unha opcion como parametro. Mostramos ao usuario un menu para elixir a sua opcion co programa
-        printf("Que desexa facer?\n\n\t1. Realizar a suma dos dous vectores.\n\t2. Realizar a multiplicacion escalar dos vectores.\n\t3. Realizar a multiplicacion tensorial dos vectores.\n");
+        printf("\nQue desexa facer?\n\n\t1. Realizar a suma dos dous vectores.\n\t2. Realizar a multiplicacion escalar dos vectores.\n\t3. Realizar a multiplicacion tensorial dos vectores.\n");
 
         scanf("%d", &opcion);
     }
@@ -317,20 +320,21 @@ int main(int argc, char **argv)
         printf(" %d )\n", vector_suma[lonx_cadea1 - 1]);
         break;
     case 2:
+        printf("\n\nO resultado da multiplicacion escalar e %d.\n", multip_escalar(lonx_cadea1, vector1, vector2));
         break;
     case 3:
-    vector_mult_tensorial = multip_tensorial(lonx_cadea1,vector1,vector2);
-        printf("O resultado e:\n\n");
-    for (int i = 0; i < lonx_cadea1; i++) {
-        printf("(");
-        for (int j = 0; j < lonx_cadea2; j++)
+        vector_mult_tensorial = multip_tensorial(lonx_cadea1, vector1, vector2);
+        printf("\n\nO resultado e:\n");
+        for (int i = 0; i < lonx_cadea1; i++)
         {
-            printf(" %d ",vector_mult_tensorial[i][j]);
+            printf("(");
+            for (int j = 0; j < lonx_cadea2; j++)
+            {
+                printf(" %d ", vector_mult_tensorial[i][j]);
+            }
+            printf(")\n");
         }
-        printf(")\n");
-        
-    }
-    
+
         break;
     default:
         printf("Opcion non admitida.\n");
