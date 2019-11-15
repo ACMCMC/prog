@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 
     if (/*(argv[1][0] == '\?') ||*/ (strcmp(argv[1], "-help") == 0)) //O usuario introduce -help como argumento
     {
-        printf("Para utilizar o programa, introduza o nome do arquivo binario que conten os datos dos vectores. Este arquivo debese atopar na carpeta de execucion do programa, e ter permisos de lectura. O arquivo debera ter extension \".dat\".\n\nPode inicializar un arquivo cos datos de novos vectores co parametro \"-create_file\" (nome do arquivo).\n");
+        printf("Sintaxe:\n\t%s [-create_file] nome_arquivo [-1,-2,-3]\n\nPara utilizar o programa, introduza o nome do arquivo binario que conten os datos dos vectores. Este arquivo debese atopar na carpeta de execucion do programa, e ter permisos de lectura. O arquivo debera ter extension \".dat\".\n\nA continuacion do nome do arquivo, pode indicar o modo de operacion do programa, en caso de omitilo mostrarase un menu para seleccionar a opcion desexada en tempo de execucion.\n\nPode inicializar un arquivo cos datos de novos vectores co parametro \"-create_file\" (nome do arquivo).\n\n\t-1 realiza a suma dos vectores.\n\t-2 realiza a multiplicacion escalar.\n\t-3 realiza a multiplicacion tensorial.\n",argv[0]);
         exit(EXIT_SUCCESS);
     }
     else if (strcmp(argv[1], "-create_file") == 0)
