@@ -67,8 +67,18 @@ int multip_escalar(int tam_vec, int *v1, int *v2) {
     return multip;
 }
 
-int* multip_tensorial(int tam_vec, int *v1, int *v2){
-    int *multip = (int *)malloc(sizeof(*v1) * tam_vec);
+int **multip_tensorial(int tam_vec, int *v1, int *v2){
+    int **multip = (int **)malloc(sizeof(*v1) * tam_vec);
+    for (int i = 0; i < tam_vec; i++)
+    {
+        multip[i] = (int *)malloc(sizeof(*v2)*tam_vec);
+        for (int j = 0; j < tam_vec; j++)
+        {
+            multip[i][j] = v1[i]*v2[j];
+        }
+        
+    }
+    
     return multip;
 }
 
@@ -85,7 +95,7 @@ int* suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
 int main(int argc, char **argv)
 {
 
-    int *vector1, *vector2, *vector_res;
+    int *vector1, *vector2, *vector_suma, **vector_mult_tensorial;
     int lonx_cadea1 = 0, lonx_cadea2 = 0;
 
     vector1 = malloc(0);
@@ -277,7 +287,7 @@ int main(int argc, char **argv)
         exit(EXIT_SUCCESS);
     }
 
-    vector_res = (int *)malloc(sizeof(*vector1) * lonx_cadea1);
+    vector_suma = (int *)malloc(sizeof(*vector1) * lonx_cadea1);
 
     int opcion;
 
@@ -298,17 +308,29 @@ int main(int argc, char **argv)
     switch (opcion)
     {
     case 1:
-        vector_res = suma(lonx_cadea1, vector1, vector2);
+        vector_suma = suma(lonx_cadea1, vector1, vector2);
         printf("\nO resultado da suma e: (");
         for (i = 0; i < (lonx_cadea1 - 1); i++)
         {
-            printf(" %d ,", vector_res[i]);
+            printf(" %d ,", vector_suma[i]);
         }
-        printf(" %d )\n", vector_res[lonx_cadea1 - 1]);
+        printf(" %d )\n", vector_suma[lonx_cadea1 - 1]);
         break;
     case 2:
         break;
     case 3:
+    vector_mult_tensorial = multip_tensorial(lonx_cadea1,vector1,vector2);
+        printf("O resultado e:\n\n");
+    for (int i = 0; i < lonx_cadea1; i++) {
+        printf("(");
+        for (int j = 0; j < lonx_cadea2; j++)
+        {
+            printf(" %d ",vector_mult_tensorial[i][j]);
+        }
+        printf(")\n");
+        
+    }
+    
         break;
     default:
         printf("Opcion non admitida.\n");
