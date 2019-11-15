@@ -59,7 +59,20 @@ char *corrixirNome(char *nome_arq_orixinal)
     return nome_arq; //Devolvemos a cadea corrixida
 }
 
-int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
+int multip_escalar(int tam_vec, int *v1, int *v2) {
+    int multip = 0;
+
+    
+
+    return multip;
+}
+
+int* multip_tensorial(int tam_vec, int *v1, int *v2){
+    int *multip = (int *)malloc(sizeof(*v1) * tam_vec);
+    return multip;
+}
+
+int* suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
 {
     int *suma = (int *)malloc(sizeof(*v1) * tam_vec);
     for (int i = 0; i < tam_vec; i++)
