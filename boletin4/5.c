@@ -27,8 +27,12 @@ void crear_arquivo_vectores(char *nome_arquivo)
 {
 }
 
-char *corrixirNome(char *nome_arq)
+char *corrixirNome(char *nome_arq_orixinal)
 { //Esta funcion toma unha cadea de caracteres e comproba se acaba en ".dat"; se non, añadelle a extension e devolve a cadea corrixida
+
+    char *nome_arq = (char *)malloc(sizeof(nome_arq_orixinal[0]) * (strlen(nome_arq_orixinal) + 1));
+
+    strcpy(nome_arq, nome_arq_orixinal);
 
     if (strlen(nome_arq) > 4) //Se a cadea non mide mais de 4 caracteres, non pode ser algo seguido de ".dat"
     {
@@ -42,11 +46,13 @@ char *corrixirNome(char *nome_arq)
 
         if (strcmp(final, ".dat") != 0) //Se a cadea non acaba en ".dat"...
         {
+            nome_arq = realloc(nome_arq, sizeof(nome_arq_orixinal[0]) * (strlen(nome_arq_orixinal) + 5));
             strcat(nome_arq, ".dat"); //Engadimoslle ".dat"
         }
     }
     else
     {
+        nome_arq = realloc(nome_arq, sizeof(nome_arq_orixinal[0]) * (strlen(nome_arq_orixinal) + 5));
         strcat(nome_arq, ".dat"); //Se a cadea non chega a media mais de 4 caracteres, non termina en ".dat" e hai que añadirllo
     }
 
@@ -65,13 +71,12 @@ int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
 
 int main(int argc, char **argv)
 {
-    int *cadea1, *cadea2;
+
+    int *vector1, *vector2, *vector_res;
     int lonx_cadea1 = 0, lonx_cadea2 = 0;
 
-    cadea1 = malloc(0);
-    cadea2 = malloc(0);
-
-
+    vector1 = malloc(0);
+    vector2 = malloc(0);
 
     if (argc < 2) //Non se especificou un nome de ficheiro como argumento
     {
@@ -91,7 +96,8 @@ int main(int argc, char **argv)
 
             char *nome_corrixido = corrixirNome(argv[2]); //Miramos se o nome do arquivo acaba en ".dat"
 
-            printf("Creando: %s\n", nome_corrixido);
+            //printf("Creando: %s\n", nome_corrixido);
+
             FILE *arq = fopen(nome_corrixido, "wb");
             if (arq == NULL)
             {
@@ -100,80 +106,113 @@ int main(int argc, char **argv)
             }
 
             char caracter_actual;
-            int num_actual, i;
+            int num_actual, i, negativo;
 
-            printf("\nCreando o vector 1...");
+            printf("\n\nCreando o vector 1...\n");
 
             do
             {
                 lonx_cadea1++;
-                printf("\nIntroduza o dato %d: ", lonx_cadea1);
+                printf("\tIntroduza o dato %d: ", lonx_cadea1);
                 num_actual = 0;
                 i = 0;
+                negativo = 0;
                 caracter_actual = '0';
                 do
                 {
-                    num_actual = num_actual * 10 + (caracter_actual - '0');
+                    if (caracter_actual == '-')
+                    {
+                        negativo = 1;
+                    }
+                    else
+                    {
+                        num_actual = num_actual * 10 + (caracter_actual - '0');
+                    }
                     caracter_actual = getchar();
                     //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
                     i++;
-                } while ((caracter_actual > '0') && (caracter_actual < '9'));
+                } while (((caracter_actual > '0') && (caracter_actual < '9')) || ((caracter_actual == '-') && (i == 1)));
 
-                cadea1 = realloc(cadea1, sizeof(*cadea1) * lonx_cadea1);
-                cadea1[lonx_cadea1 - 1] = num_actual;
+                if (negativo)
+                {
+                    num_actual = num_actual * (-1);
+                };
+
+                vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
+                vector1[lonx_cadea1 - 1] = num_actual;
 
             } while ((caracter_actual != '\n') || (i > 1));
 
             lonx_cadea1--;
-            cadea1 = realloc(cadea1, sizeof(*cadea1) * lonx_cadea1);
+            vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
 
             printf("Crearase o vector: (");
             for (i = 0; i < (lonx_cadea1 - 1); i++)
             {
-                printf(" %d ,", cadea1[i]);
+                printf(" %d ,", vector1[i]);
             }
-            printf(" %d )\n", cadea1[lonx_cadea1 - 1]);
+            printf(" %d )", vector1[lonx_cadea1 - 1]);
 
-            printf("\nCreando o vector 2...");
+            printf("\n\nCreando o vector 2...\n");
 
             do
             {
                 lonx_cadea2++;
-                printf("\nIntroduza o dato %d: ", lonx_cadea2);
+                printf("\tIntroduza o dato %d: ", lonx_cadea2);
                 num_actual = 0;
                 i = 0;
+                negativo = 0;
                 caracter_actual = '0';
                 do
                 {
-                    num_actual = num_actual * 10 + (caracter_actual - '0');
+                    if (caracter_actual == '-')
+                    {
+                        negativo = 1;
+                    }
+                    else
+                    {
+                        num_actual = num_actual * 10 + (caracter_actual - '0');
+                    }
                     caracter_actual = getchar();
                     //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
                     i++;
-                } while ((caracter_actual > '0') && (caracter_actual < '9'));
+                } while (((caracter_actual > '0') && (caracter_actual < '9')) || ((caracter_actual == '-') && (i == 1)));
 
-                cadea2 = realloc(cadea2, sizeof(*cadea2) * lonx_cadea2);
-                cadea2[lonx_cadea2 - 1] = num_actual;
+                if (negativo)
+                {
+                    num_actual = num_actual * (-1);
+                };
+
+                vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
+                vector2[lonx_cadea2 - 1] = num_actual;
 
             } while ((caracter_actual != '\n') || (i > 1));
 
             lonx_cadea2--;
-            cadea2 = realloc(cadea2, sizeof(*cadea2) * lonx_cadea2);
+            vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
 
-            printf("Crearase o vector: (");
+            printf("\n\nCrearase o vector: (");
             for (i = 0; i < (lonx_cadea2 - 1); i++)
             {
-                printf(" %d ,", cadea2[i]);
+                printf(" %d ,", vector2[i]);
             }
-            printf(" %d )\n", cadea2[lonx_cadea2 - 1]);
+            printf(" %d )\n", vector2[lonx_cadea2 - 1]);
 
             fwrite(&lonx_cadea1, sizeof(lonx_cadea1), 1, arq);
-            fwrite(cadea1, sizeof(*cadea1), lonx_cadea1, arq);
+            fwrite(vector1, sizeof(*vector1), lonx_cadea1, arq);
             fwrite(&lonx_cadea2, sizeof(lonx_cadea2), 1, arq);
-            fwrite(cadea2, sizeof(*cadea2), lonx_cadea2, arq);
+            fwrite(vector2, sizeof(*vector2), lonx_cadea2, arq);
 
-            fclose(arq);
-
-            exit(EXIT_SUCCESS);
+            if (fclose(arq))
+            {
+                printf("Erro: %s (%p)\n", strerror(errno), errno);
+                exit(1);
+            }
+            else
+            {
+                printf("Datos gardados con exito en %s.\n", nome_corrixido);
+                exit(EXIT_SUCCESS);
+            }
         }
         else
         {
@@ -197,28 +236,73 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    fread(&lonx_cadea1,sizeof(lonx_cadea1),1,arq);
-    fread(cadea1,sizeof(*cadea1),lonx_cadea1,arq);
-    fread(&lonx_cadea2,sizeof(lonx_cadea2),1,arq);
-    fread(cadea2,sizeof(*cadea2),lonx_cadea2,arq);
+    fread(&lonx_cadea1, sizeof(lonx_cadea1), 1, arq);
+    //printf("Lonxitude do primeiro vector: %d\n",lonx_cadea1);
+    fread(vector1, sizeof(*vector1), lonx_cadea1, arq);
+    fread(&lonx_cadea2, sizeof(lonx_cadea2), 1, arq);
+    fread(vector2, sizeof(*vector2), lonx_cadea2, arq);
 
-int i;
+    int i;
 
     printf("Lido o vector: (");
-            for (i = 0; i < (lonx_cadea1 - 1); i++)
-            {
-                printf(" %d ,", cadea1[i]);
-            }
-            printf(" %d )\n", cadea1[lonx_cadea1 - 1]);
-    
-    printf("Lido o vector: (");
-            for (i = 0; i < (lonx_cadea2 - 1); i++)
-            {
-                printf(" %d ,", cadea2[i]);
-            }
-            printf(" %d )\n", cadea2[lonx_cadea2 - 1]);
+    for (i = 0; i < (lonx_cadea1 - 1); i++)
+    {
+        printf(" %d ,", vector1[i]);
+    }
+    printf(" %d )\n", vector1[lonx_cadea1 - 1]);
 
-        fclose(arq);
+    printf("Lido o vector: (");
+    for (i = 0; i < (lonx_cadea2 - 1); i++)
+    {
+        printf(" %d ,", vector2[i]);
+    }
+    printf(" %d )\n", vector2[lonx_cadea2 - 1]);
+
+    if (lonx_cadea1 != lonx_cadea2)
+    {
+        printf("Os vectores teñen distintas lonxitudes, polo que non se pode operar con eles.\n");
+        exit(EXIT_SUCCESS);
+    }
+
+    vector_res = (int *)malloc(sizeof(*vector1) * lonx_cadea1);
+
+    int opcion;
+
+    if ((argc == 2) ||
+        ((argc > 2) &&
+         ((strlen(argv[1]) < 2) ||
+          ((strlen(argv[1]) > 1) && (argv[1][0] == '-') && (argv[1][1] > '3') || (argv[1][1] < '1')))))
+    {
+        //O usuario non pasou unha opcion como parametro. Mostramos ao usuario un menu para elixir a sua opcion co programa
+        printf("Que desexa facer?\n\n\t1. Realizar a suma dos dous vectores.\n\t2. Realizar a multiplicacion escalar dos vectores.\n\t3. Realizar a multiplicacion tensorial dos vectores.\n");
+
+        scanf("%d", &opcion);
+    }
+    else
+    {
+        opcion = (argv[2][1] - '0');
+    }
+    switch (opcion)
+    {
+    case 1:
+        vector_res = suma(lonx_cadea1, vector1, vector2);
+        printf("\nO resultado da suma e: (");
+        for (i = 0; i < (lonx_cadea1 - 1); i++)
+        {
+            printf(" %d ,", vector_res[i]);
+        }
+        printf(" %d )\n", vector_res[lonx_cadea1 - 1]);
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    default:
+        printf("Opcion non admitida.\n");
+        break;
+    }
+
+    fclose(arq);
 
     return (EXIT_SUCCESS);
 }
