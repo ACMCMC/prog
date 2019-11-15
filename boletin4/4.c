@@ -122,27 +122,29 @@ int main()
 
     printf("\nIntroduza a sua primeira cadea: ");
 
-    do {
+    do
+    {
         lonx_cadea1++;
-        cadea1 = realloc(cadea1,sizeof(*cadea1)*lonx_cadea1);
-        cadea1[lonx_cadea1-1] = getchar();
-    } while(cadea1[lonx_cadea1-1] != '\n');
+        cadea1 = realloc(cadea1, sizeof(*cadea1) * lonx_cadea1);
+        cadea1[lonx_cadea1 - 1] = getchar();
+    } while (cadea1[lonx_cadea1 - 1] != '\n');
 
-    cadea1[lonx_cadea1-1] = '\0';
+    cadea1[lonx_cadea1 - 1] = '\0';
 
-    printf("\nLido: %s\n",cadea1);
+    printf("\nLido: %s\n", cadea1);
 
     printf("\nIntroduza a sua segunda cadea: ");
 
-    do {
+    do
+    {
         lonx_cadea2++;
-        cadea2 = realloc(cadea2,sizeof(*cadea2)*lonx_cadea2);
-        cadea2[lonx_cadea2-1] = getchar();
-    } while(cadea2[lonx_cadea2-1] != '\n');
+        cadea2 = realloc(cadea2, sizeof(*cadea2) * lonx_cadea2);
+        cadea2[lonx_cadea2 - 1] = getchar();
+    } while (cadea2[lonx_cadea2 - 1] != '\n');
 
-    cadea2[lonx_cadea2-1] = '\0';
+    cadea2[lonx_cadea2 - 1] = '\0';
 
-    printf("\nLido: %s\n",cadea2);
+    printf("\nLido: %s\n", cadea2);
 
     printf("Iniciando busqueda...\n");
     printf("\n%s", CarCompartidos(cadea1, cadea2));

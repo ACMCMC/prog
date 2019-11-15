@@ -12,14 +12,15 @@ Este programa realiza operacións básicas con direccións de memoria*/
 
 #define EXIT_SUCCESS 0
 
-int main() {
+int main()
+{
     double a = 3.1415;
     int b = 1492;
     char c[] = "Hola";
 
-    printf("%lf esta gardado en %p\n",a,&a);
-    printf("%d esta gardado en %p\n",b,&b);
-    printf("%s esta gardado no rango %p - %p\n",c,c,c+strlen(c));
+    printf("%lf esta gardado en %p\n", a, &a);
+    printf("%d esta gardado en %p\n", b, &b);
+    printf("%s esta gardado no rango %p - %p\n", c, c, c + strlen(c));
 
-    return(EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 }
