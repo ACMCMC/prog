@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct {
     int signo;
@@ -9,14 +10,30 @@ typedef struct {
 
 void invertir_signo(bignum *n) {
     if(n->signo == 0) {
-        n->signo = 1;
+        n->signo = -1;
     } else {
         n->signo = 0;
     }
 }
 
 bignum str2bignum(char *str) {
+    bignum num;
+    int i;
+    if(strlen(str) < 1) {
+        exit(EXIT_FAILURE);
+    }
 
+    if(*str == '-') {
+        num.signo = -1;
+        i = 1;
+    } else {
+        num.signo = 0;
+        i = 0;
+    }
+while (i < strlen(str)) {
+    i++;
+};
+return num;
 }
 
 bignum add(bignum a, bignum b) {
