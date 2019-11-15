@@ -11,7 +11,7 @@ Escribide un programa para a realización de operacións de suma e multiplicaci�
 /*Autor: Aldán Creo Mariño
 Data: 12 de novembro de 2019
 Versión: 1
-Este programa elabora unha cadea de caracteres que contén só os comúns a outras dúas*/
+Este programa realiza operacións con vectores*/
 
 #include <stdio.h>
 #include <stdlib.h>

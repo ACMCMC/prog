@@ -5,7 +5,7 @@ Os punteiros son variables que almacenan enderezos de memoria. Segundo o tipo de
 /*Autor: Aldán Creo Mariño
 Data: 10 de novembro de 2019
 Versión: 1
-Este programa realiza operacións básicas con direccións de memoria*/
+Este programa realiza operacións básicas con punteiros*/
 
 #include <stdio.h>
 #include <stdlib.h>
