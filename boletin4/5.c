@@ -21,12 +21,6 @@ Este programa realiza operacións con vectores*/
 
 #define EXIT_SUCCESS 0
 
-char *corrixirNome(char *nome_arq);
-
-void crear_arquivo_vectores(char *nome_arquivo)
-{
-}
-
 char *corrixirNome(char *nome_arq_orixinal)
 { //Esta funcion toma unha cadea de caracteres e comproba se acaba en ".dat"; se non, añadelle a extension e devolve a cadea corrixida
 
