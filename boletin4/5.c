@@ -280,7 +280,7 @@ int main(int argc, char **argv)
 
     if (lonx_cadea1 != lonx_cadea2)
     {
-        printf("Os vectores teñen distintas lonxitudes, polo que non se pode operar con eles.\n");
+        printf("Os vectores tenen distintas lonxitudes, polo que non se pode operar con eles.\n");
         exit(EXIT_SUCCESS);
     }
 
