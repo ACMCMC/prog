@@ -152,7 +152,7 @@ int main(int argc, char **argv)
                     caracter_actual = getchar();
                     //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
                     i++;
-                } while (((caracter_actual > '0') && (caracter_actual < '9')) || ((caracter_actual == '-') && (i == 1)));
+                } while (((caracter_actual >= '0') && (caracter_actual <= '9')) || ((caracter_actual == '-') && (i == 1)));
 
                 if (negativo)
                 {
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
                     caracter_actual = getchar();
                     //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
                     i++;
-                } while (((caracter_actual > '0') && (caracter_actual < '9')) || ((caracter_actual == '-') && (i == 1)));
+                } while (((caracter_actual >= '0') && (caracter_actual <= '9')) || ((caracter_actual == '-') && (i == 1)));
 
                 if (negativo)
                 {
