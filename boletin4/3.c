@@ -11,13 +11,12 @@ Este programa busca o primeiro valor negativo nun vector de enteiros*/
 #include <stdlib.h>
 
 #define EXIT_SUCCESS 0
-#define N 10
 
-int *posNegativo(int *vector)
+int *posNegativo(int *vector, int lonx) //Esta función devolve un punteiro ao primeiro elemento negativo do vector
 {
     int *i = vector;
-    printf("\n\nIniciando busqueda:\n");
-    printf("Buscarase dende a posicion de memoria %p ata a %p, con incrementos de %d.\n\n", vector, vector + sizeof(vector) * N, sizeof(vector));
+    printf("\n\nIniciando busqueda:\n");//Iso é prescindible, son datos técnicos sobre a búsqueda
+    printf("Buscarase dende a posicion de memoria %p ata a %p, con incrementos de %d.\n\n", vector, vector + sizeof(vector) * lonx, sizeof(vector));
     printf("Iteracion\tDireccion\tIndice\t\t\t\tValor\n");
 
     while (*i >= 0 && ((sizeof(vector) * N) > ((i - vector) * sizeof(vector))))
@@ -26,23 +25,23 @@ int *posNegativo(int *vector)
         printf("\t\t%d", (i - vector));
         printf("\t\t%p", i);
         printf("\t\t%d", *i);
-        i++;
+        i++; //Incrementamos o punteiro, agora apunta ao seguinte elemento
     }
 
     if (*i < 0)
     {
-        return i;
+        return i; //Devolvemos o punteiro, que apunta ao primeiro elemento negativo
     }
     else
     {
-        return NULL;
+        return NULL; //Se non atopamos un elemento negativo, devolvemos NULL
     }
 }
 
 int main()
 {
     int vector[N];
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < N; i++) //Lemos os datos do vector
     {
         printf("Introduza o valor do elemento %d (en 0x%p): ", i + 1, &vector[i]);
         scanf("%d", &vector[i]);

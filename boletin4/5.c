@@ -53,7 +53,7 @@ char *corrixirNome(char *nome_arq_orixinal)
     return nome_arq; //Devolvemos a cadea corrixida
 }
 
-int multip_escalar(int tam_vec, int *v1, int *v2)
+int multip_escalar(int tam_vec, int *v1, int *v2) //A multiplicación escalar faise multiplicando tódolos elementos do mesmo índice, e sumando os produtos. Os vectores teñen que ter o tamaño tam_vec
 {
     int multip = 0;
 
@@ -65,39 +65,39 @@ int multip_escalar(int tam_vec, int *v1, int *v2)
     return multip;
 }
 
-int **multip_tensorial(int tam_vec, int *v1, int *v2)
+int **multip_tensorial(int tam_vec, int *v1, int *v2) //A multiplicación escalar faise multiplicando dúas matrices: a primeira, unha matriz columna cos elementos do primeiro vector; a segunda, unha matriz fila que ten os elementos do segundo. Os vectores teñen que ser ambos de tamaño tam_vec.
 {
-    int **multip = (int **)malloc(sizeof(*v1) * tam_vec);
+    int **multip = (int **)malloc(sizeof(*v1) * tam_vec); //reservamos o tamaño de memoria do primeiro vector de ints
     for (int i = 0; i < tam_vec; i++)
     {
-        multip[i] = (int *)malloc(sizeof(*v2) * tam_vec);
+        multip[i] = (int *)malloc(sizeof(*v2) * tam_vec); //para cada fila (á que apunta un dos elementos do vector de vectores), reservamos tam_vec elementos
         for (int j = 0; j < tam_vec; j++)
         {
             multip[i][j] = v1[i] * v2[j];
         }
     }
 
-    return multip;
+    return multip; //Devólvese un doble punteiro, que leva a un vector de vectores de ints.
 }
 
-int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores
+int *suma(int tam_vec, int *v1, int *v2) //Sumamos os dous vectores. Teñen que ter o mesmo tamaño.
 {
-    int *suma = (int *)malloc(sizeof(*v1) * tam_vec);
+    int *suma = (int *)malloc(sizeof(*v1) * tam_vec); //Reservamos a memoria, en total o tamaño en bytes dun int polo tamaño do vector
     for (int i = 0; i < tam_vec; i++)
     {
-        suma[i] = v1[i] + v2[i];
+        suma[i] = v1[i] + v2[i]; //Sumamos os vectores, elemento a elemento
     }
     return (suma);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv) //Na cabeceira da función recibimos os parámetros da consola.
 {
 
-    int *vector1, *vector2, *vector_suma, **vector_mult_tensorial;
-    int lonx_cadea1 = 0, lonx_cadea2 = 0;
+    int *vector1, *vector2, *vector_suma, **vector_mult_tensorial;  //Declaramos os resultados que podemos calcular no switch de máis adiante, xa que un switch non permite declaracións.
+    int lonx_vector1 = 0, lonx_vector2 = 0; //As cadeas inicialízanse con lonxitude 0
 
-    vector1 = malloc(0);
-    vector2 = malloc(0);
+    vector1 = (int *)malloc(0);
+    vector2 = (int *)malloc(0);
 
     if (argc < 2) //Non se especificou un nome de ficheiro como argumento
     {
@@ -133,24 +133,23 @@ int main(int argc, char **argv)
 
             do
             {
-                lonx_cadea1++;
-                printf("\tIntroduza o dato %d: ", lonx_cadea1);
-                num_actual = 0;
+                lonx_vector1++; //Comezamos incrementando a lonxitude do vector 1
+                printf("\tIntroduza o dato %d: ", lonx_vector1);
+                num_actual = 0; //Inicializamos o elemento a 0
                 i = 0;
                 negativo = 0;
                 caracter_actual = '0';
-                do
+                do //Imos lendo todos os caracteres escritos, un a un
                 {
-                    if (caracter_actual == '-')
+                    if (caracter_actual == '-') //Se atopamos un -, o número é negativo
                     {
                         negativo = 1;
                     }
-                    else
+                    else //Se o carácter que limos non é un -, entón lémolo como número
                     {
-                        num_actual = num_actual * 10 + (caracter_actual - '0');
+                        num_actual = num_actual * 10 + (caracter_actual - '0'); //Este número será a seguinte cifra en base 10
                     }
-                    caracter_actual = getchar();
-                    //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
+                    caracter_actual = getchar(); //Obtemos o seguinte carácter
                     i++;
                 } while (((caracter_actual >= '0') && (caracter_actual <= '9')) || ((caracter_actual == '-') && (i == 1)));
 
@@ -159,27 +158,27 @@ int main(int argc, char **argv)
                     num_actual = num_actual * (-1);
                 };
 
-                vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
-                vector1[lonx_cadea1 - 1] = num_actual;
+                vector1 = realloc(vector1, sizeof(*vector1) * lonx_vector1);
+                vector1[lonx_vector1 - 1] = num_actual;
 
-            } while ((caracter_actual != '\n') || (i > 1) || (lonx_cadea1 == 1));
+            } while ((caracter_actual != '\n') || (i > 1) || (lonx_vector1 == 1));
 
-            lonx_cadea1--;
-            vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
+            lonx_vector1--;
+            vector1 = realloc(vector1, sizeof(*vector1) * lonx_vector1);
 
             printf("\nCrearase o vector: (");
-            for (i = 0; i < (lonx_cadea1 - 1); i++)
+            for (i = 0; i < (lonx_vector1 - 1); i++)
             {
                 printf(" %d ,", vector1[i]);
             }
-            printf(" %d )", vector1[lonx_cadea1 - 1]);
+            printf(" %d )", vector1[lonx_vector1 - 1]);
 
             printf("\n\nCreando o vector 2...\n");
 
             do
             {
-                lonx_cadea2++;
-                printf("\tIntroduza o dato %d: ", lonx_cadea2);
+                lonx_vector2++;
+                printf("\tIntroduza o dato %d: ", lonx_vector2);
                 num_actual = 0;
                 i = 0;
                 negativo = 0;
@@ -195,7 +194,6 @@ int main(int argc, char **argv)
                         num_actual = num_actual * 10 + (caracter_actual - '0');
                     }
                     caracter_actual = getchar();
-                    //printf("\n\tCaracter: %c, suma: %d", caracter_actual, num_actual);
                     i++;
                 } while (((caracter_actual >= '0') && (caracter_actual <= '9')) || ((caracter_actual == '-') && (i == 1)));
 
@@ -204,25 +202,25 @@ int main(int argc, char **argv)
                     num_actual = num_actual * (-1);
                 };
 
-                vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
-                vector2[lonx_cadea2 - 1] = num_actual;
+                vector2 = realloc(vector2, sizeof(*vector2) * lonx_vector2);
+                vector2[lonx_vector2 - 1] = num_actual;
 
-            } while ((caracter_actual != '\n') || (i > 1) || (lonx_cadea2 == 1));
+            } while ((caracter_actual != '\n') || (i > 1) || (lonx_vector2 == 1));
 
-            lonx_cadea2--;
-            vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
+            lonx_vector2--;
+            vector2 = realloc(vector2, sizeof(*vector2) * lonx_vector2);
 
             printf("\nCrearase o vector: (");
-            for (i = 0; i < (lonx_cadea2 - 1); i++)
+            for (i = 0; i < (lonx_vector2 - 1); i++)
             {
                 printf(" %d ,", vector2[i]);
             }
-            printf(" %d )\n", vector2[lonx_cadea2 - 1]);
+            printf(" %d )\n", vector2[lonx_vector2 - 1]);
 
-            fwrite(&lonx_cadea1, sizeof(lonx_cadea1), 1, arq);
-            fwrite(vector1, sizeof(*vector1), lonx_cadea1, arq);
-            fwrite(&lonx_cadea2, sizeof(lonx_cadea2), 1, arq);
-            fwrite(vector2, sizeof(*vector2), lonx_cadea2, arq);
+            fwrite(&lonx_vector1, sizeof(lonx_vector1), 1, arq); //Escribimos o número de elementos do vector 1
+            fwrite(vector1, sizeof(*vector1), lonx_vector1, arq); //Escribimos os elementos do vector 1
+            fwrite(&lonx_vector2, sizeof(lonx_vector2), 1, arq); //O mesmo pero para o segundo
+            fwrite(vector2, sizeof(*vector2), lonx_vector2, arq);
 
             if (fclose(arq))
             {
@@ -249,42 +247,39 @@ int main(int argc, char **argv)
 
     char *nome_corrixido = corrixirNome(argv[1]); //Miramos se o nome do arquivo acaba en ".dat"
 
-    printf("Abrindo: %s\n", nome_corrixido);
-    FILE *arq = fopen(nome_corrixido, "rb");
+    printf("Abrindo: %s\n", nome_corrixido); //Aplicamos as correcións oportunas ó nome do arquivo introducido polo usuario
+    FILE *arq = fopen(nome_corrixido, "rb"); //Abrimos o arquivo en modo lectura binaria
     if (arq == NULL)
     {
         printf("\nNon se puido abrir o arquivo (%p - %s)\n", errno, strerror(errno));
         exit(1);
     }
 
-    fread(&lonx_cadea1, sizeof(lonx_cadea1), 1, arq);
-    //printf("Lonxitude do primeiro vector: %d\n",lonx_cadea1);
-    fread(vector1, sizeof(*vector1), lonx_cadea1, arq);
-    fread(&lonx_cadea2, sizeof(lonx_cadea2), 1, arq);
-    fread(vector2, sizeof(*vector2), lonx_cadea2, arq);
+    fread(&lonx_vector1, sizeof(lonx_vector1), 1, arq); //Lemos o número de elementos do vector 1
+    fread(vector1, sizeof(*vector1), lonx_vector1, arq); //Lemos ese número de elementos e os gardamos no vector 1
+    fread(&lonx_vector2, sizeof(lonx_vector2), 1, arq); //Ídem pero para o vector 2
+    fread(vector2, sizeof(*vector2), lonx_vector2, arq);
 
     int i;
 
-    printf("Lidos os vectores: (");
-    for (i = 0; i < (lonx_cadea1 - 1); i++)
+    printf("Lidos os vectores: ("); //Imprimimos por pantalla os datos dos vectores lidos
+    for (i = 0; i < (lonx_vector1 - 1); i++)
     {
         printf(" %d ,", vector1[i]);
     }
-    printf(" %d ) , (", vector1[lonx_cadea1 - 1]);
+    printf(" %d ) , (", vector1[lonx_vector1 - 1]);
 
-    for (i = 0; i < (lonx_cadea2 - 1); i++)
+    for (i = 0; i < (lonx_vector2 - 1); i++)
     {
         printf(" %d ,", vector2[i]);
     }
-    printf(" %d )\n", vector2[lonx_cadea2 - 1]);
+    printf(" %d )\n", vector2[lonx_vector2 - 1]);
 
-    if (lonx_cadea1 != lonx_cadea2)
+    if (lonx_vector1 != lonx_vector2) //Comprobamos que os vectores sexan da mesma lonxitude antes de continuar
     {
         printf("Os vectores tenen distintas lonxitudes, polo que non se pode operar con eles.\n");
         exit(EXIT_SUCCESS);
     }
-
-    vector_suma = (int *)malloc(sizeof(*vector1) * lonx_cadea1);
 
     int opcion;
 
@@ -300,29 +295,30 @@ int main(int argc, char **argv)
     }
     else
     {
-        opcion = (argv[2][1] - '0');
+        opcion = (argv[2][1] - '0'); //O usuario sí pasou unha opción como parámetro. Convertímola do seu carácter en ASCII ó seu valor numérico.
     }
     switch (opcion)
     {
-    case 1:
-        vector_suma = suma(lonx_cadea1, vector1, vector2);
-        printf("\nO resultado da suma e: (");
-        for (i = 0; i < (lonx_cadea1 - 1); i++)
+    case 1: //O usuario quere facer a suma
+        vector_suma = (int *)malloc(sizeof(*vector1) * lonx_vector1); //Reservamos a memoria necesaria para o vector suma
+        vector_suma = suma(lonx_vector1, vector1, vector2);
+        printf("\nO resultado da suma e: ("); //Imprimimos o resultado da suma
+        for (i = 0; i < (lonx_vector1 - 1); i++)
         {
             printf(" %d ,", vector_suma[i]);
         }
-        printf(" %d )\n", vector_suma[lonx_cadea1 - 1]);
+        printf(" %d )\n", vector_suma[lonx_vector1 - 1]);
         break;
-    case 2:
-        printf("\n\nO resultado da multiplicacion escalar e %d.\n", multip_escalar(lonx_cadea1, vector1, vector2));
+    case 2: //Quere facer unha multiplicación escalar. Imprimimos o resultado por pantalla.
+        printf("\n\nO resultado da multiplicacion escalar e %d.\n", multip_escalar(lonx_vector1, vector1, vector2));
         break;
-    case 3:
-        vector_mult_tensorial = multip_tensorial(lonx_cadea1, vector1, vector2);
-        printf("\n\nO resultado e:\n");
-        for (int i = 0; i < lonx_cadea1; i++)
+    case 3: //Elixiu facer unha multiplicación tensorial
+        vector_mult_tensorial = multip_tensorial(lonx_vector1, vector1, vector2); //Realizamos a multiplicación tensorial na propia función; xa ela se encarga da reserva de memoria.
+        printf("\n\nO resultado e:\n"); //Imprimimos unha matriz cadrada de orde lonx_vector1
+        for (int i = 0; i < lonx_vector1; i++)
         {
             printf("(");
-            for (int j = 0; j < lonx_cadea2; j++)
+            for (int j = 0; j < lonx_vector2; j++)
             {
                 printf(" %d ", vector_mult_tensorial[i][j]);
             }
@@ -331,11 +327,11 @@ int main(int argc, char **argv)
 
         break;
     default:
-        printf("Opcion non admitida.\n");
+        printf("Opcion non admitida.\n"); //O usuario seleccionou unha opción distinta das previstas
         break;
     }
 
-    fclose(arq);
+    fclose(arq); //Pechamos o arquivo
 
     return (EXIT_SUCCESS);
 }
