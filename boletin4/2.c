@@ -22,6 +22,10 @@ int main()
     printf("%c\n", *punt);                         //isto imprime tamén 100, porque estamos tendo só en conta o primeiro byte, e 100 cabe nese primeiro byte
     printf("%s\n", punt2);                         //aquí imprime abcd, porque estamos lendo os bytes en orde coma se foran caracteres ASCII
     printf("%d\n", *punt3);                        //aquí devolve o resultado da suma anterior, 1684234849, que en binario é 01100100 ('d') 01100011 ('c') 01100010 ('b') 01100001 ('a')
+    printf("%c", *punt2);
+    printf("%c", *(punt2 + 1));                    //Vamos lendo os elementos consecutivos do vector de caracteres; os parénteses non son necesarios
+    printf("%c", *(punt2 + 2));
+    printf("%c", *(punt2 + 3));
 
     return (EXIT_SUCCESS);
 }
