@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib_aldan_rsa.h"
+#include "lib_aldan.h"
 
 #define EXIT_SUCCESS 0
 
