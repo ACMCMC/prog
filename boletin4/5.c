@@ -129,7 +129,7 @@ int main(int argc, char **argv)
             char caracter_actual;
             int num_actual, i, negativo;
 
-            printf("\n\nCreando o vector 1...\n");
+            printf("\n\n(introduza un valor vacio para rematar)\nCreando o vector 1...\n");
 
             do
             {
@@ -162,12 +162,12 @@ int main(int argc, char **argv)
                 vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
                 vector1[lonx_cadea1 - 1] = num_actual;
 
-            } while ((caracter_actual != '\n') || (i > 1));
+            } while ((caracter_actual != '\n') || (i > 1) || (lonx_cadea1 == 1));
 
             lonx_cadea1--;
             vector1 = realloc(vector1, sizeof(*vector1) * lonx_cadea1);
 
-            printf("Crearase o vector: (");
+            printf("\nCrearase o vector: (");
             for (i = 0; i < (lonx_cadea1 - 1); i++)
             {
                 printf(" %d ,", vector1[i]);
@@ -207,12 +207,12 @@ int main(int argc, char **argv)
                 vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
                 vector2[lonx_cadea2 - 1] = num_actual;
 
-            } while ((caracter_actual != '\n') || (i > 1));
+            } while ((caracter_actual != '\n') || (i > 1) || (lonx_cadea2 == 1));
 
             lonx_cadea2--;
             vector2 = realloc(vector2, sizeof(*vector2) * lonx_cadea2);
 
-            printf("\n\nCrearase o vector: (");
+            printf("\nCrearase o vector: (");
             for (i = 0; i < (lonx_cadea2 - 1); i++)
             {
                 printf(" %d ,", vector2[i]);
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                printf("Datos gardados con exito en %s.\n", nome_corrixido);
+                printf("\nDatos gardados con exito en %s.\n", nome_corrixido);
                 exit(EXIT_SUCCESS);
             }
         }
