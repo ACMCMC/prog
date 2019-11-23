@@ -57,7 +57,7 @@ char *Ordear(char *cadea) //Esta funcion ordea os caracteres segundo o seu valor
     }
 
     cadea_ordeada[i - shift] = '\0';
-    cadea_ordeada = realloc(cadea_ordeada,sizeof(*cadea_ordeada) * (strlen(cadea_ordeada) + 1));
+    cadea_ordeada = realloc(cadea_ordeada,sizeof(*cadea_ordeada) * (strlen(cadea_ordeada) + 1)); //Diminuímos o tamaño reservado da cadea para axustala ó que ocupa
 
     return (cadea_ordeada); //Devolvemos a cadea resultado
 }
@@ -72,14 +72,11 @@ char *CarCompartidos(char *cad1, char *cad2)
     int i, long_cad_res = 0;
     for (caracter_act = cad1_ord; *caracter_act != '\0'; caracter_act++)
     {
-        //printf("Tomando o caracter: %c\n", *caracter_act);
-
         int mitad_cadea = (ceil(((double)strlen(cad2_ord)) / ((double)2)));
 
         cad_busqueda = (char *)malloc(sizeof(*cad2_ord) * strlen(cad2_ord)); //creamos unha nova cadea de tamaño a metade da cadea 2
 
         strcpy(cad_busqueda, cad2_ord);
-        //printf("\tCadea de busqueda: %s\n", cad_busqueda);
 
         while (strlen(cad_busqueda) > 1)
         {
@@ -95,7 +92,6 @@ char *CarCompartidos(char *cad1, char *cad2)
             cad_busqueda = realloc(cad_busqueda, sizeof(*cad2_ord) * (mitad_cadea + 1));
 
             cad_busqueda[mitad_cadea] = '\0';
-            //printf("\tCadea de busqueda: %s\n", cad_busqueda);
         }
 
         if (*cad_busqueda == *caracter_act)
