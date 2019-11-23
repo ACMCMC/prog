@@ -56,12 +56,8 @@ char *Ordear(char *cadea) //Esta funcion ordea os caracteres segundo o seu valor
         }
     }
 
-<<<<<<< Updated upstream
     cadea_ordeada[i - shift] = '\0';
     cadea_ordeada = realloc(cadea_ordeada,sizeof(*cadea_ordeada) * (strlen(cadea_ordeada) + 1));
-=======
-    cadea_ordeada[i - shift] = '\0'; //Pechamos a cadea
->>>>>>> Stashed changes
 
     return (cadea_ordeada); //Devolvemos a cadea resultado
 }
