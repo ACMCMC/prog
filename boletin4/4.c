@@ -57,6 +57,7 @@ char *Ordear(char *cadea)
     }
 
     cadea_ordeada[i - shift] = '\0';
+    cadea_ordeada = realloc(cadea_ordeada,sizeof(*cadea_ordeada) * (strlen(cadea_ordeada) + 1));
 
     return (cadea_ordeada);
 }

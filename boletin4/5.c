@@ -324,12 +324,13 @@ int main(int argc, char **argv) //Na cabeceira da función recibimos os parámet
             }
             printf(")\n");
         }
-
         break;
     default:
         printf("Opcion non admitida.\n"); //O usuario seleccionou unha opción distinta das previstas
         break;
     }
+
+    //poderíamos liberar memoria aquí, pero non é necesario xa que ó rematar o porgrama libérase ó sistema, polo que executar os free() manualmente supón unha carga de traballo innecesaria
 
     fclose(arq); //Pechamos o arquivo
 
