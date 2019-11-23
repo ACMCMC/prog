@@ -6,7 +6,7 @@
 typedef struct {
     int signo;
     unsigned int tam;
-    unsigned int *val;
+    unsigned char *val;
 } bignum;
 
 void invertir_signo(bignum *n) {
@@ -72,19 +72,21 @@ while (i < strlen(str)) {
 return num;
 }
 
-int sum_has_carry(int a, int b) {
-    if ((1 + a + b) == UINT_MAX) {
-
-    }
-    else if((a/2 + b/2) >= UINT_MAX/2) { //aquí nos estamos olvidando del ultimo numero
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 bignum add(bignum a, bignum b) {
     bignum res;
+    unsigned short res_temp;
+
+    int i;
+
+    for(i = 0; (i<a.tam) && (i<b.tam); i++) {
+
+    res_temp = ((unsigned short) a.val[i]) + ((unsigned short) b.val[i]);
+    if(res_temp > USHRT_MAX) {
+        res.val[i] = (unsigned char) (res_temp - USHRT_MAX);
+    }
+
+    }
+
     if(comparar_magnitud(a,b) >= 1) {
         res.val[0] = a.val[0]+b.val[0];
         for(res.tam = 1; res.tam <= a.tam; res.tam++) {

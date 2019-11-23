@@ -19,7 +19,7 @@ int *posNegativo(int *vector, int lonx) //Esta función devolve un punteiro ao p
     printf("Buscarase dende a posicion de memoria %p ata a %p, con incrementos de %d.\n\n", vector, vector + sizeof(vector) * lonx, sizeof(vector));
     printf("Iteracion\tDireccion\tIndice\t\t\t\tValor\n");
 
-    while (*i >= 0 && ((sizeof(vector) * N) > ((i - vector) * sizeof(vector))))
+    while (*i >= 0 && ((sizeof(vector) * lonx) > ((i - vector) * sizeof(vector))))
     {
         printf("\n%d", i - vector + 1);
         printf("\t\t%d", (i - vector));
@@ -40,22 +40,24 @@ int *posNegativo(int *vector, int lonx) //Esta función devolve un punteiro ao p
 
 int main()
 {
-    int vector[N];
-    for (int i = 0; i < N; i++) //Lemos os datos do vector
+    int *vector,lonx_vec;
+    printf("Introduza a lonxitude do vector: ");
+    scanf("%d",&lonx_vec);
+    for (int i = 0; i < lonx_vec; i++) //Lemos os datos do vector
     {
         printf("Introduza o valor do elemento %d (en 0x%p): ", i + 1, &vector[i]);
         scanf("%d", &vector[i]);
     }
 
-    int *posNeg = posNegativo(vector);
+    int *posNeg = posNegativo(vector, lonx_vec); //Gardamos o punteiro o primeiro elemento negativo da cadea
 
     if (posNeg != NULL)
     {
-        printf("\n\nO valor gardado en 0x%p e %d", posNeg, *posNeg);
+        printf("\n\nO valor gardado en 0x%p e %d\n", posNeg, *posNeg); //Imprimimos o valor e o punteiro
     }
-    else
+    else //Se o punteiro e nulo, enton mostramos erro
     {
-        printf("\n\nNon se atopou ningun negativo no vector");
+        printf("\n\nNon se atopou ningun negativo no vector\n");
     }
 
     return (EXIT_SUCCESS);

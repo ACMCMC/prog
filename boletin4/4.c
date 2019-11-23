@@ -18,10 +18,10 @@ Este programa elabora unha cadea de caracteres que contén só os comúns a outr
 
 #define EXIT_SUCCESS 0
 
-char *Ordear(char *cadea)
+char *Ordear(char *cadea) //Esta funcion ordea os caracteres segundo o seu valor ASCII e despois elimina os repetidos
 {
     char caracter_swap;
-    char *cadea_ordeada = (char *)malloc(sizeof(*cadea) * (strlen(cadea) + 1));
+    char *cadea_ordeada = (char *)malloc(sizeof(*cadea) * (strlen(cadea) + 1)); //Reservamos o tamaño de memoria necesario para a cadea
     int correcto, i;
 
     strcpy(cadea_ordeada, cadea);
@@ -29,9 +29,9 @@ char *Ordear(char *cadea)
     do
     {
         correcto = 1;
-        for (i = 1; cadea_ordeada[i] != '\0'; i++)
+        for (i = 1; cadea_ordeada[i] != '\0'; i++) //Comprobamos todos os pares de caracteres adxacentes da cadea
         {
-            if (cadea_ordeada[i] < cadea_ordeada[i - 1])
+            if (cadea_ordeada[i] < cadea_ordeada[i - 1]) //Se os dous caracteres estan en orde incorrecta, invertimolos
             {
                 caracter_swap = cadea_ordeada[i - 1];
                 cadea_ordeada[i - 1] = cadea_ordeada[i];
@@ -39,27 +39,31 @@ char *Ordear(char *cadea)
                 correcto = 0;
             }
         }
-    } while (!correcto);
+    } while (!correcto); //Repetimos o bucle mentres a orde non sexa a correcta
 
-    int shift = 0;
+    int shift = 0; //Imos usar esta variable para determinar cantos caracteres temos que eliminar, e dicir, a cadea final tera unha lonxitude da cadea orixinal menos esta variable
 
     for (i = 1; cadea_ordeada[i] != '\0'; i++)
     {
 
-        if (cadea_ordeada[i] == cadea_ordeada[i - 1])
+        if (cadea_ordeada[i] == cadea_ordeada[i - 1]) //Par a par, comprobamos se hai caracteres iguais, xa que estan todos ordenados de antes
         {
-            shift++;
+            shift++; //Se son iguais, disminuimos a lonxitude da cadea
         }
         else
         {
-            cadea_ordeada[i - shift] = cadea_ordeada[i];
+            cadea_ordeada[i - shift] = cadea_ordeada[i]; //Se non son iguais, metemos o caracter na cadea final
         }
     }
 
+<<<<<<< Updated upstream
     cadea_ordeada[i - shift] = '\0';
     cadea_ordeada = realloc(cadea_ordeada,sizeof(*cadea_ordeada) * (strlen(cadea_ordeada) + 1));
+=======
+    cadea_ordeada[i - shift] = '\0'; //Pechamos a cadea
+>>>>>>> Stashed changes
 
-    return (cadea_ordeada);
+    return (cadea_ordeada); //Devolvemos a cadea resultado
 }
 
 char *CarCompartidos(char *cad1, char *cad2)
