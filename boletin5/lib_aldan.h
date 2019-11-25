@@ -85,7 +85,7 @@ int comparar(bignum a, bignum b)
 bignum str2bignum(char *str)
 {
     bignum num;
-    int i = 0, n = 0, conv = 0;
+    int i, n = 0, conv = 0;
     if (strlen(str) < 1)
     {
         exit(EXIT_FAILURE);
@@ -107,7 +107,7 @@ bignum str2bignum(char *str)
 
     while (i >= 0)
     {
-        conv = conv + pow(10,i) * (str[i] - '0');
+        conv = conv + pow(10,n) * (str[i] - '0');
         if (conv > UCHAR_MAX){
             num.tam++;
             num.val = (unsigned char *)realloc(num.val, sizeof(unsigned char)*num.tam);
