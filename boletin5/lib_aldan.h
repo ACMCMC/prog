@@ -6,7 +6,7 @@
 
 typedef struct
 {
-    int signo;
+    char signo;
     unsigned int tam;
     unsigned char *val;
 } bignum;
@@ -95,6 +95,9 @@ bignum str2bignum(char *str)
     {
         num.signo = -1;
         str++; //diminuímos a lonxitude da cadea en unha unidade
+    } else if (*str == '+') {
+        num.signo = 0;
+        str++;
     }
     else
     {
