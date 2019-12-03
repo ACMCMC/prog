@@ -12,7 +12,7 @@
 
 typedef struct
 {
-    int signo;
+    char signo;
     unsigned int tam;
     unsigned char *val;
 } bignum;
