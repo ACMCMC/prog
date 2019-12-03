@@ -8,6 +8,8 @@
 
 #define _LIB_ALDAN_H
 
+#define BASE_BIGNUM (((int) UCHAR_MAX) + 1)
+
 typedef struct
 {
     int signo;
@@ -16,6 +18,8 @@ typedef struct
 } bignum;
 
 bignum str2bignum(char *str);
+
+char * showbignum(bignum num);
 
 bignum add(bignum a, bignum b);
 

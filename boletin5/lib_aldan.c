@@ -74,39 +74,93 @@ int comparar(bignum a, bignum b)
 bignum str2bignum(char *str)
 {
     bignum num;
-    int i = 0, n = 0, conv = 0;
+    num.tam = 0;
+    num.val = NULL;
+    unsigned char *cociente = NULL, cociente_size = strlen(str), newsize, conv = 0;
+    int i = 0, n = 0;
+
     if (strlen(str) < 1)
     {
         exit(EXIT_FAILURE);
     }
 
-    if (*str == '-')
+    if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
     {
         num.signo = -1;
-        i = 1;
+        str++;
     }
-    else
+    else //Se o numero non comeza por -, enton o signo e positivo e non reducimos o tamaño
     {
         num.signo = 0;
-        i = 0;
     }
 
-unsigned char *cociente = NULL, cociente_size = 0;
 
-    while (i < strlen(str))
+    cociente = (unsigned char *)malloc(sizeof(unsigned char) * cociente_size);
+
+    for (i = 0; i < cociente_size; i++)
     {
-        conv = conv*10 + (str[i]-'0');
-        printf("Temos: %d",conv);
-        if (conv >= UCHAR_MAX){
-            cociente_size++;
-            cociente = (unsigned char *)realloc(cociente, sizeof(unsigned char)*cociente_size);
-            cociente[cociente_size-1] = conv / UCHAR_MAX; //Gardamos o resto
-            conv = conv % UCHAR_MAX; //Como conv vai ser o noso seguinte byte, facemos a division enteira e gardamos o resultado como valor de partida
-        }
-        i++;
+        cociente[i] = str[i] - '0';
     }
+
+    while ((cociente_size > 3) || ((cociente_size == 3) && ((cociente[2] * 100 + cociente[1]*10+cociente[0]) > BASE_BIGNUM)))
+    {
+
+        newsize = 0;
+    i = 1;
+    conv = cociente[0];
+    printf("\n\nDIVISION %d\n\n",num.tam);
+    printf("Cociente: ");
+    for (int j = 0; j < cociente_size; j++)
+    {
+        printf("%d",cociente[j]);
+    }
+    printf("\n\n");
     
+
+        while (i < cociente_size)
+        {
+            conv = conv * 10 + cociente[i];
+            printf("Temos: %d\t", conv);
+                if((newsize != 0) || ((conv / BASE_BIGNUM) != 0)){newsize++;
+                cociente[newsize - 1] = conv / BASE_BIGNUM; //Gardamos o resto
+                conv = conv % BASE_BIGNUM;                  //Como conv vai ser o noso seguinte byte, facemos a division enteira e gardamos o resultado como valor de partida
+                }
+                printf("Cociente: %d, newsize: %d\t", cociente[newsize - 1], newsize);
+                printf("Resto: %d\n", conv);
+            i++;
+        }
+        cociente_size = newsize;
+        /*cociente = (unsigned char *)realloc(cociente, sizeof(unsigned char) * cociente_size); //Este realloc permitirianos aforrar memoria, pero implica realizar multiples reallocs que influen negativamente no rendemento do programa. E mellor liberar o vector ao final.*/
+        num.tam++; //Incrementamos o tamaño do numero
+        num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar a nova cifra en base 256
+        num.val[num.tam - 1] = conv; //Gardamos o resto como a seguinte cifra do noso numero
+    }
+
+    num.tam++; //A ultima cifra do numero e o cociente que nos queda na ultima division
+    num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar este ultimo cociente
+    conv = cociente[0]; //Como o cociente e un vector de numeros en base 10, pasamolos a un unico numero
+    for (i = 1; i < newsize; i++)
+    {
+        conv = conv * 10 + cociente[i];
+    }
+    num.val[num.tam-1] = conv;
+
+    free(cociente); //liberamos a memoria que xa non imos usar
+
     return num;
+}
+
+char * showbignum(bignum num) {
+
+    int i,j = 0; //j e o numero de caracteres da cadea
+
+    char * str = NULL; //a cadea esta vacia ao principio (apunta a NULL)
+
+    for (i = 0; i < num.tam; i++) { //Imos facer un bucle para pasar o bignum a texto en base 10, isto facemolo multiplicando 
+        str = realloc(str, sizeof(char)*j);
+    }
+
+    return str;
 }
 
 bignum add(bignum a, bignum b)

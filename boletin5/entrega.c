@@ -6,7 +6,9 @@
 
 int main(){
     bignum a;
-    a = str2bignum("98765432109876543210");
+    a = str2bignum("589494346948423");
+
+    printf("O numero e: ");
 
     for (int i = 0; i < a.tam; i++)
     {
