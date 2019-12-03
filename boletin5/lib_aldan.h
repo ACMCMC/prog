@@ -8,7 +8,7 @@
 
 #define _LIB_ALDAN_H
 
-#define BASE_BIGNUM (((int) UCHAR_MAX) + 1)
+#define BASE_BIGNUM (((int)UCHAR_MAX) + 1)
 
 typedef struct
 {
@@ -19,7 +19,7 @@ typedef struct
 
 bignum str2bignum(char *str);
 
-char * showbignum(bignum num);
+char *showbignum(bignum num);
 
 bignum add(bignum a, bignum b);
 
