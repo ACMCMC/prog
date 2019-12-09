@@ -33,7 +33,7 @@ bignum str2bignum(char *str){
 bignum add(bignum a, bignum b){
     bignum result;
     bignum *maior,*menor;
-    int max;
+    int max,*borrar;
     //Hai que comprobar cal ten o maior tamaño
     if(a.tam>=b.tam){
         maior = &a;
@@ -61,11 +61,15 @@ bignum add(bignum a, bignum b){
     else{ //Se son distintos, haberá que facer unha resta
         if(a.sign==1){
             a.sign = 0;
+            borrar = result.val;
             result = resta(b,a);
+            free(borrar);
         }
         else{
             b.sign = 0;
+            borrar = result.val;
             result = resta(a,b);
+            free(borrar);
         }
     }
     //LIMPAMOS POSIBLES CEROS Á ESQUERDA
@@ -83,7 +87,7 @@ bignum add(bignum a, bignum b){
 bignum resta(bignum a, bignum b){
     bignum result;
     bignum *maior,*menor;
-    int max, acarreo=0;
+    int max, acarreo=0, *borrar;
     //Hai que comprobar cal ten a maior magnitude
     if(a.tam>b.tam){
         maior = &a;
@@ -135,11 +139,15 @@ bignum resta(bignum a, bignum b){
     else{ //Se son distintos, haberá que facer unha suma
         if(a.sign==1){
             b.sign = 1;
+            borrar = result.val;
             result = add(b,a);
+            free(borrar);
         }
         else{
             b.sign = 0;
+            borrar = result.val;
             result = add(a,b);
+            free(borrar);
         }
     }
     //LIMPAMOS POSIBLES CEROS Á ESQUERDA
