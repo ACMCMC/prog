@@ -37,6 +37,8 @@ int main(int argc, char** argv) {
         while(getchar()!='\n'); //Limpamos o buffer se queda algún caracter
     }
 
+    //Hai que adaptar a funcion para que admita nums de lonxitude arbitraria
+    
     //SEGUNDO NUMERO
     limpar=1;
     lonx2 = 40;
