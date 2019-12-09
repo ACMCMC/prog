@@ -33,7 +33,7 @@ bignum str2bignum(char *str){
 bignum add(bignum a, bignum b){
     bignum result;
     bignum *maior,*menor;
-    int max,*borrar;
+    int max;
     //Hai que comprobar cal ten o maior tamaño
     if(a.tam>=b.tam){
         maior = &a;
@@ -61,15 +61,11 @@ bignum add(bignum a, bignum b){
     else{ //Se son distintos, haberá que facer unha resta
         if(a.sign==1){
             a.sign = 0;
-            borrar = result.val;
             result = resta(b,a);
-            free(borrar);
         }
         else{
             b.sign = 0;
-            borrar = result.val;
             result = resta(a,b);
-            free(borrar);
         }
     }
     //LIMPAMOS POSIBLES CEROS Á ESQUERDA
@@ -81,13 +77,15 @@ bignum add(bignum a, bignum b){
         }
         else result.tam--;
     }
+    //Reaxustamos a memoria
+    result.val = realloc(result.val,sizeof(int)*result.tam);
     return result;
 }
 
 bignum resta(bignum a, bignum b){
     bignum result;
     bignum *maior,*menor;
-    int max, acarreo=0, *borrar;
+    int max, acarreo=0;
     //Hai que comprobar cal ten a maior magnitude
     if(a.tam>b.tam){
         maior = &a;
@@ -139,15 +137,11 @@ bignum resta(bignum a, bignum b){
     else{ //Se son distintos, haberá que facer unha suma
         if(a.sign==1){
             b.sign = 1;
-            borrar = result.val;
             result = add(b,a);
-            free(borrar);
         }
         else{
             b.sign = 0;
-            borrar = result.val;
             result = add(a,b);
-            free(borrar);
         }
     }
     //LIMPAMOS POSIBLES CEROS Á ESQUERDA
@@ -159,6 +153,8 @@ bignum resta(bignum a, bignum b){
         }
         else result.tam--;
     }
+    //Reaxustamos a memoria
+    result.val = realloc(result.val,sizeof(int)*result.tam);
     return result;
 }
 
@@ -210,6 +206,8 @@ bignum mult(bignum a, bignum b){
         }
         else result.tam--;
     }
+    //Reaxustamos a memoria
+    result.val = realloc(result.val,sizeof(int)*result.tam);
     free(holder.val);
     return result;
 }
@@ -337,6 +335,8 @@ bignum modulo(bignum a, bignum n){
                         free(borrar);
                         result.sign = 1;
                     }
+                    //Reaxustamos a memoria
+                    result.val = realloc(result.val,sizeof(int)*result.tam);
                     return result;
                 }
                 else if(i==0){
