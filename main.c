@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     if (argc == 1)
     {
-        i = 2; //Se non se especificaron argumentos, enton temos que pedir os dous nums
+        i = 0; //Se non se especificaron argumentos, enton temos que pedir os dous nums
     }
     else if ((argc > 1) && (argv[1][0] == '-'))
     {
@@ -69,6 +69,9 @@ int main(int argc, char **argv)
     if (i == 1)
     {
         vector_bignum[0] = str2bignum(argv[argc-1]);
+    } else if (i == 0) {
+        vector_bignum[0] = str2bignum(argv[argc-2]);
+        vector_bignum[1] = str2bignum(argv[argc-1]);
     }
 
     while (i < 2)
@@ -77,6 +80,7 @@ int main(int argc, char **argv)
 
         cadea_size = 0;
         free(cadea);
+        cadea = NULL;
 
         do
         {
@@ -90,10 +94,10 @@ int main(int argc, char **argv)
         i++;
     }
 
-    bignum2str(vector_bignum[0]);
-    bignum2str(vector_bignum[1]);
+printf("O primeiro numero e: %s\n",bignum2str(vector_bignum[0]));
+printf("O segundo numero e: %s\n",bignum2str(vector_bignum[1]));
 
-    char operacion, letra, *valor1, *valor2, *valor3, *out;
+    /*char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;
     bignum num1, num2, num3, result;
     scanf("%c", &operacion);
@@ -305,6 +309,7 @@ int main(int argc, char **argv)
     if (result.sign == 1)
         printf("-");
     for (int i = result.tam - 1; i >= 0; i--)
-        printf("%d", result.val[i]);
+        printf("%d", result.val[i]);*/
+
     return (EXIT_SUCCESS);
 }

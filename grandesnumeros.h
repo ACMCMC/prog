@@ -21,6 +21,9 @@ bignum str2bignum(char *str);
 //Poscondicións: un bignum co signo adecuado (se non existe interpretaráse como positivo) cuxo tamaño é menor ou igual ao da cadea
 //e cuxo vector de datos enteiros son os valores correspondentes aos díxitos representados na cadea, ELIMINANDO CEROS Á ESQUERDA.
 
+//TODO: Engadir descricion da funcion
+char * bignum2str(bignum num);
+
 //Precondicións: dous bignums de calquer signo e tamaño.
 bignum add(bignum a, bignum b);
 //Poscondicións: un bignum correspondente á suma das entradas de tamaño igual ou maior ao maior deles

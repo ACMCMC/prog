@@ -10,6 +10,22 @@
 
 int errobignum;
 
+char * bignum2str(bignum num) {
+    char *str = (char *) malloc(sizeof(char)*(num.tam+1+num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+    int i;
+
+    for (i = num.sign; i < (num.tam + num.sign); i++) {
+        str[i] = num.val[num.tam-1-i+num.sign] + '0';
+    };
+
+    str[num.tam+num.sign] = '\0';
+    if(num.sign == 1) {
+        num.val[0] = '-';
+    }
+
+    return str;
+}
+
 bignum str2bignum(char *str)
 {
     bignum num;
