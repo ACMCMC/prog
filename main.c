@@ -8,27 +8,90 @@
 #include <string.h>
 #include "grandesnumeros.h"
 
+#define CONCIDION_ARGUMENTO ((opcion == 'S') || (opcion == 'R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D'))
+
 int main(int argc, char **argv)
 {
-char opcion;
+    char opcion, i, cadea_size, *cadea = NULL;
+    bignum *vector_bignum = (bignum *)malloc(sizeof(bignum) * 2);
 
-    if ((argc == 1) || (argv[1][0] != '-')) { //Se non se especificou un argumento, mostramos un menu ao usuario para que elixa unha opcion
-
-    printf("Seleccione a operación:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n");
-
-    do {
-        printf("Opcion> ");
-    scanf("%c",&opcion);
-    getchar();
-    } while (!((opcion == 'S') || (opcion =='R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D')));
+    if (argc > 4)
+    { //Non se poden especificar mais de 4 argumentos
+        printf("Especificaronse demasiados argumentos.\n\nEmpregue:\n\t%s -help\n\n\tpara obter axuda.\n", argv[0]);
+        exit(1);
     }
 
-    if ((argc > 1) && (strcmp(argv[1],"-help") == 0)) {
-        printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n",argv[0]);
+    if ((argc == 1) || (argv[1][0] != '-'))
+    { //Se non se especificou un argumento, mostramos un menu ao usuario para que elixa unha opcion
+
+        printf("Seleccione a operación:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n");
+
+        do
+        {
+            printf("Opcion: ");
+            opcion = getchar();
+            getchar();
+        } while (!CONCIDION_ARGUMENTO);
+    }
+
+    if ((argc > 1) && (strcmp(argv[1], "-help") == 0))
+    {
+        printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n", argv[0]);
         exit(0);
     }
 
-    
+    if ((argc > 1) && (argv[1][0] == '-'))
+    { //Se se especificou unha opcion
+        if ((strlen(argv[1]) == 2) && ((argv[1][1] == 'S') || (argv[1][1] == 'R') || (argv[1][1] == 'P') || (argv[1][1] == 'M') || (argv[1][1] == 'F') || (argv[1][1] == 'D')))
+        {                        //... e se a nosa opcion e correcta...
+            opcion = argv[1][1]; //Gardamola como a opcion elixida
+        }
+        else
+        { //Se non e correcta, saimos do programa mostrando erro
+            printf("Opcion non admitida.\n\nEmpregue:\n\t%s -help\n\n\tpara obter axuda.\n", argv[0]);
+            exit(1);
+        }
+    }
+
+    if (argc == 1)
+    {
+        i = 2; //Se non se especificaron argumentos, enton temos que pedir os dous nums
+    }
+    else if ((argc > 1) && (argv[1][0] == '-'))
+    {
+        i = argc - 2; //Fara falta pedir esa cantidade de nums
+    }
+    else
+    {
+        i = argc - 1;
+    }
+
+    if (i == 1)
+    {
+        vector_bignum[0] = str2bignum(argv[argc-1]);
+    }
+
+    while (i < 2)
+    {
+        printf("Introduza un numero: ");
+
+        cadea_size = 0;
+        free(cadea);
+
+        do
+        {
+            cadea_size++;
+            cadea = realloc(cadea, sizeof(*cadea) * cadea_size);
+            cadea[cadea_size - 1] = getchar();
+        } while (cadea[cadea_size - 1] != '\n');
+
+        vector_bignum[i] = str2bignum(cadea);
+
+        i++;
+    }
+
+    bignum2str(vector_bignum[0]);
+    bignum2str(vector_bignum[1]);
 
     char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;
