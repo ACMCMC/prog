@@ -11,31 +11,45 @@
 bignum str2bignum(char *str)
 {
     bignum num;
-    if (str[0] == '-')
+    int i;
+
+    if (str[0] == '-') {
         num.sign = 1; //O valor 1 será signo negativo
+        str++; //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
+    }
     else
         num.sign = 0;
-    //ELIMINAMOS POSIBLES 0's Á ESQUERDA
-    int lonx = strlen(str) - 1;
-    for (int i = 1; i < lonx; i++)
-    {
-        if (str[1] == 48)
-        {
-            for (int j = 1; j < strlen(str); j++)
-            {
-                str[j] = str[j + 1];
-            }
-        }
-        else
-            break;
+
+    //Ignoramos os ceros a esquerda
+
+    while (*str == '0') {
+        str++;
     }
-    num.tam = strlen(str) - 1;
-    num.val = (int *)malloc(sizeof(int) * num.tam);
-    //OS CARACTERES ESTARÁN EN ORDEN INVERSO
-    for (int i = 0; i < num.tam; i++)
-        num.val[i] = str[num.tam - i] - 48; //Axustamos o valor enteiro do caracter ASCII dos números ao valor enteiro real
-    if (num.tam == 1 && num.val[0] == 0)
-        num.sign = 0; //Igualamos o -0 a 0;
+
+    if (*str == '\0') { //Se tras ignorar todolos ceros a esquerda da cadea, non nos queda nada, enton o noso numero e o 0
+        num.val = (int *) malloc(sizeof(int));
+        num.val[0] = 0;
+        num.tam = 1;
+        num.sign = 0;
+
+        return num; //Devolvemos o 0
+    }
+
+//O noso numero non e 0, imos convertir a cadea en orde inverso a valores do vector do noso bignum
+
+num.tam = strlen(str);
+
+    num.val = (int *) malloc(sizeof(int)*num.tam);
+
+    for(i = 0; i < num.tam; i++) {
+        if ((str[num.tam-i-1] <= '0') || (str[num.tam-i-1] >= '9')) { //Se o caracter que estamos a ler non e un numero, devolvemos null e establecemos a nosa variable global de erro
+            errobignum = ERRO_CARACTERES_NON_ADMITIDOS;
+            exit(errobignum);
+        } else {
+            num.val[i] = str[num.tam-i-1] - '0'; //Restamos '0' a cada dixito de str
+            }
+    }
+
     return num;
 }
 

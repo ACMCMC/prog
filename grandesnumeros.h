@@ -12,6 +12,10 @@ typedef struct
     int *val;
 } bignum;
 
+extern int errobignum;
+
+#define ERRO_CARACTERES_NON_ADMITIDOS 1
+
 //Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude non nula, con signo e sen parte decimal, cun \n ao final.
 bignum str2bignum(char *str);
 //Poscondicións: un bignum co signo adecuado (se non existe interpretaráse como positivo) cuxo tamaño é menor ou igual ao da cadea
