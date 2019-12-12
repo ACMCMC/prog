@@ -8,26 +8,31 @@
 #include <string.h>
 #include "grandesnumeros.h"
 
+int errobignum;
+
 bignum str2bignum(char *str)
 {
     bignum num;
     int i;
 
-    if (str[0] == '-') {
+    if (str[0] == '-')
+    {
         num.sign = 1; //O valor 1 será signo negativo
-        str++; //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
+        str++;        //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
     }
     else
         num.sign = 0;
 
     //Ignoramos os ceros a esquerda
 
-    while (*str == '0') {
+    while (*str == '0')
+    {
         str++;
     }
 
-    if (*str == '\0') { //Se tras ignorar todolos ceros a esquerda da cadea, non nos queda nada, enton o noso numero e o 0
-        num.val = (int *) malloc(sizeof(int));
+    if (*str == '\0')
+    { //Se tras ignorar todolos ceros a esquerda da cadea, non nos queda nada, enton o noso numero e o 0
+        num.val = (int *)malloc(sizeof(int));
         num.val[0] = 0;
         num.tam = 1;
         num.sign = 0;
@@ -35,19 +40,23 @@ bignum str2bignum(char *str)
         return num; //Devolvemos o 0
     }
 
-//O noso numero non e 0, imos convertir a cadea en orde inverso a valores do vector do noso bignum
+    //O noso numero non e 0, imos convertir a cadea en orde inverso a valores do vector do noso bignum
 
-num.tam = strlen(str);
+    num.tam = strlen(str);
 
-    num.val = (int *) malloc(sizeof(int)*num.tam);
+    num.val = (int *)malloc(sizeof(int) * num.tam);
 
-    for(i = 0; i < num.tam; i++) {
-        if ((str[num.tam-i-1] <= '0') || (str[num.tam-i-1] >= '9')) { //Se o caracter que estamos a ler non e un numero, devolvemos null e establecemos a nosa variable global de erro
+    for (i = 0; i < num.tam; i++)
+    {
+        if ((str[num.tam - i - 1] <= '0') || (str[num.tam - i - 1] >= '9'))
+        { //Se o caracter que estamos a ler non e un numero, devolvemos null e establecemos a nosa variable global de erro
             errobignum = ERRO_CARACTERES_NON_ADMITIDOS;
             exit(errobignum);
-        } else {
-            num.val[i] = str[num.tam-i-1] - '0'; //Restamos '0' a cada dixito de str
-            }
+        }
+        else
+        {
+            num.val[i] = str[num.tam - i - 1] - '0'; //Restamos '0' a cada dixito de str
+        }
     }
 
     return num;
