@@ -10,10 +10,29 @@
 
 int main(int argc, char **argv)
 {
+char opcion;
+
+    if ((argc == 1) || (argv[1][0] != '-')) { //Se non se especificou un argumento, mostramos un menu ao usuario para que elixa unha opcion
+
+    printf("Seleccione a operación:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n");
+
+    do {
+        printf("Opcion> ");
+    scanf("%c",&opcion);
+    getchar();
+    } while (!((opcion == 'S') || (opcion =='R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D')));
+    }
+
+    if ((argc > 1) && (strcmp(argv[1],"-help") == 0)) {
+        printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n",argv[0]);
+        exit(0);
+    }
+
+    
+
     char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;
     bignum num1, num2, num3, result;
-    printf("Seleccione a operación:\n   S - Suma\n   R - Resta\n   P - Producto\n   M - Módulo\n   F - Factorial\n   D - Dividir\nOperación: ");
     scanf("%c", &operacion);
     //Preparamos os números
     if (operacion == 's' || operacion == 'S' || operacion == 'r' || operacion == 'R' || operacion == 'p' || operacion == 'P' || operacion == 'm' || operacion == 'M')
