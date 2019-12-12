@@ -11,7 +11,7 @@ typedef struct {
  int *val;
 }bignum;
 
-//Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude con ou sen signo e sen parte decimal.
+//Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude non nula, con signo e sen parte decimal, cun \n ao final.
 bignum str2bignum(char *str);
 //Poscondicións: un bignum co signo adecuado (se non existe interpretaráse como positivo) cuxo tamaño é menor ou igual ao da cadea
 //e cuxo vector de datos enteiros son os valores correspondentes aos díxitos representados na cadea, ELIMINANDO CEROS Á ESQUERDA.

@@ -78,7 +78,7 @@ bignum add(bignum a, bignum b){
         else result.tam--;
     }
     //Reaxustamos a memoria
-    result.val = realloc(result.val,sizeof(int)*result.tam);
+    result.val = (int*)realloc(result.val,sizeof(int)*result.tam);
     return result;
 }
 
@@ -154,7 +154,7 @@ bignum resta(bignum a, bignum b){
         else result.tam--;
     }
     //Reaxustamos a memoria
-    result.val = realloc(result.val,sizeof(int)*result.tam);
+    result.val = (int*)realloc(result.val,sizeof(int)*result.tam);
     return result;
 }
 
@@ -207,7 +207,7 @@ bignum mult(bignum a, bignum b){
         else result.tam--;
     }
     //Reaxustamos a memoria
-    result.val = realloc(result.val,sizeof(int)*result.tam);
+    result.val = (int*)realloc(result.val,sizeof(int)*result.tam);
     free(holder.val);
     return result;
 }
@@ -336,7 +336,7 @@ bignum modulo(bignum a, bignum n){
                         result.sign = 1;
                     }
                     //Reaxustamos a memoria
-                    result.val = realloc(result.val,sizeof(int)*result.tam);
+                    result.val = (int*)realloc(result.val,sizeof(int)*result.tam);
                     return result;
                 }
                 else if(i==0){
