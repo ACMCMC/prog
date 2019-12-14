@@ -304,6 +304,9 @@ bignum mult(bignum a, bignum b)
     int i, j;
     unsigned char acarreo = 0;
 
+    if (a.tam < b.tam)
+        return (mult(b, a));
+
     termo_suma.sign = positivo;
     termo_suma.tam = 0;
     termo_suma.val = NULL;
@@ -346,7 +349,8 @@ bignum mult(bignum a, bignum b)
         resultado.sign = negativo;
     }
 
-    while ((resultado.tam > 1) && (resultado.val[resultado.tam-1] == 0))(resultado.tam--, resultado.val = (char *)realloc(resultado.val,resultado.tam*sizeof(*resultado.val)));
+    while ((resultado.tam > 1) && (resultado.val[resultado.tam - 1] == 0))
+        (resultado.tam--, resultado.val = (char *)realloc(resultado.val, resultado.tam * sizeof(*resultado.val)));
 
     free(termo_suma.val);
 
@@ -356,27 +360,26 @@ bignum mult(bignum a, bignum b)
 bignum modulo(bignum a, bignum n)
 {
     bignum resultado, multiplo_diez;
-    unsigned int i;
+    int i;
 
     multiplo_diez.sign = positivo;
     multiplo_diez.tam = 2;
-    multiplo_diez.val = (char *) malloc(sizeof(*multiplo_diez.val)*multiplo_diez.tam);
+    multiplo_diez.val = (char *)malloc(sizeof(*multiplo_diez.val) * multiplo_diez.tam);
     multiplo_diez.val[0] = 0;
     multiplo_diez.val[1] = 1;
 
     resultado.sign = positivo;
     resultado.tam = 1;
-    resultado.val = (char *) malloc(sizeof(*resultado.val));
+    resultado.val = (char *)malloc(sizeof(*resultado.val));
     resultado.val[0] = 0;
 
-
-    for (i = a.tam-1; i >= 0; i--) {
-        resultado = mult(resultado,multiplo_diez);
-    printf("isto vai\n");
+    for (i = a.tam - 1; i >= 0; i--)
+    {
+        resultado = mult(resultado, multiplo_diez);
         resultado.val[0] = a.val[i];
-        printf("%s\n",bignum2str(resultado));
-        while (comparar(resultado, n) != menor) {
-            resultado = resta(resultado,n);
+        while (comparar(resultado, n) != menor)
+        {
+            resultado = resta(resultado, n);
         }
     }
 
