@@ -346,12 +346,18 @@ bignum mult(bignum a, bignum b)
         resultado.sign = negativo;
     }
 
+    free(termo_suma.val);
+
     return resultado;
 }
 
 bignum modulo(bignum a, bignum n)
 {
-    bignum result, holder;
+    bignum resultado;
+
+    return resultado;
+
+    /*bignum result, holder;
     int *borrar;
     int terminar = 0, max, acarreo = 0, signo_a, signo_n = positivo;
     holder.sign = positivo;
@@ -555,7 +561,7 @@ bignum modulo(bignum a, bignum n)
                 break;
             }
         }
-    }
+    }*/
 }
 
 bignum fact(bignum n)
@@ -586,6 +592,8 @@ bignum fact(bignum n)
 
     while ((n.tam > 1) || (n.val[0] > 2))
         (n = resta(n, auxiliar), resultado = mult(resultado, n)); //Empregamos a coma como o operador de evaluación secuencial
+
+    free(auxiliar.val);
 
     return resultado;
 }
