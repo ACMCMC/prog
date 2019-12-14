@@ -22,7 +22,8 @@ extern unsigned int errobignum;
 
 //{(∀x : 0 < x AND x < N-1 : '0' <= str[x] AND str[x] <= '9') AND (∃x : x == 0 : str[x] == '-' OR ('0' <= str[x] AND str[x] <= '9')) AND (∃x : x == N-1 : str[x] == '\0')}
 bignum str2bignum(char *str);
-//{((∃x : x == 0 : str[x] == '-' : bignum.tam == N-2) OR (∃x : x == 0 : str[x] != '-' : bignum.tam == N-1)) AND ((∀x : 0 <= x AND x < bignum.tam : str[x] - '0' == bignum.val[x]) OR ((∃x : x == 0 : str[x] == '-') AND (∀x : 0 < x AND x <= bignum.tam : str[x] - '0' == bignum.val[x-1])))}
+//{((∃x : x == 0 : str[x] == '-' : bignum.tam == N-2) OR (∃x : x == 0 : str[x] != '-' : bignum.tam == N-1)) AND ((∃x : x == 0 : str[x] == '-' : bignum.sign == negativo) OR (∃x : x == 0 : str[x] != '-' : bignum.sign == positivo)) AND ((∀x : 0 <= x AND x < bignum.tam : str[x] - '0' == bignum.val[x]) OR ((∃x : x == 0 : str[x] == '-') AND (∀x : 0 < x AND x <= bignum.tam : str[x] - '0' == bignum.val[x-1])))}
+//{((bignum.sign == positivo) OR (bignum.sign == negativo)) AND ()}
 
 //TODO: Engadir descricion da funcion
 char *bignum2str(bignum num);
