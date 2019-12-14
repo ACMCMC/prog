@@ -300,68 +300,53 @@ bignum resta(bignum a, bignum b)
 
 bignum mult(bignum a, bignum b)
 {
-    bignum result, holder, *maior, *menor;
-    int acarreo, acarreo_prev, max;
-    //O algoritmo da multiplicación funciona independentemente de que número se colla como primeiro término,
-    //pero saber o maior é necesario para saber o tamaño máximo do resultado
-    if (a.tam >= b.tam)
+    bignum resultado, termo_suma;
+    int i, j;
+    unsigned char acarreo = 0;
+
+    termo_suma.sign = positivo;
+    termo_suma.tam = 0;
+    termo_suma.val = NULL;
+
+    resultado.tam = 0;
+    resultado.val = NULL;
+    resultado.sign = positivo;
+
+    for (i = 0; i < b.tam; i++)
     {
-        maior = &a;
-        menor = &b;
-    }
-    else
-    {
-        maior = &b;
-        menor = &a;
-    }
-    result.tam = maior->tam * 2; //O resultado terá como moito o doble de dixitos que o maior
-    result.val = (int *)malloc(sizeof(int) * result.tam);
-    holder.tam = maior->tam + 1;
-    holder.val = (int *)malloc(sizeof(int) * holder.tam);
-    for (int i = 0; i < result.tam; i++)
-        result.val[i] = 0; //Limpamos a memoria por se é reciclada
-    for (int i = 0; i < menor->tam; i++)
-    {
-        acarreo = 0;
-        for (int h = 0; h < holder.tam; h++)
-            holder.val[h] = 0; //Limpamos o holder
-        //CALCULAMOS O RESULTADO PARCIAL
-        for (int j = 0; j < maior->tam; j++)
-        {
-            holder.val[j] = (menor->val[i] * maior->val[j] + acarreo) % 10;
-            acarreo = (menor->val[i] * maior->val[j] + acarreo) / 10;
+        free(termo_suma.val);
+        termo_suma.val = (unsigned char *)malloc(sizeof(*termo_suma.val) * (a.tam + i));
+        for (j = 0; j < i; i++)
+        { //Poderiamos tamen usar un calloc
+            termo_suma.val[j] = 0;
         }
-        holder.val[maior->tam] = acarreo;
-        //IMPLEMENTAMOS A SUMA DO HOLDER AO RESULTADO
-        acarreo = 0;
-        for (int j = 0; j < holder.tam; j++)
+        while (j < i + a.tam)
         {
-            acarreo_prev = acarreo;
-            acarreo = (result.val[j + i] + holder.val[j] + acarreo) / 10;
-            result.val[j + i] = (result.val[j + i] + holder.val[j] + acarreo_prev) % 10;
+            termo_suma.val[j] = b.val[i] * a.val[j - i] + acarreo;
+            acarreo = termo_suma.val[j] / 10;
+            termo_suma.val[j] = termo_suma.val[j] % 10;
+            j++;
         }
-        result.val[holder.tam + i] = acarreo;
-    }
-    if (a.sign == b.sign)
-        result.sign = positivo;
-    else
-        result.sign = negativo;
-    //LIMPAMOS POSIBLES CEROS Á ESQUERDA
-    max = result.tam - 1;
-    for (int i = max; i > 0; i--)
-    {
-        if (result.val[i] != 0)
+        if (acarreo)
         {
-            result.tam = i + 1;
-            break;
+            termo_suma.tam = i + a.tam + 1;
+            termo_suma.val = (unsigned char *)realloc(termo_suma.val, sizeof(*termo_suma.val) * (termo_suma.tam));
+            termo_suma.val[termo_suma.tam - 1] = acarreo;
+            acarreo = 0;
         }
         else
-            result.tam--;
+        {
+            termo_suma.tam = i + a.tam;
+        }
+        resultado = add(resultado, termo_suma);
     }
-    //Reaxustamos a memoria
-    result.val = (int *)realloc(result.val, sizeof(int) * result.tam);
-    free(holder.val);
-    return result;
+
+    if (a.sign != b.sign)
+    {
+        resultado.sign = negativo;
+    }
+
+    return resultado;
 }
 
 bignum modulo(bignum a, bignum n)
