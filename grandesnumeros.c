@@ -565,9 +565,7 @@ bignum fact(bignum n)
     return result;
 }
 
-bignum dividir(bignum a, bignum b, bignum n)
+bignum multmod(bignum a, bignum b, bignum n)
 {
-    bignum result = mult(a, b);
-    result = modulo(result, n);
-    return result;
+    return modulo(mult(a, b), n);
 }

@@ -47,7 +47,7 @@ bignum fact(bignum n);
 //Poscondicións: o factorial do número, tendo en conta que 0!=1.
 
 //Precondicións: dous bignums de calquer tamaño e signo; e un bignum (n) que NON sexa NULO e sen ceros á esquerda no valor.
-bignum dividir(bignum a, bignum b, bignum n);
+bignum multmod(bignum a, bignum b, bignum n);
 //Un bignum de lonxitude igual ou menor a (a)*(b) que corresponde co resultado de (a*b)%n.
 
 #endif
