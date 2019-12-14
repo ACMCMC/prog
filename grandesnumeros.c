@@ -12,6 +12,8 @@ REFERENCIAS
 
 [3] https://stackoverflow.com/questions/18617620/behavior-of-realloc-when-the-new-size-is-the-same-as-the-old-one
 
+[4] https://www.geeksforgeeks.org/clearing-the-input-buffer-in-cc/
+
 */
 
 #include <stdio.h>
@@ -367,8 +369,8 @@ bignum modulo(bignum a, bignum n)
 {
     bignum result, holder;
     int *borrar;
-    int terminar = 0, max, acarreo = 0, signo_a, signo_n;
-    holder.sign = 0;
+    int terminar = 0, max, acarreo = 0, signo_a, signo_n = positivo;
+    holder.sign = positivo;
     holder.tam = a.tam;
     holder.val = (int *)malloc(sizeof(int) * holder.tam);
     for (int i = holder.tam - 1; i >= 0; i--)
@@ -394,17 +396,17 @@ bignum modulo(bignum a, bignum n)
             }
             else if (a.val[i] < n.val[i])
             { //SON IGUAIS E O SEGUINTE É MENOR, A É MENOR
-                if (result.sign == 1)
+                if (result.sign == negativo)
                 {
                     borrar = result.val;
                     result = add(result, n);
                     free(borrar);
                 }
-                if (signo_n == 1)
+                if (signo_n == negativo)
                 {
                     borrar = result.val;
                     result = resta(n, result);
-                    result.sign = 1;
+                    result.sign = negativo;
                     free(borrar);
                 }
                 free(holder.val);
@@ -424,9 +426,9 @@ bignum modulo(bignum a, bignum n)
     else
     { //SE A É MENOR XA O DEVOLVEMOS
         free(holder.val);
-        if (result.sign == 1)
+        if (result.sign == positivo)
         {
-            if (n.sign == 1)
+            if (n.sign == positivo)
             {
                 return result;
             }
@@ -437,7 +439,7 @@ bignum modulo(bignum a, bignum n)
         }
         else
         {
-            if (n.sign == 1)
+            if (n.sign == negativo)
             {
                 return add(n, result);
             }
@@ -451,15 +453,15 @@ bignum modulo(bignum a, bignum n)
     //DESARROLLO DA FUNCIÓN!!!!!!!!!!
     for (int i = 0; i < n.tam; i++)
         holder.val[holder.tam - n.tam + i - 1] = n.val[i]; //Rellenamos as maiores posicións do holder co divisor
-    if (result.sign == 1)
+    if (result.sign == negativo)
     {
         signo_a = result.sign;
-        result.sign = 0;
+        result.sign = positivo;
     }
-    if (n.sign == 1)
+    if (n.sign == negativo)
     {
         signo_n = n.sign;
-        n.sign = 0;
+        n.sign = positivo;
     }
     while (1)
     {
@@ -485,7 +487,7 @@ bignum modulo(bignum a, bignum n)
                 }
                 else if (result.val[i] < n.val[i])
                 {
-                    if (signo_a == 1)
+                    if (signo_a == negativo)
                     {
                         max = result.tam - 1;
                         for (int i = max; i > 0; i--)
@@ -518,12 +520,12 @@ bignum modulo(bignum a, bignum n)
                                 result.tam--;
                         }
                     }
-                    if (signo_n == 1)
+                    if (signo_n == positivo)
                     {
                         borrar = result.val;
                         result = resta(n, result);
                         free(borrar);
-                        result.sign = 1;
+                        result.sign = negativo;
                     }
                     //Reaxustamos a memoria
                     result.val = (int *)realloc(result.val, sizeof(int) * result.tam);
@@ -531,7 +533,7 @@ bignum modulo(bignum a, bignum n)
                 }
                 else if (i == 0)
                 {
-                    result.sign = 0;
+                    result.sign = positivo;
                     result.tam = 1;
                     free(result.val);
                     result.val = (int *)malloc(sizeof(int) * result.tam);
@@ -576,7 +578,7 @@ bignum fact(bignum n)
 {
     bignum resultado, auxiliar; //Poderiamos declarar dous bignums: un que sexa 0 e outro que sexa 1, pero podemos reemplazalos por un bignum que chamamos auxiliar, que valerá 0 ou 1 segundo o que necesitemos (así aforramos memoria)
 
-    auxiliar.sign = 0; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
+    auxiliar.sign = positivo; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
     auxiliar.val = (char *)malloc(sizeof(*auxiliar.val));
     auxiliar.val[0] = 0; //Imos empregar un 0 como auxiliar ó principio da función
     auxiliar.tam = 1;
@@ -596,9 +598,10 @@ bignum fact(bignum n)
     }
 
     auxiliar.val[0] = 1; //A partir de aquí, o noso bignum auxiliar será 1, para restarlle 1 ao noso termo da multiplicación
+    resultado = n;
 
-    while ((n.tam > 1) || (n.val[0] != 1))
-        (resultado = mult(resultado, n), n = resta(n, auxiliar)); //Empregamos a coma como o operador de evaluación secuencial
+    while ((n.tam > 1) || (n.val[0] > 2))
+        (n = resta(n, auxiliar) , resultado = mult(resultado, n)); //Empregamos a coma como o operador de evaluación secuencial
 
     return resultado;
 }
