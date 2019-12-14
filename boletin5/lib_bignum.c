@@ -317,7 +317,6 @@ bignum mult(bignum a, bignum b)
 
     for (i = 0; i < b.tam; i++)
     {
-      printf("%d,%d\n", i, b.tam);
         free(termo_suma.val);
         termo_suma.val = (char *)malloc(sizeof(*termo_suma.val) * (a.tam + i));
         for (j = 0; j < i; j++)
@@ -326,11 +325,9 @@ bignum mult(bignum a, bignum b)
         }
         while (j < i + a.tam)
         {
-          printf("\t%d,%d\n", j, i+a.tam);
             termo_suma.val[j] = b.val[i] * a.val[j - i] + acarreo;
             acarreo = termo_suma.val[j] / 10;
             termo_suma.val[j] = termo_suma.val[j] % 10;
-            printf("\t%d -- %d\n", acarreo, termo_suma.val[j]);
             j++;
         }
         if (acarreo)
