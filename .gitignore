@@ -1,3 +1,5 @@
 .vscode/launch.json
 .vscode/tasks.json
 *.exe
+boletin5/lib_bignum.o
+boletin5/main
