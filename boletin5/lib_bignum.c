@@ -346,6 +346,8 @@ bignum mult(bignum a, bignum b)
         resultado.sign = negativo;
     }
 
+    while ((resultado.tam > 1) && (resultado.val[resultado.tam-1] == 0))(resultado.tam--, resultado.val = (char *)realloc(resultado.val,resultado.tam*sizeof(*resultado.val)));
+
     free(termo_suma.val);
 
     return resultado;
@@ -353,215 +355,32 @@ bignum mult(bignum a, bignum b)
 
 bignum modulo(bignum a, bignum n)
 {
-    bignum resultado;
+    bignum resultado, multiplo_diez;
+    unsigned int i;
+
+    multiplo_diez.sign = positivo;
+    multiplo_diez.tam = 2;
+    multiplo_diez.val = (char *) malloc(sizeof(*multiplo_diez.val)*multiplo_diez.tam);
+    multiplo_diez.val[0] = 0;
+    multiplo_diez.val[1] = 1;
+
+    resultado.sign = positivo;
+    resultado.tam = 1;
+    resultado.val = (char *) malloc(sizeof(*resultado.val));
+    resultado.val[0] = 0;
+
+
+    for (i = a.tam-1; i >= 0; i--) {
+        resultado = mult(resultado,multiplo_diez);
+    printf("isto vai\n");
+        resultado.val[0] = a.val[i];
+        printf("%s\n",bignum2str(resultado));
+        while (comparar(resultado, n) != menor) {
+            resultado = resta(resultado,n);
+        }
+    }
 
     return resultado;
-
-    /*bignum result, holder;
-    int *borrar;
-    int terminar = 0, max, acarreo = 0, signo_a, signo_n = positivo;
-    holder.sign = positivo;
-    holder.tam = a.tam;
-    holder.val = (int *)malloc(sizeof(int) * holder.tam);
-    for (int i = holder.tam - 1; i >= 0; i--)
-        holder.val[i] = 0; //Limpamos o holder
-    result.sign = a.sign;
-    result.tam = a.tam; //Como moito
-    result.val = (int *)malloc(sizeof(int) * result.tam);
-    for (int i = 0; i < result.tam; i++)
-        result.val[i] = a.val[i]; //Insertamos o valor do dividendo no resultado
-    if (result.tam == 1 && result.val[0] == 0)
-        return result; //Desfacemonos do caso do 0
-    //Hai que comprobar se N ten maior magnitude
-    if (a.tam > n.tam)
-    { //SE A É MAIS GRANDE, NON FACEMOS NADA
-    }
-    else if (a.tam == n.tam)
-    { //SE SON IGUAIS
-        for (int i = a.tam - 1; i >= 0; i--)
-        { //DENDE O FINAL ATA O PRINCIPIO BUSCAMOS UN ELEMENTO MAIOR E CONTINUAMOS
-            if (a.val[i] > n.val[i])
-            {
-                break;
-            }
-            else if (a.val[i] < n.val[i])
-            { //SON IGUAIS E O SEGUINTE É MENOR, A É MENOR
-                if (result.sign == negativo)
-                {
-                    borrar = result.val;
-                    result = add(result, n);
-                    free(borrar);
-                }
-                if (signo_n == negativo)
-                {
-                    borrar = result.val;
-                    result = resta(n, result);
-                    result.sign = negativo;
-                    free(borrar);
-                }
-                free(holder.val);
-                return result;
-            }
-            else if (i == 0)
-            { //SE TODOS SON IGUAIS E CHEGAMOS AO FINAL, O RESULTADO SERÁ 0
-                result.tam = 1;
-                free(result.val);
-                free(holder.val);
-                result.val = (int *)malloc(sizeof(int));
-                result.val[0] = 0;
-                return result;
-            }
-        }
-    }
-    else
-    { //SE A É MENOR XA O DEVOLVEMOS
-        free(holder.val);
-        if (result.sign == positivo)
-        {
-            if (n.sign == positivo)
-            {
-                return result;
-            }
-            else
-            {
-                return add(n, result);
-            }
-        }
-        else
-        {
-            if (n.sign == negativo)
-            {
-                return add(n, result);
-            }
-            else
-            {
-                return result;
-            }
-        }
-    }
-    //SEGURO QUE A>N, PODEMOS APLICAR A FUNCION
-    //DESARROLLO DA FUNCIÓN!!!!!!!!!!
-    for (int i = 0; i < n.tam; i++)
-        holder.val[holder.tam - n.tam + i - 1] = n.val[i]; //Rellenamos as maiores posicións do holder co divisor
-    if (result.sign == negativo)
-    {
-        signo_a = result.sign;
-        result.sign = positivo;
-    }
-    if (n.sign == negativo)
-    {
-        signo_n = n.sign;
-        n.sign = positivo;
-    }
-    while (1)
-    {
-        //DETECTAMOS SE O QUE QUEDA NO RESULTADO É MENOR AO DIVISOR. SE É O CASO, REMATAMOS
-        for (int i = result.tam - 1; i >= n.tam; i--)
-        {
-            if (result.val[i] != 0)
-            {
-                terminar = 0;
-                break;
-            }
-            else
-                terminar = 1;
-        }
-        if (terminar == 1)
-        {
-            for (int i = n.tam - 1; i >= 0; i++)
-            {
-                if (result.val[i] > n.val[i])
-                {
-                    terminar = 0;
-                    break;
-                }
-                else if (result.val[i] < n.val[i])
-                {
-                    if (signo_a == negativo)
-                    {
-                        max = result.tam - 1;
-                        for (int i = max; i > 0; i--)
-                        {
-                            if (result.val[i] != 0)
-                            {
-                                result.tam = i + 1;
-                                break;
-                            }
-                            else
-                                result.tam--;
-                        }
-                        result.sign = signo_a;
-                        borrar = result.val;
-                        result = add(n, result);
-                        free(borrar);
-                    }
-                    else
-                    {
-                        //LIMPAMOS POSIBLES CEROS Á ESQUERDA
-                        max = result.tam - 1;
-                        for (int i = max; i > 0; i--)
-                        {
-                            if (result.val[i] != 0)
-                            {
-                                result.tam = i + 1;
-                                break;
-                            }
-                            else
-                                result.tam--;
-                        }
-                    }
-                    if (signo_n == positivo)
-                    {
-                        borrar = result.val;
-                        result = resta(n, result);
-                        free(borrar);
-                        result.sign = negativo;
-                    }
-                    //Reaxustamos a memoria
-                    result.val = (int *)realloc(result.val, sizeof(int) * result.tam);
-                    return result;
-                }
-                else if (i == 0)
-                {
-                    result.sign = positivo;
-                    result.tam = 1;
-                    free(result.val);
-                    result.val = (int *)malloc(sizeof(int) * result.tam);
-                    result.val[0] = 0;
-                    return result;
-                }
-            }
-        }
-        //O QUE É A PROPIA FUNCIÓN, SABEMOS QUE O QUE QUEDA É >N; IMPLEMENTAR A DIVISIÓN
-        //Revisamos se o holder é menor que o dividendo. Se o é facemos un shift á dereita e volvemos revisar ata poder restar
-        for (int i = result.tam - 1; i >= 0; i--)
-        {
-            if (result.val[i] > holder.val[i])
-            {
-                //Implementamos a RESTA
-                for (int i = 0; i < holder.tam; i++)
-                {
-                    result.val[i] = (result.val[i] - (holder.val[i] + acarreo));
-                    if (result.val[i] < 0)
-                    {
-                        result.val[i] += 10;
-                        acarreo = 1;
-                    }
-                    else
-                        acarreo = 0;
-                }
-                break;
-            }
-            else if (result.val[i] < holder.val[i])
-            {
-                //Shift-right
-                for (int i = 0; i < holder.tam - 1; i++)
-                    holder.val[i] = holder.val[i + 1];
-                holder.val[holder.tam - 1] = 0;
-                break;
-            }
-        }
-    }*/
 }
 
 bignum fact(bignum n)
