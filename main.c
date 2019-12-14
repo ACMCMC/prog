@@ -13,7 +13,7 @@
 int main(int argc, char **argv)
 {
     char opcion, i, cadea_size, *cadea = NULL;
-    bignum *vector_bignum = (bignum *)malloc(sizeof(bignum) * 2);
+    bignum resultado, *vector_bignum = (bignum *)malloc(sizeof(bignum) * 2);
 
     if (argc > 4)
     { //Non se poden especificar mais de 4 argumentos
@@ -101,18 +101,21 @@ int main(int argc, char **argv)
     {
     case 'S':
     case 's':
-        printf("A suma vale %s\n",bignum2str(add(vector_bignum[0],vector_bignum[1])));
+        resultado = add(vector_bignum[0],vector_bignum[1]);
         break;
 
     case 'R':
     case 'r':
-        printf("A resta vale %s\n",bignum2str(resta(vector_bignum[0],vector_bignum[1])));
+        resultado = resta(vector_bignum[0],vector_bignum[1]);
         break;
     
     default: //Este caso nunca se vai dar, porque xa nos aseguramos previamente de que a opción elixida é correcta
         exit(1);
         break;
     }
+
+    if (errobignum == ERRO_FALSE) printf("O resultado e: %s, lonxitude %d\n",bignum2str(resultado),resultado.tam);
+    else printf("Produciuse un erro. Codigo de erro %p.\n", errobignum);
 
     /*char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;

@@ -16,10 +16,11 @@ typedef struct
     char *val;
 } bignum;
 
-extern int errobignum;
+#define ERRO_FALSE 0x0
+#define ERRO_CARACTERES_NON_ADMITIDOS 0x1
+#define ERRO_FACTORIAL_NEGATIVO 0x2
 
-#define ERRO_CARACTERES_NON_ADMITIDOS 1
-#define ERRO_FACTORIAL_NEGATIVO 2
+extern unsigned char errobignum = ERRO_FALSE;
 
 //Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude non nula, con signo e sen parte decimal, cun \n ao final.
 //Precondicións: {(∀x : 0 < x AND x < N-1 : '0' <= str[x] AND str[x] <= '9') AND (∃x : x == 0 : str[x] == '-' OR ('0' <= str[x] AND str[x] <= '9')) AND (∃x : x == N-1 : str[x] == '\0')}

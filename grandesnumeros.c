@@ -112,7 +112,7 @@ bignum str2bignum(char *str)
     else
         num.sign = positivo;
 
-    //Ignoramos os ceros a esquerda
+    //Ignoramos os ceros á esquerda
 
     while (*str == '0')
     {
@@ -217,6 +217,7 @@ bignum add(bignum a, bignum b)
 
 bignum resta(bignum a, bignum b)
 {
+    printf("entramos aqui\n");
     //A función de resta é moi similar á de suma
 
     bignum result, *bignum_maior, *bignum_menor;
@@ -268,7 +269,7 @@ bignum resta(bignum a, bignum b)
             i++;
         }
 
-        while (result.val[i-1] == 0)
+        while ((result.val[i-1] == 0) && (i > 1))
         {
             i--;
         }
