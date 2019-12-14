@@ -1,5 +1,4 @@
-/* Aldán Creo Mariño
- */
+/* Aldán Creo Mariño*/
 //!!!ALGÚNS NOMES DAS FUNCIÓNS FORON MODIFICADOS POR INTERFERIR CON NOMES DAS LIBRARÍAS STANDARD
 #ifndef LIB_BIGNUM_H
 #define LIB_BIGNUM_H
@@ -21,11 +20,10 @@ typedef struct
 
 extern unsigned int errobignum;
 
-//Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude non nula, con signo e sen parte decimal, cun \n ao final.
-//Precondicións: {(∀x : 0 < x AND x < N-1 : '0' <= str[x] AND str[x] <= '9') AND (∃x : x == 0 : str[x] == '-' OR ('0' <= str[x] AND str[x] <= '9')) AND (∃x : x == N-1 : str[x] == '\0')}
+
+//{(∀x : 0 < x AND x < N-1 : '0' <= str[x] AND str[x] <= '9') AND (∃x : x == 0 : str[x] == '-' OR ('0' <= str[x] AND str[x] <= '9')) AND (∃x : x == N-1 : str[x] == '\0')}
 bignum str2bignum(char *str);
-//Poscondicións: un bignum co signo adecuado (se non existe interpretaráse como positivo) cuxo tamaño é menor ou igual ao da cadea e cuxo vector de datos enteiros son os valores correspondentes aos díxitos representados na cadea, ELIMINANDO CEROS Á ESQUERDA.
-//Poscondicións: {((∃x : x == 0 : str[x] == '-' : bignum.tam == N-2) OR (∃x : x == 0 : str[x] != '-' : bignum.tam == N-1)) AND ((∀x : 0 <= x AND x < bignum.tam : str[x] - '0' == bignum.val[x]) OR ((∃x : x == 0 : str[x] == '-') AND (∀x : 0 < x AND x <= bignum.tam : str[x] - '0' == bignum.val[x-1])))}
+//{((∃x : x == 0 : str[x] == '-' : bignum.tam == N-2) OR (∃x : x == 0 : str[x] != '-' : bignum.tam == N-1)) AND ((∀x : 0 <= x AND x < bignum.tam : str[x] - '0' == bignum.val[x]) OR ((∃x : x == 0 : str[x] == '-') AND (∀x : 0 < x AND x <= bignum.tam : str[x] - '0' == bignum.val[x-1])))}
 
 //TODO: Engadir descricion da funcion
 char *bignum2str(bignum num);

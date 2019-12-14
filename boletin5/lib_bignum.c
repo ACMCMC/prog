@@ -27,7 +27,7 @@ typedef enum
     menor = -1
 } comparacion; //Empregamos esta enumeración para evaluar comparacións de bignums
 
-errobignum = ERRO_FALSE;
+unsigned int errobignum = ERRO_FALSE;
 
 comparacion comparar(bignum a, bignum b)
 {
