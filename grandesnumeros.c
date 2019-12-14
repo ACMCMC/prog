@@ -1,7 +1,16 @@
 /* 
- * Guillermo Blanco Filgueira
- * 25 de noviembre de 2019
- */
+* Guillermo Blanco Filgueira
+* Aldán Creo Mariño
+* 25 de noviembre de 2019
+*/
+
+/*
+
+REFERENCIAS
+
+[1] https://embeddedgurus.com/stack-overflow/2011/02/efficient-c-tip-13-use-the-modulus-operator-with-caution/
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,16 +19,19 @@
 
 int errobignum;
 
-char * bignum2str(bignum num) {
-    char *str = (char *) malloc(sizeof(char)*(num.tam+1+num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+char *bignum2str(bignum num)
+{
+    char *str = (char *)malloc(sizeof(char) * (num.tam + 1 + num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
     int i;
 
-    for (i = num.sign; i < (num.tam + num.sign); i++) {
-        str[i] = num.val[num.tam-1-i+num.sign] + '0';
+    for (i = num.sign; i < (num.tam + num.sign); i++)
+    {
+        str[i] = num.val[num.tam - 1 - i + num.sign] + '0';
     };
 
-    str[num.tam+num.sign] = '\0';
-    if(num.sign == 1) {
+    str[num.tam + num.sign] = '\0';
+    if (num.sign == 1)
+    {
         num.val[0] = '-';
     }
 
@@ -48,7 +60,7 @@ bignum str2bignum(char *str)
 
     if (*str == '\0')
     { //Se tras ignorar todolos ceros a esquerda da cadea, non nos queda nada, enton o noso numero e o 0
-        num.val = (int *)malloc(sizeof(int));
+        num.val = (char *)malloc(sizeof(*num.val));
         num.val[0] = 0;
         num.tam = 1;
         num.sign = 0;
@@ -60,7 +72,7 @@ bignum str2bignum(char *str)
 
     num.tam = strlen(str);
 
-    num.val = (int *)malloc(sizeof(int) * num.tam);
+    num.val = (char *)malloc(sizeof(*num.val) * num.tam);
 
     for (i = 0; i < num.tam; i++)
     {
@@ -80,9 +92,9 @@ bignum str2bignum(char *str)
 
 bignum add(bignum a, bignum b)
 {
-    bignum result;
-    bignum *maior, *menor;
-    int max;
+    bignum result, *maior, *menor;
+    int i;
+
     //Hai que comprobar cal ten o maior tamaño
     if (a.tam >= b.tam)
     {
@@ -91,54 +103,48 @@ bignum add(bignum a, bignum b)
     }
     else
     {
-        menor = &a;
         maior = &b;
+        menor = &a;
     }
+
     int acarreo = 0;
     if (a.sign == b.sign)
     {
         result.sign = a.sign;        //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
-        result.tam = maior->tam + 1; //A suma pode ter como moito un díxito máis que o maior
-        result.val = (int *)malloc(sizeof(int) * result.tam);
-        for (int i = 0; i < menor->tam; i++)
+        result.tam = maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
+        result.val = (char *) malloc(sizeof(*result.val) * result.tam);
+
+        for (i = 0; i < menor->tam; i++)
         {
-            result.val[i] = (maior->val[i] + menor->val[i] + acarreo) % 10;
-            acarreo = (maior->val[i] + menor->val[i] + acarreo) / 10;
+            result.val[i] = (a.val[i] + b.val[i] + acarreo) % 10; //A cifra actual que gardamos é a cifra en módulo 10
+            acarreo = (a.val[i] + b.val[i] + acarreo) / 10; //O acarreo é a división enteira por 10
         }
-        for (int i = menor->tam; i < maior->tam; i++)
-        {
+        while (i < maior->tam) { //Imos sumando o resto de dixitos, que se corresponden aos do maior
             result.val[i] = (maior->val[i] + acarreo) % 10;
             acarreo = (maior->val[i] + acarreo) / 10;
+            i++;
         }
-        result.val[maior->tam] = acarreo;
+
+        if (acarreo) {
+            result.tam++;
+        result.val = (char *) realloc(result.val, sizeof(*result.val) * result.tam);
+        result.val[result.tam - 1] = acarreo;
+        }
     }
     else
-    { //Se son distintos, haberá que facer unha resta
-        if (a.sign == 1)
+    {                    //Se son distintos, haberá que facer unha resta
+        if (a.sign == 1) //temos (-a) + (+b), e polo tanto facemos b - (+ a)
         {
             a.sign = 0;
             result = resta(b, a);
         }
-        else
+        else //temos (+a) + (-b), por iso facemos a - b
         {
             b.sign = 0;
             result = resta(a, b);
         }
     }
-    //LIMPAMOS POSIBLES CEROS Á ESQUERDA
-    max = result.tam - 1;
-    for (int i = max; i > 0; i--)
-    {
-        if (result.val[i] != 0)
-        {
-            result.tam = i + 1;
-            break;
-        }
-        else
-            result.tam--;
-    }
-    //Reaxustamos a memoria
-    result.val = (int *)realloc(result.val, sizeof(int) * result.tam);
+    
     return result;
 }
 
