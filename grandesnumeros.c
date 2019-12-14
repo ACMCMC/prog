@@ -93,7 +93,7 @@ bignum str2bignum(char *str)
     bignum num;
     int i;
 
-    if (str[0] == '-')
+    if (*str == '-')
     {
         num.sign = 1; //O valor 1 será signo negativo
         str++;        //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
@@ -126,10 +126,13 @@ bignum str2bignum(char *str)
 
     for (i = 0; i < num.tam; i++)
     {
-        if ((str[num.tam - i - 1] <= '0') || (str[num.tam - i - 1] >= '9'))
-        { //Se o caracter que estamos a ler non e un numero, devolvemos null e establecemos a nosa variable global de erro
+        if ((str[num.tam - i - 1] < '0') || (str[num.tam - i - 1] > '9'))
+        { //Se o caracter que estamos a ler non e un numero, devolvemos un bignum de erro e establecemos a nosa variable global de erro
             errobignum = ERRO_CARACTERES_NON_ADMITIDOS;
-            exit(errobignum);
+    num.tam = 0;
+    num.sign = -1;
+    num.val = NULL;
+            return(num);
         }
         else
         {
@@ -593,12 +596,10 @@ bignum fact(bignum n)
         }
     }
 
-    auxiliar.val[0] = 1; //A partires de aquí, o noso bignum auxiliar será 1, para restarlle 1 ao noso termo da multiplicación
+    auxiliar.val[0] = 1; //A partir de aquí, o noso bignum auxiliar será 1, para restarlle 1 ao noso termo da multiplicación
 
-    while ((n.tam > 1) || (n.val[0] != 1)) {
-        resultado = mult(resultado, n);
-        n = resta(n, auxiliar);
-    }
+    while ((n.tam > 1) || (n.val[0] != 1))
+        (resultado = mult(resultado, n) , n = resta(n, auxiliar)); //Empregamos a coma como o operador de evaluación secuencial
 
     return resultado;
 }

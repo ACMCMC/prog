@@ -24,19 +24,19 @@ int main(int argc, char **argv)
     if ((argc == 1) || (argv[1][0] != '-'))
     { //Se non se especificou un argumento, mostramos un menu ao usuario para que elixa unha opcion
 
-        printf("Seleccione a operación:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n");
+        printf("Seleccione a operacion:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Modulo\n\tF: Factorial\n\tD: Dividir\n");
 
         do
         {
             printf("Opcion: ");
             opcion = getchar();
-            getchar();
+            fflush(stdin);
         } while (!CONCIDION_ARGUMENTO);
     }
 
     if ((argc > 1) && (strcmp(argv[1], "-help") == 0))
     {
-        printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Módulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n", argv[0]);
+        printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Modulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n", argv[0]);
         exit(0);
     }
 
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     if (i == 1)
     {
         vector_bignum[0] = str2bignum(argv[argc-1]);
-    } else if (i == 0) {
+    } else if (i == 2) {
         vector_bignum[0] = str2bignum(argv[argc-2]);
         vector_bignum[1] = str2bignum(argv[argc-1]);
     }
@@ -81,13 +81,14 @@ int main(int argc, char **argv)
         cadea_size = 0;
         free(cadea);
         cadea = NULL;
-
         do
         {
             cadea_size++;
             cadea = realloc(cadea, sizeof(*cadea) * cadea_size);
             cadea[cadea_size - 1] = getchar();
         } while (cadea[cadea_size - 1] != '\n');
+
+        cadea[cadea_size-1] = '\0';
 
         vector_bignum[i] = str2bignum(cadea);
 
