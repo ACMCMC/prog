@@ -75,7 +75,7 @@ comparacion comparar(bignum a, bignum b)
 char *bignum2str(bignum num)
 {
     char *str; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
-    int i;
+    unsigned int i;
 
     if (num.sign == negativo)
         (i = 1, num.tam++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
@@ -103,7 +103,7 @@ char *bignum2str(bignum num)
 bignum str2bignum(char *str)
 {
     bignum num;
-    int i;
+    unsigned int i;
 
     if (*str == '-')
     {
