@@ -1,5 +1,4 @@
-/* 
- * Guillermo Blanco Filgueira
+/* Autores : Guillermo Blanco Filgueira, Aldán Creo Mariño
  * 25 de noviembre de 2019
  */
 //!!!ALGÚNS NOMES DAS FUNCIÓNS FORON MODIFICADOS POR INTERFERIR CON NOMES DAS LIBREÍAS STANDARD
@@ -7,7 +6,12 @@
 #define GRANDESNUMEROS_H
 typedef struct
 {
-    enum {positivo,negativo,erro} sign;
+    enum
+    {
+        positivo,
+        negativo,
+        erro
+    } sign;
     unsigned int tam;
     char *val;
 } bignum;

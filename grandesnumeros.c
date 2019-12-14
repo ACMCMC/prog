@@ -1,6 +1,4 @@
-/* 
-* Guillermo Blanco Filgueira
-* Aldán Creo Mariño
+/*Autores : Guillermo Blanco Filgueira, Aldán Creo Mariño
 * 25 de noviembre de 2019
 */
 
@@ -78,11 +76,15 @@ char *bignum2str(bignum num)
     char *str = (char *)malloc(sizeof(char) * (num.tam + 1 + num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
     int i;
 
-    if (num.sign == negativo) (i = 1 , num.tam++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
-    else if (num.sign == positivo) i = 0; //Se o noso número é positivo, non facemos un shift
-    else return("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
+    if (num.sign == negativo)
+        (i = 1, num.tam++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
+    else if (num.sign == positivo)
+        i = 0; //Se o noso número é positivo, non facemos un shift
+    else
+        return ("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
 
-    while (i < num.tam) {
+    while (i < num.tam)
+    {
         str[i] = num.val[num.tam - 1 - i] + '0';
         i++;
     }
@@ -104,7 +106,7 @@ bignum str2bignum(char *str)
     if (*str == '-')
     {
         num.sign = negativo; //O valor 1 será signo negativo
-        str++;        //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
+        str++;               //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
     }
     else
         num.sign = positivo;
@@ -170,15 +172,15 @@ bignum add(bignum a, bignum b)
 
     if (a.sign == b.sign)
     {
-        result.sign = a.sign;    //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
+        result.sign = a.sign;           //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
         result.tam = bignum_maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
         result.val = (char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < bignum_menor->tam; i++)
         {
             result.val[i] = (a.val[i] + b.val[i] + acarreo); //A cifra actual que gardamos é a cifra en módulo 10. A suma facémola con a e b, porque non nos importa cal é o maior xa que a suma é conmutativa, e deste xeito nos aforramos o acceso a través dunha dereferenciación, polo cal somos máis eficientes [2]
-            acarreo = result.val[i] / 10;       //O acarreo é a división enteira por 10
-            result.val[i] = result.val[i] % 10; //En vez de facer directamente o módulo, para aforrarnos repetir os cálculos, empregamos result.val[i] como un almacén temporal do resultado da multiplicación para calcular o acarreo
+            acarreo = result.val[i] / 10;                    //O acarreo é a división enteira por 10
+            result.val[i] = result.val[i] % 10;              //En vez de facer directamente o módulo, para aforrarnos repetir os cálculos, empregamos result.val[i] como un almacén temporal do resultado da multiplicación para calcular o acarreo
         }
         while (i < bignum_maior->tam)
         { //Imos sumando o resto de dixitos, que se corresponden aos do maior
@@ -196,7 +198,7 @@ bignum add(bignum a, bignum b)
         }
     }
     else
-    {                    //Se os bignums son de signo oposto, haberá que facer unha resta
+    {                           //Se os bignums son de signo oposto, haberá que facer unha resta
         if (a.sign == negativo) //temos (-a) + (+b), e polo tanto facemos b - (+ a)
         {
             a.sign = positivo;
@@ -220,7 +222,7 @@ bignum resta(bignum a, bignum b)
     int i, acarreo = 0;
 
     //Hai que comprobar cal ten o maior tamaño. Tamén poderiamos invocar de novo a esta función cos bignums ao revés, para que a sempre sexa > b, pero sería menos eficiente.
-    if (comparar(a,b) == menor)
+    if (comparar(a, b) == menor)
     {
         bignum_maior = &b;
         bignum_menor = &a;
@@ -233,17 +235,20 @@ bignum resta(bignum a, bignum b)
 
     if (bignum_maior->sign == bignum_menor->sign)
     {
-        result.sign = a.sign;    //Se os signos do maior e o menor coinciden, facemos a resta dos módulos, e o signo é o mesmo
+        result.sign = a.sign;           //Se os signos do maior e o menor coinciden, facemos a resta dos módulos, e o signo é o mesmo
         result.tam = bignum_maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
         result.val = (char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < bignum_menor->tam; i++)
         {
             result.val[i] = (bignum_maior->val[i] - bignum_menor->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
-            if (result.val[i] < 0) {
+            if (result.val[i] < 0)
+            {
                 result.val[i] += 10;
                 acarreo = 1;
-            } else {
+            }
+            else
+            {
                 acarreo = 0;
             }
         }
@@ -251,25 +256,30 @@ bignum resta(bignum a, bignum b)
         { //Imos restándolle o acarreo ao resto de dixitos, que se corresponden aos do maior
             i++;
             result.val[i] = (bignum_maior->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
-            if (result.val[i] < 0) {
+            if (result.val[i] < 0)
+            {
                 result.val[i] += 10;
                 acarreo = 1;
-            } else {
+            }
+            else
+            {
                 acarreo = 0;
             }
         }
 
-        while (result.val[i] == 0) {
+        while (result.val[i] == 0)
+        {
             i--;
-        } 
-        
-        if ((i + 1) != result.tam) { //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
-        result.tam = i + 1;
-        result.val = (char *)realloc(result.val,sizeof(*result.val)*result.tam);
+        }
+
+        if ((i + 1) != result.tam)
+        { //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
+            result.tam = i + 1;
+            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
         }
     }
     else
-    {                    //Se son de signos distintos, haberá que facer unha suma
+    {                           //Se son de signos distintos, haberá que facer unha suma
         if (a.sign == negativo) //temos (-a) - (+b), e polo tanto facemos - (a + b)
         {
             a.sign = positivo;

@@ -1,4 +1,4 @@
-/* Autor : Guillermo Blanco Filgueira
+/* Autores : Guillermo Blanco Filgueira, Aldán Creo Mariño
  * Data : 18 de novembro de 2019
  * Este programa permite traballar con enteiros maiores que os permitidos polo ordenador
 */
