@@ -576,17 +576,31 @@ bignum modulo(bignum a, bignum n)
 
 bignum fact(bignum n)
 {
-    bignum result, one;
+    bignum resultado, auxiliar; //Poderiamos declarar dous bignums: un que sexa 0 e outro que sexa 1, pero podemos reemplazalos por un bignum que chamamos auxiliar, que valerá 0 ou 1 segundo o que necesitemos (así aforramos memoria)
 
-    one.sign = 0; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
-    one.val = (char *)malloc(sizeof(*one.val));
-    one.val[0] = 1;
-    one.tam = 1;
+    auxiliar.sign = 0; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
+    auxiliar.val = (char *)malloc(sizeof(*auxiliar.val));
+    auxiliar.val[0] = 0; //Imos empregar un 0 como auxiliar ó principio da función
+    auxiliar.tam = 1;
 
-    for (n; (n.tam > 1) || (n.val[0] != 1); n = resta(n, one))
-        result = mult(result, n);
+    if (comparar(n,auxiliar) != maior) {
+        if (comparar(n,auxiliar) == igual) { //Se estamos pedindo o factorial de 0, devolvemos 1
+            auxiliar.val[0] = 1;
+            return (auxiliar);
+        } else { //Devolvemos un bignum que vale 0 e establecemos errobignum a ERRO_FACTORIAL_NEGATIVO
+            errobignum = ERRO_FACTORIAL_NEGATIVO;
+            return (auxiliar);
+        }
+    }
 
-    return result;
+    auxiliar.val[0] = 1; //A partires de aquí, o noso bignum auxiliar será 1, para restarlle 1 ao noso termo da multiplicación
+
+    while ((n.tam > 1) || (n.val[0] != 1)) {
+        resultado = mult(resultado, n);
+        n = resta(n, auxiliar);
+    }
+
+    return resultado;
 }
 
 bignum multmod(bignum a, bignum b, bignum n)

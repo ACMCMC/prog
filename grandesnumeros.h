@@ -15,6 +15,7 @@ typedef struct
 extern int errobignum;
 
 #define ERRO_CARACTERES_NON_ADMITIDOS 1
+#define ERRO_FACTORIAL_NEGATIVO 2
 
 //Precondicións: pasarlle unha cadena de caracteres do 0-9 de calquera lonxitude non nula, con signo e sen parte decimal, cun \n ao final.
 bignum str2bignum(char *str);
