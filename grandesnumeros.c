@@ -73,7 +73,7 @@ comparacion comparar(bignum a, bignum b)
 
 char *bignum2str(bignum num)
 {
-    char *str = (char *)malloc(sizeof(char) * (num.tam + 1 + num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+    char *str; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
     int i;
 
     if (num.sign == negativo)
@@ -83,6 +83,7 @@ char *bignum2str(bignum num)
     else
         return ("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
 
+    str = (char *)malloc(sizeof(char) * (num.tam + 1));
     while (i < num.tam)
     {
         str[i] = num.val[num.tam - 1 - i] + '0';
@@ -92,7 +93,7 @@ char *bignum2str(bignum num)
     str[i] = '\0';
     if (num.sign == negativo)
     {
-        num.val[0] = '-';
+        str[0] = '-';
     }
 
     return str;
@@ -156,7 +157,7 @@ bignum str2bignum(char *str)
 bignum add(bignum a, bignum b)
 {
     bignum result, *bignum_maior, *bignum_menor;
-    int i, acarreo = 0;
+    unsigned char i, acarreo = 0;
 
     //Hai que comprobar cal ten o maior tamaño. Tamén poderiamos invocar de novo a esta función cos bignums ao revés, para que a sempre sexa > b, pero sería menos eficiente.
     if (a.tam >= b.tam)
@@ -184,10 +185,10 @@ bignum add(bignum a, bignum b)
         }
         while (i < bignum_maior->tam)
         { //Imos sumando o resto de dixitos, que se corresponden aos do maior
-            i++;
             result.val[i] = (bignum_maior->val[i] + acarreo);
             acarreo = result.val[i] / 10;
             result.val[i] = result.val[i] % 10;
+            i++;
         }
 
         if (acarreo) //Se temos un acarreo, precisamos aumentar nunha unidade o tamaño da suma e engadir ese acarreo
@@ -219,7 +220,7 @@ bignum resta(bignum a, bignum b)
     //A función de resta é moi similar á de suma
 
     bignum result, *bignum_maior, *bignum_menor;
-    int i, acarreo = 0;
+    unsigned char i, acarreo = 0;
 
     //Hai que comprobar cal ten o maior tamaño. Tamén poderiamos invocar de novo a esta función cos bignums ao revés, para que a sempre sexa > b, pero sería menos eficiente.
     if (comparar(a, b) == menor)
@@ -236,7 +237,7 @@ bignum resta(bignum a, bignum b)
     if (bignum_maior->sign == bignum_menor->sign)
     {
         result.sign = a.sign;           //Se os signos do maior e o menor coinciden, facemos a resta dos módulos, e o signo é o mesmo
-        result.tam = bignum_maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
+        result.tam = bignum_maior->tam; //A resta pode medir como máximo o tamaño do maior
         result.val = (char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < bignum_menor->tam; i++)
@@ -254,7 +255,6 @@ bignum resta(bignum a, bignum b)
         }
         while (i < bignum_maior->tam)
         { //Imos restándolle o acarreo ao resto de dixitos, que se corresponden aos do maior
-            i++;
             result.val[i] = (bignum_maior->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
             if (result.val[i] < 0)
             {
@@ -265,17 +265,18 @@ bignum resta(bignum a, bignum b)
             {
                 acarreo = 0;
             }
+            i++;
         }
 
-        while (result.val[i] == 0)
+        while (result.val[i-1] == 0)
         {
             i--;
         }
 
-        if ((i + 1) != result.tam)
+        if ((i) != result.tam)
         { //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
-            result.tam = i + 1;
-            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
+            result.tam = i;
+            result.val = (char *) realloc(result.val, sizeof(*result.val) * result.tam);
         }
     }
     else
@@ -286,10 +287,10 @@ bignum resta(bignum a, bignum b)
             result = add(b, a);
             result.sign = negativo;
         }
-        else //temos (+a) + (-b), por iso facemos a - b
+        else //temos (+a) - (-b), por iso facemos a + b
         {
             b.sign = positivo;
-            result = resta(a, b);
+            result = add(a, b);
         }
     }
 
