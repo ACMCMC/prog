@@ -97,8 +97,22 @@ int main(int argc, char **argv)
         i++;
     }
 
-    printf("O primeiro numero e: %s\n", bignum2str(vector_bignum[0]));
-    printf("O segundo numero e: %s\n", bignum2str(vector_bignum[1]));
+    switch (opcion)
+    {
+    case 'S':
+    case 's':
+        printf("A suma vale %s\n",bignum2str(add(vector_bignum[0],vector_bignum[1])));
+        break;
+
+    case 'R':
+    case 'r':
+        printf("A resta vale %s\n",bignum2str(resta(vector_bignum[0],vector_bignum[1])));
+        break;
+    
+    default: //Este caso nunca se vai dar, porque xa nos aseguramos previamente de que a opción elixida é correcta
+        exit(1);
+        break;
+    }
 
     /*char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;
