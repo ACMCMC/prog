@@ -34,7 +34,7 @@ comparacion comparar(bignum a, bignum b)
 {
     if (a.sign != b.sign) //Se o signo é distinto...
     {
-        if (a.sign == 0)
+        if (a.sign == positivo)
         {
             return maior; //Sendo a positivo, a > b
         }
@@ -83,7 +83,7 @@ char *bignum2str(bignum num)
     else return("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
 
     while (i < num.tam) {
-        str[i] = num.val[num.tam - 1 - i + num.sign] + '0';
+        str[i] = num.val[num.tam - 1 - i] + '0';
         i++;
     }
 
@@ -270,7 +270,7 @@ bignum resta(bignum a, bignum b)
     }
     else
     {                    //Se son de signos distintos, haberá que facer unha suma
-        if (a.sign == 1) //temos (-a) - (+b), e polo tanto facemos - (a + b)
+        if (a.sign == negativo) //temos (-a) - (+b), e polo tanto facemos - (a + b)
         {
             a.sign = positivo;
             result = add(b, a);
@@ -278,7 +278,7 @@ bignum resta(bignum a, bignum b)
         }
         else //temos (+a) + (-b), por iso facemos a - b
         {
-            b.sign = 0;
+            b.sign = positivo;
             result = resta(a, b);
         }
     }
@@ -427,9 +427,9 @@ bignum mult(bignum a, bignum b)
         result.val[holder.tam + i] = acarreo;
     }
     if (a.sign == b.sign)
-        result.sign = 0;
+        result.sign = positivo;
     else
-        result.sign = 1;
+        result.sign = negativo;
     //LIMPAMOS POSIBLES CEROS Á ESQUERDA
     max = result.tam - 1;
     for (int i = max; i > 0; i--)
