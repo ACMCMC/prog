@@ -19,6 +19,44 @@ REFERENCIAS
 
 int errobignum;
 
+typedef enum {maior = 1, igual = 0, menor = -1} igualdade;
+
+igualdade comparar(bignum a, bignum b)
+{
+    if (a.sign != b.sign) //Se o signo é distinto...
+    {
+        if (a.sign == 0)
+        {
+            return maior; //Sendo a positivo, a > b
+        }
+        else
+        {
+            return menor; //Sendo a negativo, a < b
+        }
+    }
+    else if (a.tam > b.tam) //Se a ten máis cifras que b, a é maior que b
+    {
+        return maior;
+    }
+    else if (b.tam > a.tam) //Se b ten máis cifras que a, a é menor que b
+    {
+        return menor;
+    }
+    else {
+        while (a.tam>0) {//Para ser máis eficientes en uso de memoria, imos empregar a.tam como unha variable contador: percorreremos o vector dos díxitos ata atopar un que sexa distinto, decrecendo a.tam (que actúa como contador)
+            if (a.val[a.tam-1] == b.val[a.tam-1]) { //a primeira condición que comprobamos, tratando de ser máis eficientes, é se as dúas cifras son iguais
+                a.tam--;//Decrecemos a nosa variable contador
+            } else if (a.val[a.tam-1] > b.val[a.tam-1]) {
+                return(maior);
+            } else { //b é maior que a
+                return (menor);
+            }
+        }
+
+        return igual; //se comprobamos tódalas cifras, iso é porque coinciden, e os bignums son iguais
+    }
+}
+
 char *bignum2str(bignum num)
 {
     char *str = (char *)malloc(sizeof(char) * (num.tam + 1 + num.sign)); //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
