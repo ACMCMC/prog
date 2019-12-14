@@ -8,7 +8,7 @@
 #include <string.h>
 #include "grandesnumeros.h"
 
-#define CONCIDION_ARGUMENTO ((opcion == 'S') || (opcion == 'R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D'))
+#define CONCIDION_ARGUMENTO ((opcion == 'S') || (opcion == 'R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D') || (opcion == 's') || (opcion == 'r') || (opcion == 'p') || (opcion == 'm') || (opcion == 'f') || (opcion == 'd'))
 
 int main(int argc, char **argv)
 {
@@ -30,19 +30,19 @@ int main(int argc, char **argv)
         {
             printf("Opcion: ");
             opcion = getchar();
-            fflush(stdin);
-        } while (!CONCIDION_ARGUMENTO);
+            fflush(stdin); //Ignoramos o resto de caracteres introducidos, incluído o '\n'
+        } while (!CONCIDION_ARGUMENTO); //Seguimos neste bucle mentres non se introduza unha opción correcta
     }
 
-    if ((argc > 1) && (strcmp(argv[1], "-help") == 0))
+    if ((argc > 1) && (strcmp(argv[1], "-help") == 0)) //Se o primeiro argumento especificado é "-help", mostramos a axuda
     {
         printf("Uso do programa.\n\nEscriba:\n\t%s [opcion] [numero 1] [numero 2]\n\n\tpara usar o programa.\n\nOpcions admitidas:\n\tS: Suma\n\tR: Resta\n\tP: Producto\n\tM: Modulo\n\tF: Factorial\n\tD: Dividir\n\nSe non se especifican os numeros, pediranse en tempo de execucion.\n\nEmpregue a opcion \"-help\" para amosar este menu de axuda.\n", argv[0]);
-        exit(0);
+        exit(0); //Saímos con código de éxito
     }
 
     if ((argc > 1) && (argv[1][0] == '-'))
     { //Se se especificou unha opcion
-        if ((strlen(argv[1]) == 2) && ((argv[1][1] == 'S') || (argv[1][1] == 'R') || (argv[1][1] == 'P') || (argv[1][1] == 'M') || (argv[1][1] == 'F') || (argv[1][1] == 'D')))
+        if ((strlen(argv[1]) == 2) && ((argv[1][1] == 'S') || (argv[1][1] == 'R') || (argv[1][1] == 'P') || (argv[1][1] == 'M') || (argv[1][1] == 'F') || (argv[1][1] == 'D') || (argv[1][1] == 's') || (argv[1][1] == 'r') || (argv[1][1] == 'p') || (argv[1][1] == 'm') || (argv[1][1] == 'f') || (argv[1][1] == 'd')))
         {                        //... e se a nosa opcion e correcta...
             opcion = argv[1][1]; //Gardamola como a opcion elixida
         }
