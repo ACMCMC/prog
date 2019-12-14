@@ -7,7 +7,7 @@
 #define GRANDESNUMEROS_H
 typedef struct
 {
-    char sign; //Sign = 0 para positivos, 1 para negativos
+    enum {positivo,negativo,erro} sign;
     unsigned int tam;
     char *val;
 } bignum;
