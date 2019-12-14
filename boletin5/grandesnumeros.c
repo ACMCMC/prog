@@ -1,5 +1,4 @@
-/*Autores : Guillermo Blanco Filgueira, Aldán Creo Mariño
-* 25 de noviembre de 2019
+/*Aldán Creo Mariño
 */
 
 /*

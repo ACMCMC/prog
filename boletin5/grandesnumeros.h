@@ -1,5 +1,4 @@
-/* Autores : Guillermo Blanco Filgueira, Aldán Creo Mariño
- * 25 de noviembre de 2019
+/* Aldán Creo Mariño
  */
 //!!!ALGÚNS NOMES DAS FUNCIÓNS FORON MODIFICADOS POR INTERFERIR CON NOMES DAS LIBRARÍAS STANDARD
 #ifndef GRANDESNUMEROS_H

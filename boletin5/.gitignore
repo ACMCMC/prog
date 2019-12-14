@@ -1,9 +1,0 @@
-﻿################################################################################
-# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs
-/Boletin5/.vs/Boletin5/v16
-/Boletin5/Debug
-/Boletin5/x64/Debug
-/Boletin5
