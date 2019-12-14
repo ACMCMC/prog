@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "grandesnumeros.h"
+#include "lib_bignum.h"
 
 #define CONCIDION_ARGUMENTO ((opcion == 'S') || (opcion == 'R') || (opcion == 'P') || (opcion == 'M') || (opcion == 'F') || (opcion == 'D') || (opcion == 's') || (opcion == 'r') || (opcion == 'p') || (opcion == 'm') || (opcion == 'f') || (opcion == 'd'))
 
@@ -30,7 +30,8 @@ int main(int argc, char **argv)
             printf("Opcion: ");
             opcion = getchar();
             //Ignoramos o resto de caracteres introducidos, incluído o '\n'. Sería máis compacto usar fflush(stdin), pero trátase dun comportamento indefinido [4].
-            while ((getchar()) != '\n');
+            while ((getchar()) != '\n')
+                ;
         } while (!CONCIDION_ARGUMENTO); //Seguimos neste bucle mentres non se introduza unha opción correcta
     }
 
@@ -66,8 +67,9 @@ int main(int argc, char **argv)
         i = argc - 1;
     }
 
-    if (opcion == 'D' || opcion == 'd') { //Se pedimos a multiplicación módulo n, imos pedir antes que nada o módulo
-        vector_bignum = (bignum*)realloc(vector_bignum, sizeof(bignum) * 3);
+    if (opcion == 'D' || opcion == 'd')
+    { //Se pedimos a multiplicación módulo n, imos pedir antes que nada o módulo
+        vector_bignum = (bignum *)realloc(vector_bignum, sizeof(bignum) * 3);
         printf("Introduza o valor do modulo n: ");
 
         cadea_size = 0;
@@ -75,7 +77,7 @@ int main(int argc, char **argv)
         do
         {
             cadea_size++;
-            cadea = (char*)realloc(cadea, sizeof(*cadea) * cadea_size);
+            cadea = (char *)realloc(cadea, sizeof(*cadea) * cadea_size);
             cadea[cadea_size - 1] = getchar();
         } while (cadea[cadea_size - 1] != '\n');
 
@@ -104,7 +106,7 @@ int main(int argc, char **argv)
         do
         {
             cadea_size++;
-            cadea = (char *) realloc(cadea, sizeof(*cadea) * cadea_size);
+            cadea = (char *)realloc(cadea, sizeof(*cadea) * cadea_size);
             cadea[cadea_size - 1] = getchar();
         } while (cadea[cadea_size - 1] != '\n');
 
@@ -119,16 +121,16 @@ int main(int argc, char **argv)
     {
     case 'S':
     case 's':
-        resultado = add(vector_bignum[0],vector_bignum[1]);
+        resultado = add(vector_bignum[0], vector_bignum[1]);
         break;
 
     case 'R':
     case 'r':
-        resultado = resta(vector_bignum[0],vector_bignum[1]);
+        resultado = resta(vector_bignum[0], vector_bignum[1]);
         break;
     case 'P':
     case 'p':
-        resultado = mult(vector_bignum[0],vector_bignum[1]);
+        resultado = mult(vector_bignum[0], vector_bignum[1]);
         break;
     case 'M':
     case 'm':
@@ -141,14 +143,16 @@ int main(int argc, char **argv)
     case 'D':
     case 'd':
         resultado = multmod(vector_bignum[0], vector_bignum[1], vector_bignum[2]);
-    
+
     default: //Este caso nunca se vai dar, porque xa nos aseguramos previamente de que a opción elixida é correcta
         exit(1);
         break;
     }
-    
-    if (errobignum == ERRO_FALSE) printf("O resultado e: %s, lonxitude %u\n",bignum2str(resultado),resultado.tam);
-    else printf("Produciuse un erro. Codigo de erro %p.\n", errobignum);
+
+    if (errobignum == ERRO_FALSE)
+        printf("O resultado e: %s, lonxitude %u\n", bignum2str(resultado), resultado.tam);
+    else
+        printf("Produciuse un erro. Codigo de erro %p.\n", errobignum);
 
     /*char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;

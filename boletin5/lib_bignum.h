@@ -1,8 +1,8 @@
 /* Aldán Creo Mariño
  */
 //!!!ALGÚNS NOMES DAS FUNCIÓNS FORON MODIFICADOS POR INTERFERIR CON NOMES DAS LIBRARÍAS STANDARD
-#ifndef GRANDESNUMEROS_H
-#define GRANDESNUMEROS_H
+#ifndef LIB_BIGNUM_H
+#define LIB_BIGNUM_H
 typedef struct
 {
     enum

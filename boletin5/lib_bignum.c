@@ -18,7 +18,7 @@ REFERENCIAS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "grandesnumeros.h"
+#include "lib_bignum.h"
 
 typedef enum
 {
@@ -255,7 +255,7 @@ bignum resta(bignum a, bignum b)
             }
         }
         while (i < bignum_maior->tam)
-        { //Imos restándolle o acarreo ao resto de dixitos, que se corresponden aos do maior
+        {                                                     //Imos restándolle o acarreo ao resto de dixitos, que se corresponden aos do maior
             result.val[i] = (bignum_maior->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
             if (result.val[i] < 0)
             {
@@ -269,7 +269,7 @@ bignum resta(bignum a, bignum b)
             i++;
         }
 
-        while ((result.val[i-1] == 0) && (i > 1))
+        while ((result.val[i - 1] == 0) && (i > 1))
         {
             i--;
         }
@@ -277,7 +277,7 @@ bignum resta(bignum a, bignum b)
         if ((i) != result.tam)
         { //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
             result.tam = i;
-            result.val = (char *) realloc(result.val, sizeof(*result.val) * result.tam);
+            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
         }
     }
     else
@@ -600,7 +600,7 @@ bignum fact(bignum n)
     resultado = n;
 
     while ((n.tam > 1) || (n.val[0] > 2))
-        (n = resta(n, auxiliar) , resultado = mult(resultado, n)); //Empregamos a coma como o operador de evaluación secuencial
+        (n = resta(n, auxiliar), resultado = mult(resultado, n)); //Empregamos a coma como o operador de evaluación secuencial
 
     return resultado;
 }
