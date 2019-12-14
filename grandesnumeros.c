@@ -19,9 +19,14 @@ REFERENCIAS
 
 int errobignum;
 
-typedef enum {maior = 1, igual = 0, menor = -1} igualdade;
+typedef enum
+{
+    maior = 1,
+    igual = 0,
+    menor = -1
+} comparacion; //Empregamos esta enumeración para evaluar comparacións de bignums
 
-igualdade comparar(bignum a, bignum b)
+comparacion comparar(bignum a, bignum b)
 {
     if (a.sign != b.sign) //Se o signo é distinto...
     {
@@ -42,13 +47,20 @@ igualdade comparar(bignum a, bignum b)
     {
         return menor;
     }
-    else {
-        while (a.tam>0) {//Para ser máis eficientes en uso de memoria, imos empregar a.tam como unha variable contador: percorreremos o vector dos díxitos ata atopar un que sexa distinto, decrecendo a.tam (que actúa como contador)
-            if (a.val[a.tam-1] == b.val[a.tam-1]) { //a primeira condición que comprobamos, tratando de ser máis eficientes, é se as dúas cifras son iguais
-                a.tam--;//Decrecemos a nosa variable contador
-            } else if (a.val[a.tam-1] > b.val[a.tam-1]) {
-                return(maior);
-            } else { //b é maior que a
+    else
+    {
+        while (a.tam > 0)
+        { //Para ser máis eficientes en uso de memoria, imos empregar a.tam como unha variable contador: percorreremos o vector dos díxitos ata atopar un que sexa distinto, decrecendo a.tam (que actúa como contador)
+            if (a.val[a.tam - 1] == b.val[a.tam - 1])
+            {            //a primeira condición que comprobamos, tratando de ser máis eficientes, é se as dúas cifras son iguais
+                a.tam--; //Decrecemos a nosa variable contador
+            }
+            else if (a.val[a.tam - 1] > b.val[a.tam - 1])
+            {
+                return (maior);
+            }
+            else
+            { //b é maior que a
                 return (menor);
             }
         }
@@ -148,25 +160,27 @@ bignum add(bignum a, bignum b)
     int acarreo = 0;
     if (a.sign == b.sign)
     {
-        result.sign = a.sign;        //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
+        result.sign = a.sign;    //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
         result.tam = maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
-        result.val = (char *) malloc(sizeof(*result.val) * result.tam);
+        result.val = (char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < menor->tam; i++)
         {
             result.val[i] = (a.val[i] + b.val[i] + acarreo) % 10; //A cifra actual que gardamos é a cifra en módulo 10
-            acarreo = (a.val[i] + b.val[i] + acarreo) / 10; //O acarreo é a división enteira por 10
+            acarreo = (a.val[i] + b.val[i] + acarreo) / 10;       //O acarreo é a división enteira por 10
         }
-        while (i < maior->tam) { //Imos sumando o resto de dixitos, que se corresponden aos do maior
+        while (i < maior->tam)
+        { //Imos sumando o resto de dixitos, que se corresponden aos do maior
             result.val[i] = (maior->val[i] + acarreo) % 10;
             acarreo = (maior->val[i] + acarreo) / 10;
             i++;
         }
 
-        if (acarreo) {
+        if (acarreo)
+        {
             result.tam++;
-        result.val = (char *) realloc(result.val, sizeof(*result.val) * result.tam);
-        result.val[result.tam - 1] = acarreo;
+            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
+            result.val[result.tam - 1] = acarreo;
         }
     }
     else
@@ -182,7 +196,7 @@ bignum add(bignum a, bignum b)
             result = resta(a, b);
         }
     }
-    
+
     return result;
 }
 
@@ -565,12 +579,12 @@ bignum fact(bignum n)
     bignum result, one;
 
     one.sign = 0; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
-    one.val = (char *) malloc(sizeof(*one.val));
+    one.val = (char *)malloc(sizeof(*one.val));
     one.val[0] = 1;
     one.tam = 1;
 
-    for (n;(n.tam > 1) || (n.val[0] != 1);n = resta(n,one))
-    result = mult(result,n);
+    for (n; (n.tam > 1) || (n.val[0] != 1); n = resta(n, one))
+        result = mult(result, n);
 
     return result;
 }
