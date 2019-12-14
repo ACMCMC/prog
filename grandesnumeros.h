@@ -7,7 +7,7 @@
 #define GRANDESNUMEROS_H
 typedef struct
 {
-    char sign; //Sign = 0 para positivos, 1 para negativos 
+    char sign; //Sign = 0 para positivos, 1 para negativos
     unsigned int tam;
     char *val;
 } bignum;
@@ -24,7 +24,7 @@ bignum str2bignum(char *str);
 //Poscondicións: {((∃x : x == 0 : str[x] == '-' : bignum.tam == N-2) OR (∃x : x == 0 : str[x] != '-' : bignum.tam == N-1)) AND ((∀x : 0 <= x AND x < bignum.tam : str[x] - '0' == bignum.val[x]) OR ((∃x : x == 0 : str[x] == '-') AND (∀x : 0 < x AND x <= bignum.tam : str[x] - '0' == bignum.val[x-1])))}
 
 //TODO: Engadir descricion da funcion
-char * bignum2str(bignum num);
+char *bignum2str(bignum num);
 
 //Precondicións: dous bignums de calquer signo e tamaño.
 bignum add(bignum a, bignum b);

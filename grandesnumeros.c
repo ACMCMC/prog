@@ -129,10 +129,10 @@ bignum str2bignum(char *str)
         if ((str[num.tam - i - 1] < '0') || (str[num.tam - i - 1] > '9'))
         { //Se o caracter que estamos a ler non e un numero, devolvemos un bignum de erro e establecemos a nosa variable global de erro
             errobignum = ERRO_CARACTERES_NON_ADMITIDOS;
-    num.tam = 0;
-    num.sign = -1;
-    num.val = NULL;
-            return(num);
+            num.tam = 0;
+            num.sign = -1;
+            num.val = NULL;
+            return (num);
         }
         else
         {
@@ -586,11 +586,15 @@ bignum fact(bignum n)
     auxiliar.val[0] = 0; //Imos empregar un 0 como auxiliar ó principio da función
     auxiliar.tam = 1;
 
-    if (comparar(n,auxiliar) != maior) {
-        if (comparar(n,auxiliar) == igual) { //Se estamos pedindo o factorial de 0, devolvemos 1
+    if (comparar(n, auxiliar) != maior)
+    {
+        if (comparar(n, auxiliar) == igual)
+        { //Se estamos pedindo o factorial de 0, devolvemos 1
             auxiliar.val[0] = 1;
             return (auxiliar);
-        } else { //Devolvemos un bignum que vale 0 e establecemos errobignum a ERRO_FACTORIAL_NEGATIVO
+        }
+        else
+        { //Devolvemos un bignum que vale 0 e establecemos errobignum a ERRO_FACTORIAL_NEGATIVO
             errobignum = ERRO_FACTORIAL_NEGATIVO;
             return (auxiliar);
         }
@@ -599,7 +603,7 @@ bignum fact(bignum n)
     auxiliar.val[0] = 1; //A partir de aquí, o noso bignum auxiliar será 1, para restarlle 1 ao noso termo da multiplicación
 
     while ((n.tam > 1) || (n.val[0] != 1))
-        (resultado = mult(resultado, n) , n = resta(n, auxiliar)); //Empregamos a coma como o operador de evaluación secuencial
+        (resultado = mult(resultado, n), n = resta(n, auxiliar)); //Empregamos a coma como o operador de evaluación secuencial
 
     return resultado;
 }

@@ -68,10 +68,12 @@ int main(int argc, char **argv)
 
     if (i == 1)
     {
-        vector_bignum[0] = str2bignum(argv[argc-1]);
-    } else if (i == 2) {
-        vector_bignum[0] = str2bignum(argv[argc-2]);
-        vector_bignum[1] = str2bignum(argv[argc-1]);
+        vector_bignum[0] = str2bignum(argv[argc - 1]);
+    }
+    else if (i == 2)
+    {
+        vector_bignum[0] = str2bignum(argv[argc - 2]);
+        vector_bignum[1] = str2bignum(argv[argc - 1]);
     }
 
     while (i < 2)
@@ -88,15 +90,15 @@ int main(int argc, char **argv)
             cadea[cadea_size - 1] = getchar();
         } while (cadea[cadea_size - 1] != '\n');
 
-        cadea[cadea_size-1] = '\0';
+        cadea[cadea_size - 1] = '\0';
 
         vector_bignum[i] = str2bignum(cadea);
 
         i++;
     }
 
-printf("O primeiro numero e: %s\n",bignum2str(vector_bignum[0]));
-printf("O segundo numero e: %s\n",bignum2str(vector_bignum[1]));
+    printf("O primeiro numero e: %s\n", bignum2str(vector_bignum[0]));
+    printf("O segundo numero e: %s\n", bignum2str(vector_bignum[1]));
 
     /*char operacion, letra, *valor1, *valor2, *valor3, *out;
     int lonx, limpar = 1;
