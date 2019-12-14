@@ -301,8 +301,8 @@ bignum resta(bignum a, bignum b)
 bignum mult(bignum a, bignum b)
 {
     bignum resultado, termo_suma;
-    int i, j;
-    unsigned char acarreo = 0;
+    unsigned int i, j;
+    char acarreo = 0;
 
     if (a.tam < b.tam)
         return (mult(b, a));
@@ -317,23 +317,26 @@ bignum mult(bignum a, bignum b)
 
     for (i = 0; i < b.tam; i++)
     {
+      printf("%d,%d\n", i, b.tam);
         free(termo_suma.val);
-        termo_suma.val = (unsigned char *)malloc(sizeof(*termo_suma.val) * (a.tam + i));
-        for (j = 0; j < i; i++)
+        termo_suma.val = (char *)malloc(sizeof(*termo_suma.val) * (a.tam + i));
+        for (j = 0; j < i; j++)
         { //Poderiamos tamen usar un calloc
             termo_suma.val[j] = 0;
         }
         while (j < i + a.tam)
         {
+          printf("\t%d,%d\n", j, i+a.tam);
             termo_suma.val[j] = b.val[i] * a.val[j - i] + acarreo;
             acarreo = termo_suma.val[j] / 10;
             termo_suma.val[j] = termo_suma.val[j] % 10;
+            printf("\t%d -- %d\n", acarreo, termo_suma.val[j]);
             j++;
         }
         if (acarreo)
         {
             termo_suma.tam = i + a.tam + 1;
-            termo_suma.val = (unsigned char *)realloc(termo_suma.val, sizeof(*termo_suma.val) * (termo_suma.tam));
+            termo_suma.val = (char *)realloc(termo_suma.val, sizeof(*termo_suma.val) * (termo_suma.tam));
             termo_suma.val[termo_suma.tam - 1] = acarreo;
             acarreo = 0;
         }
