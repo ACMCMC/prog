@@ -524,44 +524,16 @@ bignum modulo(bignum a, bignum n)
 
 bignum fact(bignum n)
 {
-    bignum result, counter, one;
-    int *borrar;
-    one.sign = 0;
-    one.tam = 1;
-    one.val = (int *)malloc(sizeof(int));
+    bignum result, one;
+
+    one.sign = 0; //Creamos un bignum que vale 1, para ir restándollo ó noso termo da multiplicación
+    one.val = (char *) malloc(sizeof(*one.val));
     one.val[0] = 1;
-    if (n.sign == 1)
-    {
-        exit(EXIT_FAILURE); //O factorial non está definido para números negativos
-    }
-    if (n.tam == 1 && n.val[0] == 0)
-    {
-        return one;
-    }
-    result.sign = 0;
-    result.tam = n.tam;
-    result.val = (int *)malloc(sizeof(int) * result.tam);
-    for (int i = 0; i < n.tam; i++)
-        result.val[i] = n.val[i];
-    counter.sign = 0;
-    counter.tam = n.tam;
-    counter.val = (int *)malloc(sizeof(int) * counter.tam);
-    for (int i = 0; i < n.tam; i++)
-        counter.val[i] = n.val[i];
-    borrar = counter.val;
-    counter = resta(counter, one);
-    free(borrar);
-    while (counter.tam > 1 || counter.val[0] != 0)
-    {
-        borrar = result.val;
-        result = mult(result, counter);
-        free(borrar);
-        borrar = counter.val;
-        counter = resta(counter, one);
-        free(borrar);
-    }
-    free(counter.val);
-    free(one.val);
+    one.tam = 1;
+
+    for (n;(n.tam > 1) || (n.val[0] != 1);n = resta(n,one))
+    result = mult(result,n);
+
     return result;
 }
 
