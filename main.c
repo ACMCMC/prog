@@ -113,8 +113,8 @@ int main(int argc, char **argv)
         exit(1);
         break;
     }
-
-    if (errobignum == ERRO_FALSE) printf("O resultado e: %s, lonxitude %d\n",bignum2str(resultado),resultado.tam);
+    
+    if (errobignum == ERRO_FALSE) printf("O resultado e: %s, lonxitude %u\n",bignum2str(resultado),resultado.tam);
     else printf("Produciuse un erro. Codigo de erro %p.\n", errobignum);
 
     /*char operacion, letra, *valor1, *valor2, *valor3, *out;

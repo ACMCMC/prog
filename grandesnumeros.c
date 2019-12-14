@@ -19,14 +19,14 @@ REFERENCIAS
 #include <string.h>
 #include "grandesnumeros.h"
 
-int errobignum;
-
 typedef enum
 {
     maior = 1,
     igual = 0,
     menor = -1
 } comparacion; //Empregamos esta enumeración para evaluar comparacións de bignums
+
+errobignum = ERRO_FALSE;
 
 comparacion comparar(bignum a, bignum b)
 {
@@ -217,7 +217,6 @@ bignum add(bignum a, bignum b)
 
 bignum resta(bignum a, bignum b)
 {
-    printf("entramos aqui\n");
     //A función de resta é moi similar á de suma
 
     bignum result, *bignum_maior, *bignum_menor;
