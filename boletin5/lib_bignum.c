@@ -95,6 +95,7 @@ char *bignum2str(bignum num)
         num_act = num_act / 10;
     }
 
+
     //Temos que ir multiplicando cada elemento do vector do bignum por esta base, e ir sumando os termos sucesivos
     /*
                         2       4
@@ -145,6 +146,7 @@ char *bignum2str(bignum num)
             termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
             for (j = 0; j < i; j++)
             {
+printf("isto vai\n");
                 termo_suma_mult_temp[j] = 0;
             }
             while (j < tam_multip)
@@ -158,7 +160,7 @@ char *bignum2str(bignum num)
                 }
                 while (j < tam_multip)
                 {
-                    termo_suma_mult_temp =
+                    termo_suma_mult_temp[j] =
                         termo_suma_mult[j - i] * base_256[i] + carry;
                     if (termo_suma_mult_temp[j] > 9)
                     {
@@ -233,7 +235,7 @@ bignum str2bignum(char *str)
     bignum num;
     num.tam = 0;                                                                     //En principio, non ten tamaño
     num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
-    unsigned char *dividendo = NULL, cociente_size = strlen(str), newsize, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
+    unsigned char *dividendo = NULL, dividendo_size = strlen(str), newsize = dividendo_size, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
     int i = 0, n = 0;                                                                //Estas son variables de control
 
     if (strlen(str) < 1) //Se o numero non mide o suficiente, saimos con codigo de estado 1
@@ -251,21 +253,21 @@ bignum str2bignum(char *str)
         num.sign = positivo;
     }
 
-    dividendo = (unsigned char *)malloc(sizeof(unsigned char) * cociente_size); //Aloxamos o tamaño preciso para gardar o dividendo
+    dividendo = (unsigned char *)malloc(sizeof(unsigned char) * dividendo_size); //Aloxamos o tamaño preciso para gardar o dividendo
 
-    for (i = 0; i < cociente_size; i++) //Convertemos a cadea de caracteres a unha cadea de chars con valor numerico
+    for (i = 0; i < dividendo_size; i++) //Convertemos a cadea de caracteres a unha cadea de chars con valor numerico
     {
         dividendo[i] = str[i] - '0';
     }
 
-    while ((cociente_size > 3) || ((cociente_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
+    while ((dividendo_size > 3) || ((dividendo_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
     {
 
         newsize = 0; //O novo tamaño do dividendo en principio e cero, e imolo ir aumentando segundo engadimos cifras
         i = 1;
         conv = dividendo[0]; //Engadimos a primeira cifra do dividendo
 
-        while (i < cociente_size)
+        while (i < dividendo_size)
         {
             conv = conv * 10 + dividendo[i];
             if ((newsize != 0) || ((conv / BASE_BIGNUM) != 0))
@@ -276,7 +278,7 @@ bignum str2bignum(char *str)
             }
             i++;
         }
-        cociente_size = newsize;
+        dividendo_size = newsize;
         /*dividendo = (unsigned char *)realloc(dividendo, sizeof(unsigned char) * cociente_size); //Este realloc permitirianos aforrar memoria, pero implica realizar multiples reallocs que influen negativamente no rendemento do programa. E mellor liberar o vector ao final.*/
         num.tam++;                                                                    //Incrementamos o tamaño do numero
         num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar a nova cifra en base 256
