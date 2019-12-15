@@ -1,0 +1,9 @@
+name: Generar librería de bol5
+on: push
+
+jobs:
+  build:
+    name: Generar librería
+    runs-on: ubuntu-latest
+    steps:
+      -uses: ./github/acciones_build
