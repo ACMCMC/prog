@@ -98,29 +98,6 @@ char* bignum2str(bignum num)
 
 
 	//Temos que ir multiplicando cada elemento do vector do bignum por esta base, e ir sumando os termos sucesivos
-	/*
-						2       4
-			  x 2       5       6
-		   --------------------------
-								(2)4
-						(1)2+#
-				#
-				1       4       4
-
-								(2)0
-						(1)0+#
-				#
-		1       2       0       0
-	  -------------------------------
-		1       3       4       4
-
-								8
-						4
--------------------------------------
-		4       8       0       0
--------------------------------------
-		6       1       4       4
-*/
 
 	for ((lonx_mult = 0, temp = num.val[num.tam - 1]); temp > 0; lonx_mult++)
 	{
@@ -132,7 +109,6 @@ char* bignum2str(bignum num)
 
 	while (num.tam > 1)
 	{
-for(int k = (printf("\n\n\n\nMULTIPLICACION SUMADA:\n") , 0); k < lonx_mult; k++)(printf("Valor %d: %d\t",k, mult[k]));
 		num.tam--;
 
 		//Converimos o elemento i-esimo do vector a un vector en b10
@@ -204,8 +180,6 @@ for(int k = (printf("\n\n\n\nMULTIPLICACION SUMADA:\n") , 0); k < lonx_mult; k++
 		lonx_mult = lonx_mult_term;
 
 		//Facemos a suma de mult_term con num_act
-
-		for (int k = (printf("\n\nMULTIPLICACION SIN SUMAR:\n"), 0); k < lonx_mult; k++)(printf("Valor %d: %d\t", k, mult[k]));
 
 		carry = 0;
 
