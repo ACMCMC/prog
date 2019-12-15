@@ -6,4 +6,5 @@ jobs:
     name: Generar librería
     runs-on: ubuntu-latest
     steps:
-      -uses: ./github/acciones_build
+      - uses: actions/checkout@v1
+      - uses: ./github/acciones_build
