@@ -1,4 +1,4 @@
-![](https://github.com/ACMCMC/prog/workflows/build_libs/badge.svg)
+![](https://github.com/ACMCMC/prog/workflows/build.yml/badge.svg)
 # prog
 ## Ejercicios de Programación I y II de Ingeniería Informática de la USC
 
