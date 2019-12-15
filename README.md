@@ -1,4 +1,4 @@
-![](https://github.com/ACMCMC/prog/workflows/Compilar/badge.svg)
+![](https://github.com/ACMCMC/prog/workflows/Compilar/badge.svg?branch=master)
 # prog
 ## Ejercicios de Programación I y II de Ingeniería Informática de la USC
 
