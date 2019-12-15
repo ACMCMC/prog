@@ -261,7 +261,7 @@ bignum str2bignum(char *str)
     num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
     unsigned char *dividendo = NULL, dividendo_size = strlen(str), newsize = dividendo_size, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
     int i = 0, n = 0;                                                                //Estas son variables de control
-
+printf("isto vai\n");
     if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
     {
         num.sign = negativo;
@@ -277,7 +277,7 @@ bignum str2bignum(char *str)
         exit(EXIT_FAILURE);
     }
 
-    dividendo = (unsigned char *)malloc(sizeof(unsigned char) * dividendo_size); //Aloxamos o tamaño preciso para gardar o dividendo
+    dividendo = (unsigned char *)malloc(sizeof(*dividendo) * dividendo_size); //Aloxamos o tamaño preciso para gardar o dividendo
 
     for (i = 0; i < dividendo_size; i++) //Convertemos a cadea de caracteres a unha cadea de chars con valor numerico
     {
@@ -302,15 +302,17 @@ bignum str2bignum(char *str)
             }
             i++;
         }
+    for (i = 0; i < dividendo_size; i++) printf("dividendo[%d]: %d\n",i,dividendo[i]);
         dividendo_size = newsize;
         /*dividendo = (unsigned char *)realloc(dividendo, sizeof(unsigned char) * cociente_size); //Este realloc permitirianos aforrar memoria, pero implica realizar multiples reallocs que influen negativamente no rendemento do programa. E mellor liberar o vector ao final.*/
         num.tam++;                                                                    //Incrementamos o tamaño do numero
-        num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar a nova cifra en base 256
+        num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(*num.val)); //Facemos espacio para gardar a nova cifra en base 256
         num.val[num.tam - 1] = conv;                                                  //Gardamos o resto como a seguinte cifra do noso numero
     }
 
+
     num.tam++;                                                                    //A ultima cifra do numero e o dividendo que nos queda na ultima division
-    num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar este ultimo dividendo
+    num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(*num.val)); //Facemos espacio para gardar este ultimo dividendo
     conv = dividendo[0];                                                          //Como o dividendo e un vector de numeros en base 10, pasamolos a un unico numero
     for (i = 1; i < newsize; i++)
     {
