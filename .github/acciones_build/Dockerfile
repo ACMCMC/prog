@@ -8,6 +8,9 @@ LABEL "com.github.actions.color"="purple"
 ADD / /acciones_build/
 RUN pwd
 RUN echo "Vamos a establecer los permisos de ejecución"
+RUN echo "La carpeta contiene: "
+RUN cd acciones_build
 RUN ls
+RUN cd ..
 RUN chmod -R +x /acciones_build
 ENTRYPOINT ["/entrypoint.sh"]
