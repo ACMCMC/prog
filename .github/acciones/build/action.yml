@@ -2,3 +2,5 @@ name: Compilar
 branding:
   icon: 'command'  
   color: 'yellow'
+using: 'docker'
+image: 'Dockerfile'
