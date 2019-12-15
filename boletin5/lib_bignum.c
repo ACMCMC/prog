@@ -77,8 +77,9 @@ comparacion comparar(bignum a, bignum b)
 
 char *bignum2str(bignum num)
 {
-    char *str, *cad_fin, *base_256 = NULL, *termo_suma = NULL, *termo_suma_mult, *termo_suma_mult_temp = NULL, *suma; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
-    unsigned int i, j, tam_suma, tam_str = 1, num_act, tam_base, tam_multip, carry;
+    int temp;
+    char *str, *cad_fin, *b_256 = NULL, *termo_suma = NULL, *termo_suma_mult, *termo_suma_mult_temp = NULL, *suma = NULL, *num_act = NULL, *mult = NULL, *mult_term = NULL; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+    unsigned int i, j, tam_suma, tam_str = 1, lonx_b_256, tam_multip, carry, lonx_mult, lonx_mult_term, lonx_num_act;
 
     if (num.sign == negativo)
         (i = 1, tam_str++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
@@ -88,11 +89,11 @@ char *bignum2str(bignum num)
         return ("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
 
     //Imos obter o modulo 256 (que esta en base 1 xa) en un vector de caracteres base 10
-    for ((tam_base = 1, num_act = BASE_BIGNUM); num_act > 9; tam_base++)
+    for ((lonx_b_256 = 0, temp = num.val[num.tam-1]); temp > 0; lonx_b_256++)
     {
-        base_256 = (char *)realloc(base_256, sizeof(char) * (tam_base));
-        base_256[tam_base - 1] = num_act % 10;
-        num_act = num_act / 10;
+        b_256 = (char *)realloc(b_256, sizeof(char) * (lonx_b_256+1));
+        b_256[lonx_b_256] = temp % 10;
+        temp = temp / 10;
     }
 
 
@@ -121,20 +122,27 @@ char *bignum2str(bignum num)
         6       1       4       4
 */
 
-tam_multip = 3;
+    for ((lonx_mult = 0, temp = num.val[num.tam-1]); temp > 0; lonx_mult++)
+    {
+        mult = (char *)realloc(mult, sizeof(char) * (lonx_mult+1));
+        mult[lonx_mult] = temp % 10;
+        temp = temp / 10;
+    }
 
-    while (num.tam > 0)
+    //for(i = 0; i < lonx_mult; i++)printf("Valor %d: %d\n",i,mult[i]);
+
+    while (num.tam > 1)
     {
         num.tam--;
-        free(termo_suma);
 
         //Converimos o elemento i-esimo do vector a un vector en b10
-        for ((i = 0, num_act = num.val[num.tam]); num_act > 9; i++)
-        {
-            termo_suma = (char *)realloc(termo_suma, sizeof(char) * (i + 1));
-            termo_suma[i] = num_act % 10;
-            num_act = num_act / 10;
-        }
+            printf("isto vai\n");
+        for ((lonx_num_act = 0 , temp = num.val[num.tam-1]); temp > 0; lonx_num_act++)
+    {
+        num_act = (char *)realloc(num_act, sizeof(char) * (lonx_num_act+1));
+        num_act[lonx_num_act] = temp % 10;
+        temp = temp / 10;
+    }
 
         //Multiplicamos o que xa levabamos de antes por 256
 
@@ -142,92 +150,106 @@ tam_multip = 3;
 
         //vamos a multiplicar cada elemento de base_256 por los elementos de termo_suma_mult, esto nos va a ir dando distintos productos que acumulamos en termo_suma_mult_temp, y luego eso lo sumamos en termo_suma_mult_temp_anterior
 
-        for (i = 0; i < tam_base; i++)
+        free(mult_term);
+
+        for (i = 0; i < lonx_b_256; i++)
         {
-            free(termo_suma_mult_temp);
-            termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
+            mult_term = malloc(sizeof(*mult_term)*(lonx_mult+i));
             for (j = 0; j < i; j++)
             {
-printf("isto vai\n");
-                termo_suma_mult_temp[j] = 0;
+                mult_term[j] = 0;
             }
-            while (j < tam_multip)
+            while (j < (lonx_mult+i))
             {
-                carry = 0;
-                free(termo_suma_mult_temp);
-                termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
-                for (j = 0; j < i; j++)
-                {
-                    termo_suma_mult_temp[j] = 0;
-                }
-                while (j < tam_multip)
-                {
-                    termo_suma_mult_temp[j] =
-                        termo_suma_mult[j - i] * base_256[i] + carry;
-                    if (termo_suma_mult_temp[j] > 9)
+                mult_term[j] = mult_term[j] + mult[j-i] * b_256[i] + carry;
+                
+                    if (mult_term[j] > 9)
                     {
-                        carry = termo_suma_mult_temp[j] / 10;
-                        termo_suma_mult_temp[j] = termo_suma_mult_temp[j] % 10;
+                        carry = mult_term[j] / 10;
+                        mult_term[j] = mult_term[j] % 10;
                     }
                     else
                     {
                         carry = 0;
                     }
                     j++;
-                }
-                tam_multip = j;
-                if (carry)
-                {
-                    termo_suma_mult_temp = realloc(termo_suma_mult_temp, sizeof(*termo_suma_mult_temp) * (j + 1));
-                    termo_suma_mult_temp[j] = carry;
-                        tam_multip++;
-                }
+                
 
-                carry = 0;
 
-                for (i = 0; i < tam_suma; i++) {
-                    suma[i] = termo_suma_mult_temp[i] + suma[i] + carry;
-                    if (suma[i] > 9)
-                    {
-                        carry = suma[i] / 10;
-                        suma[i] = suma[i] - 10;
-                    } else {
-                        carry = 0;
-                    }
-                }
-                while(i<tam_multip) {
-                    suma[i] = termo_suma_mult_temp[i] + carry;
-                    if (suma[i] > 9)
-                    {
-                        carry = suma[i] / 10;
-                        suma[i] = suma[i] - 10;
-                    } else {
-                        carry = 0;
-                    }
-                    i++;
-                }
-
-                tam_suma = i;
-
-                // Sumamos o que levabamos da multiplicacion con esto
             }
-        }
+
+
+            if (carry) {
+                lonx_mult_term = j + 1;
+                mult_term = realloc(mult_term,sizeof(*mult_term)*(lonx_mult_term));
+                mult_term[j] = carry;
+            } else {
+                lonx_mult_term = j;
+            }
+
+            }
+
+            free(mult);
+
+            mult = mult_term;
+            lonx_mult = lonx_mult_term;
+
+            //Facemos a suma de mult_term con num_act
+
+            for (i = 0; i < lonx_num_act; i++) {
+                mult[i] = mult[i] + num_act[i] + carry;
+                if (mult[i] > 9) {
+                    carry = mult[i] / 10;
+                    mult[i] -= 10;
+                } else {
+                    carry = 0;
+                }
+            }
+            
+            while (carry && (i < lonx_mult))
+            {
+                mult[i] = mult[i] + carry;
+                if (mult[i] > 9) {
+                    carry = mult[i] / 10;
+                    mult[i] -= 10;
+                } else {
+                    carry = 0;
+                }
+                i++;
+            }
+
+            if (carry) {
+                lonx_mult++;
+                mult = realloc(mult,sizeof(*mult)*lonx_mult);
+                mult[lonx_mult-1] = carry;
+                carry = 0;
+            }
+            
+        
     }
 
-    str = (char *)malloc(sizeof(char) * (tam_str));
-    while (i < num.tam)
+    
+    if (num.sign == negativo)
     {
-        cad_fin[i] = str[i] + '0';
+    str = (char *)malloc(sizeof(char) * (lonx_mult+2));
+        str[0] = '-';
+        i = 1;
+    } else {
+    str = (char *)malloc(sizeof(char) * (lonx_mult+1));
+        i = 0;
+    }
+
+    while (i < lonx_mult)
+    {
+        str[lonx_mult-1-i] = mult[(num.sign==negativo?i-1:i)] + '0';
         i++;
     }
 
     str[i] = '\0';
-    if (num.sign == negativo)
-    {
-        str[0] = '-';
-    }
 
-    free(base_256);
+    free(b_256);
+    free(mult);
+    free(num_act);
 
     return str;
 }
@@ -240,11 +262,6 @@ bignum str2bignum(char *str)
     unsigned char *dividendo = NULL, dividendo_size = strlen(str), newsize = dividendo_size, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
     int i = 0, n = 0;                                                                //Estas son variables de control
 
-    if (strlen(str) < 1) //Se o numero non mide o suficiente, saimos con codigo de estado 1
-    {
-        exit(EXIT_FAILURE);
-    }
-
     if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
     {
         num.sign = negativo;
@@ -253,6 +270,11 @@ bignum str2bignum(char *str)
     else //Se o numero non comeza por -, enton o signo e positivo e non reducimos o tamaño
     {
         num.sign = positivo;
+    }
+
+    if (strlen(str) < 1) //Se o numero non mide o suficiente, saimos con codigo de estado 1
+    {
+        exit(EXIT_FAILURE);
     }
 
     dividendo = (unsigned char *)malloc(sizeof(unsigned char) * dividendo_size); //Aloxamos o tamaño preciso para gardar o dividendo
