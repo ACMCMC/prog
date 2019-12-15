@@ -5,9 +5,9 @@ LABEL "com.github.actions.description"="Generar archivos de compilacion"
 LABEL "com.github.actions.icon"="mic"
 LABEL "com.github.actions.color"="purple"
 
-ADD entrypoint.sh /entrypoint.sh
+ADD ../acciones_build /acciones_build/
 RUN pwd
-RUN echo entrypoint.sh
+RUN echo "Vamos a establecer los permisos de ejecución"
 RUN ls
-RUN chmod -R +x ./progI
+RUN chmod -R +x /acciones_build
 ENTRYPOINT ["/entrypoint.sh"]
