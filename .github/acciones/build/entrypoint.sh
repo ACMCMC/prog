@@ -6,7 +6,11 @@ echo "Vamos a empezar la compilación"
 
 chmod +x instrucciones.sh
 
-if (./instrucciones.sh == 1) ; then
-  echo "Game over!"
+CODIGO_COMPILACION = ./instrucciones.sh
+
+if ($CODIGO_COMPILACION == 1) ; then
+  echo "Error de compilación: $CODIGO_COMPILACION"
   exit 0
+else
+  echo "Compilación exitosa"
 fi
