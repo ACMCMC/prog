@@ -1,8 +1,8 @@
-name: build_libs
+name: Compilar
 on: push
 
 jobs:
-  build_libs:
+  trabajo_compilar:
     name: Generar librería
     runs-on: ubuntu-latest
     steps:
