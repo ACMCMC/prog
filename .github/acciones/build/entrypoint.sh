@@ -6,6 +6,10 @@ echo "Ubicación: ${BASEDIR}"
 ls
 echo "Vamos a empezar la compilación"
 
+cd /
+pwd
+ls
+
 chmod +x instrucciones.sh
 
 CODIGO_COMPILACION="$(./instrucciones.sh)"
