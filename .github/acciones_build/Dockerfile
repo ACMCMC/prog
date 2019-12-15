@@ -6,5 +6,7 @@ LABEL "com.github.actions.icon"="mic"
 LABEL "com.github.actions.color"="purple"
 
 ADD entrypoint.sh /entrypoint.sh
-RUN chmod -R +x .
+RUN pwd
+RUN ls
+RUN chmod -R +x ./progI
 ENTRYPOINT ["/entrypoint.sh"]
