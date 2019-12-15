@@ -6,7 +6,7 @@ on:
 
 jobs:
   trabajo_compilar:
-    name: Generar librería
+    name: Generar archivos compilados
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
