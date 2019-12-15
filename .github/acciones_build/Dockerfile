@@ -5,10 +5,6 @@ LABEL "com.github.actions.description"="Generar archivos de compilacion"
 LABEL "com.github.actions.icon"="mic"
 LABEL "com.github.actions.color"="purple"
 
-ADD . /acciones_build/
-RUN echo "Vamos a establecer los permisos de ejecución"
-RUN echo "La carpeta contiene: "
-RUN cd acciones_build
-RUN ls
-RUN chmod -R +x /acciones_build
-ENTRYPOINT ["/acciones_build/entrypoint.sh"]
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
