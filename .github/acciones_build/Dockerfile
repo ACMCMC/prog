@@ -7,6 +7,8 @@ LABEL "com.github.actions.color"="green"
 
 WORKDIR /usr/src/myapp
 ADD entrypoint.sh /entrypoint.sh
+COPY . .
 RUN ls
 RUN pwd
+RUN chmod +x entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
