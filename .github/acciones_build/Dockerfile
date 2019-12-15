@@ -10,5 +10,5 @@ RUN echo "Vamos a establecer los permisos de ejecución"
 RUN echo "La carpeta contiene: "
 RUN cd acciones_build
 RUN ls
-RUN chmod -R +x /
+RUN chmod -R +x /acciones_build
 ENTRYPOINT ["/acciones_build/entrypoint.sh"]
