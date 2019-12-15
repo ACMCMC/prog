@@ -6,5 +6,6 @@ LABEL "com.github.actions.icon"="zap"
 LABEL "com.github.actions.color"="green"
 
 ADD entrypoint.sh /entrypoint.sh
+RUN docker pull gcc
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
