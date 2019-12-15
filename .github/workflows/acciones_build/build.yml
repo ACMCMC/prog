@@ -1,4 +1,4 @@
-name: Construír librerías
+name: build_libs
 on: push
 
 jobs:
