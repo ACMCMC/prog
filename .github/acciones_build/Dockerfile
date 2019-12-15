@@ -13,4 +13,4 @@ RUN cd acciones_build
 RUN ls
 RUN cd ..
 RUN chmod -R +x /acciones_build
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/acciones_build/entrypoint.sh"]
