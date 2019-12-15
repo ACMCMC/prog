@@ -1,6 +1,8 @@
 #!/bin/sh -l
 
-pwd
+echo "Script ejecutado desde: ${PWD}"
+BASEDIR=$(dirname $0)
+echo "Ubicación: ${BASEDIR}"
 ls
 echo "Vamos a empezar la compilación"
 
