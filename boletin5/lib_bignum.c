@@ -18,7 +18,10 @@ REFERENCIAS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include "lib_bignum.h"
+
+#define BASE_BIGNUM (UCHAR_MAX + 1)
 
 typedef enum
 {
@@ -74,20 +77,102 @@ comparacion comparar(bignum a, bignum b)
 
 char *bignum2str(bignum num)
 {
-    char *str; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
-    unsigned int i;
+    char *str, *cad_fin, *base_256 = NULL, *termo_suma = NULL, *termo_suma_mult, *termo_suma_mult_temp = NULL; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+    unsigned int i, tam_str = 1, num_act, tam_base, j, tam_multip, carry;
 
     if (num.sign == negativo)
-        (i = 1, num.tam++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
+        (i = 1, tam_str++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
     else if (num.sign == positivo)
         i = 0; //Se o noso número é positivo, non facemos un shift
     else
         return ("#ERRO"); //Podería ser o caso de que o bignum teña asignado o signo de erro, nese caso o string que devolvemos será un de erro
 
-    str = (char *)malloc(sizeof(char) * (num.tam + 1));
+    //Imos obter o modulo 256 (que esta en base 1 xa) en un vector de caracteres base 10
+    for ((tam_base = 1, num_act = BASE_BIGNUM); num_act > 9; tam_base++)
+    {
+        base_256 = (char *)realloc(base_256, sizeof(char) * (tam_base));
+        base_256[tam_base - 1] = num_act % 10;
+        num_act = num_act / 10;
+    }
+
+    //Temos que ir multiplicando cada elemento do vector do bignum por esta base, e ir sumando os termos sucesivos
+    /*
+                        2       4
+              x 2       5       6
+           --------------------------
+                                (2)4
+                        (1)2+#
+                #
+                1       4       4
+
+                                (2)0
+                        (1)0+#
+                #
+        1       2       0       0
+      -------------------------------
+        1       3       4       4
+
+                                8
+                        4
+-------------------------------------
+        4       8       0       0
+-------------------------------------
+        6       1       4       4
+*/
+
+    while (num.tam > 0)
+    {
+        num.tam--;
+        free(termo_suma);
+        carry = 0;
+
+        //Converimos o elemento i-esimo do vector a un vector en b10
+        for ((i = 0, num_act = num.val[num.tam]); num_act > 9; i++)
+        {
+            termo_suma = (char *)realloc(termo_suma, sizeof(char) * (i + 1));
+            termo_suma[i] = num_act % 10;
+            num_act = num_act / 10;
+        }
+
+        //Multiplicamos o que xa levabamos de antes por 256
+
+        for (i = 0; i < tam_base; i++)
+        {
+            free(termo_suma_mult_temp);
+            termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
+            for (j = 0; j < i; j++)
+            {
+                termo_suma_mult_temp[j] = 0;
+            }
+            while (j < tam_multip)
+            {
+                termo_suma_mult_temp = termo_suma_mult[j - i] * base_256[i] + carry;
+                if (termo_suma_mult_temp[j] > 9)
+                {
+                    carry = termo_suma_mult_temp[j] / 10;
+                    termo_suma_mult_temp[j] = termo_suma_mult_temp[j] % 10;
+                }
+                else
+                {
+                    carry = 0;
+                }
+                j++;
+            }
+            if (carry)
+            {
+                termo_suma_mult_temp = realloc(termo_suma_mult_temp, sizeof(*termo_suma_mult_temp) * (j + 1));
+                termo_suma_mult_temp[j] = carry;
+            }
+
+            //Sumamos o que levabamos da multiplicacion con esto
+            
+        }
+    }
+
+    str = (char *)malloc(sizeof(char) * (tam_str));
     while (i < num.tam)
     {
-        str[i] = num.val[num.tam - 1 - i] + '0';
+        cad_fin[i] = str[i] + '0';
         i++;
     }
 
@@ -97,60 +182,76 @@ char *bignum2str(bignum num)
         str[0] = '-';
     }
 
+    free(base_256);
+
     return str;
 }
 
 bignum str2bignum(char *str)
 {
     bignum num;
-    unsigned int i;
+    num.tam = 0;                                                                     //En principio, non ten tamaño
+    num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
+    unsigned char *dividendo = NULL, cociente_size = strlen(str), newsize, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
+    int i = 0, n = 0;                                                                //Estas son variables de control
 
-    if (*str == '-')
+    if (strlen(str) < 1) //Se o numero non mide o suficiente, saimos con codigo de estado 1
     {
-        num.sign = negativo; //O valor 1 será signo negativo
-        str++;               //Incrementamos a direccion a que apunta o punteiro. Isto implica que o noso string se reduce nunha unidade, xa que comezaremos a ler a partir da posicion 1 de str
+        exit(EXIT_FAILURE);
     }
-    else
-        num.sign = positivo;
 
-    //Ignoramos os ceros á esquerda
-
-    while (*str == '0')
+    if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
     {
+        num.sign = negativo;
         str++;
     }
-
-    if (*str == '\0')
-    { //Se tras ignorar todolos ceros a esquerda da cadea, non nos queda nada, enton o noso numero e o 0
-        num.val = (char *)malloc(sizeof(*num.val));
-        num.val[0] = 0;
-        num.tam = 1;
-        num.sign = positivo;
-
-        return num; //Devolvemos o 0
-    }
-
-    //O noso numero non e 0, imos convertir a cadea en orde inverso a valores do vector do noso bignum
-
-    num.tam = strlen(str);
-
-    num.val = (char *)malloc(sizeof(*num.val) * num.tam);
-
-    for (i = 0; i < num.tam; i++)
+    else //Se o numero non comeza por -, enton o signo e positivo e non reducimos o tamaño
     {
-        if ((str[num.tam - i - 1] < '0') || (str[num.tam - i - 1] > '9'))
-        { //Se o caracter que estamos a ler non e un numero, devolvemos un bignum de erro e establecemos a nosa variable global de erro
-            errobignum = ERRO_CARACTERES_NON_ADMITIDOS;
-            num.tam = 0;
-            num.sign = erro;
-            num.val = NULL;
-            return (num);
-        }
-        else
-        {
-            num.val[i] = str[num.tam - i - 1] - '0'; //Restamos '0' a cada dixito de str
-        }
+        num.sign = positivo;
     }
+
+    dividendo = (unsigned char *)malloc(sizeof(unsigned char) * cociente_size); //Aloxamos o tamaño preciso para gardar o dividendo
+
+    for (i = 0; i < cociente_size; i++) //Convertemos a cadea de caracteres a unha cadea de chars con valor numerico
+    {
+        dividendo[i] = str[i] - '0';
+    }
+
+    while ((cociente_size > 3) || ((cociente_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
+    {
+
+        newsize = 0; //O novo tamaño do dividendo en principio e cero, e imolo ir aumentando segundo engadimos cifras
+        i = 1;
+        conv = dividendo[0]; //Engadimos a primeira cifra do dividendo
+
+        while (i < cociente_size)
+        {
+            conv = conv * 10 + dividendo[i];
+            if ((newsize != 0) || ((conv / BASE_BIGNUM) != 0))
+            {
+                newsize++;                                   //Incrementamos o tamaño do novo dividendo
+                dividendo[newsize - 1] = conv / BASE_BIGNUM; //Imos gardando o cociente
+                conv = conv % BASE_BIGNUM;                   //Como conv vai ser o noso seguinte byte, facemos a division enteira e gardamos o resultado como valor de partida
+            }
+            i++;
+        }
+        cociente_size = newsize;
+        /*dividendo = (unsigned char *)realloc(dividendo, sizeof(unsigned char) * cociente_size); //Este realloc permitirianos aforrar memoria, pero implica realizar multiples reallocs que influen negativamente no rendemento do programa. E mellor liberar o vector ao final.*/
+        num.tam++;                                                                    //Incrementamos o tamaño do numero
+        num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar a nova cifra en base 256
+        num.val[num.tam - 1] = conv;                                                  //Gardamos o resto como a seguinte cifra do noso numero
+    }
+
+    num.tam++;                                                                    //A ultima cifra do numero e o dividendo que nos queda na ultima division
+    num.val = (unsigned char *)realloc(num.val, num.tam * sizeof(unsigned char)); //Facemos espacio para gardar este ultimo dividendo
+    conv = dividendo[0];                                                          //Como o dividendo e un vector de numeros en base 10, pasamolos a un unico numero
+    for (i = 1; i < newsize; i++)
+    {
+        conv = conv * 10 + dividendo[i];
+    }
+    num.val[num.tam - 1] = conv;
+
+    free(dividendo); //liberamos a memoria que xa non imos usar
 
     return num;
 }
@@ -176,7 +277,7 @@ bignum add(bignum a, bignum b)
     {
         result.sign = a.sign;           //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
         result.tam = bignum_maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
-        result.val = (char *)malloc(sizeof(*result.val) * result.tam);
+        result.val = (unsigned char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < bignum_menor->tam; i++)
         {
@@ -195,7 +296,7 @@ bignum add(bignum a, bignum b)
         if (acarreo) //Se temos un acarreo, precisamos aumentar nunha unidade o tamaño da suma e engadir ese acarreo
         {
             result.tam++;
-            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
+            result.val = (unsigned char *)realloc(result.val, sizeof(*result.val) * result.tam);
             result.val[result.tam - 1] = acarreo;
         }
     }
@@ -239,7 +340,7 @@ bignum resta(bignum a, bignum b)
     {
         result.sign = a.sign;           //Se os signos do maior e o menor coinciden, facemos a resta dos módulos, e o signo é o mesmo
         result.tam = bignum_maior->tam; //A resta pode medir como máximo o tamaño do maior
-        result.val = (char *)malloc(sizeof(*result.val) * result.tam);
+        result.val = (unsigned char *)malloc(sizeof(*result.val) * result.tam);
 
         for (i = 0; i < bignum_menor->tam; i++)
         {
@@ -277,7 +378,7 @@ bignum resta(bignum a, bignum b)
         if ((i) != result.tam)
         { //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
             result.tam = i;
-            result.val = (char *)realloc(result.val, sizeof(*result.val) * result.tam);
+            result.val = (unsigned char *)realloc(result.val, sizeof(*result.val) * result.tam);
         }
     }
     else

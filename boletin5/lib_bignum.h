@@ -10,7 +10,7 @@ typedef struct
         erro
     } sign;
     unsigned int tam;
-    char *val;
+    unsigned char *val;
 } bignum;
 
 #define ERRO_FALSE 0x0
