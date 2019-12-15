@@ -1,5 +1,8 @@
 name: Compilar
-on: push
+on: 
+  push:
+    paths-ignore:
+      - '**.md'
 
 jobs:
   trabajo_compilar:
