@@ -1,4 +1,4 @@
-name: Generar librería de bol5
+name: Construír librerías
 on: push
 
 jobs:
