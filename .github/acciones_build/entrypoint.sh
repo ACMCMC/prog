@@ -1,4 +1,5 @@
 #!/bin/sh -l
 
-cd .github/acciones_build
+pwd
+ls
 ./boletin5.sh
