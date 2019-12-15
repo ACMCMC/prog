@@ -1,5 +1,4 @@
 #!/bin/sh -l
 
-pwd
-ls
-./boletin5.sh
+cd boletin5
+gcc -c lib_bignum.c -o lib_bignum.o
