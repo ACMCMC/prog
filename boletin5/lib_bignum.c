@@ -77,8 +77,8 @@ comparacion comparar(bignum a, bignum b)
 
 char *bignum2str(bignum num)
 {
-    char *str, *cad_fin, *base_256 = NULL, *termo_suma = NULL, *termo_suma_mult, *termo_suma_mult_temp = NULL; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
-    unsigned int i, tam_str = 1, num_act, tam_base, j, tam_multip, carry;
+    char *str, *cad_fin, *base_256 = NULL, *termo_suma = NULL, *termo_suma_mult, *termo_suma_mult_temp = NULL, *suma; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+    unsigned int i, j, tam_suma, tam_str = 1, num_act, tam_base, tam_multip, carry;
 
     if (num.sign == negativo)
         (i = 1, tam_str++); //Para aforrarnos unha variable extra que nos indique se debemos facer un "shift" da cadea para incluir o - ao principio, simplemente incrementamos num.tam (xa non será o tamaño real, pero non nos importa porque estamos a traballar cunha copia do bignum orixinal)
@@ -124,7 +124,6 @@ char *bignum2str(bignum num)
     {
         num.tam--;
         free(termo_suma);
-        carry = 0;
 
         //Converimos o elemento i-esimo do vector a un vector en b10
         for ((i = 0, num_act = num.val[num.tam]); num_act > 9; i++)
@@ -136,37 +135,67 @@ char *bignum2str(bignum num)
 
         //Multiplicamos o que xa levabamos de antes por 256
 
-        for (i = 0; i < tam_base; i++)
-        {
-            free(termo_suma_mult_temp);
-            termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
-            for (j = 0; j < i; j++)
+            for (i = 0; i < tam_base; i++)
             {
-                termo_suma_mult_temp[j] = 0;
-            }
-            while (j < tam_multip)
-            {
-                termo_suma_mult_temp = termo_suma_mult[j - i] * base_256[i] + carry;
-                if (termo_suma_mult_temp[j] > 9)
+                carry = 0;
+                free(termo_suma_mult_temp);
+                termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
+                for (j = 0; j < i; j++)
                 {
-                    carry = termo_suma_mult_temp[j] / 10;
-                    termo_suma_mult_temp[j] = termo_suma_mult_temp[j] % 10;
+                    termo_suma_mult_temp[j] = 0;
                 }
-                else
+                while (j < tam_multip)
                 {
-                    carry = 0;
+                    termo_suma_mult_temp =
+                        termo_suma_mult[j - i] * base_256[i] + carry;
+                    if (termo_suma_mult_temp[j] > 9)
+                    {
+                        carry = termo_suma_mult_temp[j] / 10;
+                        termo_suma_mult_temp[j] = termo_suma_mult_temp[j] % 10;
+                    }
+                    else
+                    {
+                        carry = 0;
+                    }
+                    j++;
                 }
-                j++;
-            }
-            if (carry)
-            {
-                termo_suma_mult_temp = realloc(termo_suma_mult_temp, sizeof(*termo_suma_mult_temp) * (j + 1));
-                termo_suma_mult_temp[j] = carry;
-            }
+                tam_multip = j;
+                if (carry)
+                {
+                    termo_suma_mult_temp = realloc(termo_suma_mult_temp, sizeof(*termo_suma_mult_temp) * (j + 1));
+                    termo_suma_mult_temp[j] = carry;
+                        tam_multip++;
+                }
 
-            //Sumamos o que levabamos da multiplicacion con esto
-            
-        }
+                carry = 0;
+
+                for (i = 0; i < tam_suma; i++) {
+                    suma[i] = termo_suma_mult_temp[i] + suma[i] + carry;
+                    if (suma[i] > 9)
+                    {
+                        carry = suma[i] / 10;
+                        suma[i] = suma[i] - 10;
+                    } else {
+                        carry = 0;
+                    }
+                }
+                while(i<tam_multip) {
+                    suma[i] = termo_suma_mult_temp[i] + carry;
+                    if (suma[i] > 9)
+                    {
+                        carry = suma[i] / 10;
+                        suma[i] = suma[i] - 10;
+                    } else {
+                        carry = 0;
+                    }
+                    i++;
+                }
+
+                tam_suma = i;
+
+                // Sumamos o que levabamos da multiplicacion con esto
+            }
+        
     }
 
     str = (char *)malloc(sizeof(char) * (tam_str));
