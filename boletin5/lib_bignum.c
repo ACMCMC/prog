@@ -132,7 +132,7 @@ char* bignum2str(bignum num)
 
 	while (num.tam > 1)
 	{
-for(int k = (printf("\n") , 0); k < lonx_mult; k++)(printf("Valor %d: %d\t",k, mult[k]));
+for(int k = (printf("\n\n\n\nMULTIPLICACION SUMADA:\n") , 0); k < lonx_mult; k++)(printf("Valor %d: %d\t",k, mult[k]));
 		num.tam--;
 
 		//Converimos o elemento i-esimo do vector a un vector en b10
@@ -204,6 +204,10 @@ for(int k = (printf("\n") , 0); k < lonx_mult; k++)(printf("Valor %d: %d\t",k, m
 		lonx_mult = lonx_mult_term;
 
 		//Facemos a suma de mult_term con num_act
+
+		for (int k = (printf("\n\nMULTIPLICACION SIN SUMAR:\n"), 0); k < lonx_mult; k++)(printf("Valor %d: %d\t", k, mult[k]));
+
+		carry = 0;
 
 		for (i = 0; i < lonx_num_act; i++) {
 			mult[i] = mult[i] + num_act[i] + carry;
