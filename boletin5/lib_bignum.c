@@ -135,7 +135,19 @@ char *bignum2str(bignum num)
 
         //Multiplicamos o que xa levabamos de antes por 256
 
-            for (i = 0; i < tam_base; i++)
+        //tam_base es 3, porque nuestra base es {2,5,6}
+
+        //vamos a multiplicar cada elemento de base_256 por los elementos de termo_suma_mult, esto nos va a ir dando distintos productos que acumulamos en termo_suma_mult_temp, y luego eso lo sumamos en termo_suma_mult_temp_anterior
+
+        for (i = 0; i < tam_base; i++)
+        {
+            free(termo_suma_mult_temp);
+            termo_suma_mult_temp = malloc(sizeof(*termo_suma_mult_temp) * (i + tam_multip - 1));
+            for (j = 0; j < i; j++)
+            {
+                termo_suma_mult_temp[j] = 0;
+            }
+            while (j < tam_multip)
             {
                 carry = 0;
                 free(termo_suma_mult_temp);
@@ -195,7 +207,7 @@ char *bignum2str(bignum num)
 
                 // Sumamos o que levabamos da multiplicacion con esto
             }
-        
+        }
     }
 
     str = (char *)malloc(sizeof(char) * (tam_str));
