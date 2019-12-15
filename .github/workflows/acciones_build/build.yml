@@ -2,7 +2,7 @@ name: build_libs
 on: push
 
 jobs:
-  construir:
+  build_libs:
     name: Generar librería
     runs-on: ubuntu-latest
     steps:
