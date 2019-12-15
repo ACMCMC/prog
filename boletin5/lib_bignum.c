@@ -121,6 +121,8 @@ char *bignum2str(bignum num)
         6       1       4       4
 */
 
+tam_multip = 3;
+
     while (num.tam > 0)
     {
         num.tam--;
