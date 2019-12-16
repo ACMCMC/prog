@@ -249,8 +249,9 @@ bignum str2bignum(char* str)
 	bignum num;
 	num.tam = 0;                                                                     //En principio, non ten tamaño
 	num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
-	unsigned char* dividendo = NULL, dividendo_size = strlen(str), newsize = dividendo_size, conv = 0; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
-	int i = 0, n = 0;                                                                //Estas son variables de control
+	unsigned short conv = 0;
+	unsigned char *dividendo = NULL, dividendo_size, newsize; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
+	int i;                                                                //Estas son variables de control
 	if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
 	{
 		num.sign = negativo;
@@ -266,12 +267,17 @@ bignum str2bignum(char* str)
 		exit(EXIT_FAILURE);
 	}
 
+	dividendo_size = strlen(str);
+	newsize = dividendo_size;
+
 	dividendo = (unsigned char*)malloc(sizeof(*dividendo) * dividendo_size); //Aloxamos o tamaño preciso para gardar o dividendo
 
 	for (i = 0; i < dividendo_size; i++) //Convertemos a cadea de caracteres a unha cadea de chars con valor numerico
 	{
 		dividendo[i] = str[i] - '0';
 	}
+
+	for (int k = (printf("\n\n") , 0) ; k < dividendo_size ; k++) (printf("Dividendo[%d]: %d\t",k,dividendo[k]));
 
 	while ((dividendo_size > 3) || ((dividendo_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
 	{
@@ -283,15 +289,17 @@ bignum str2bignum(char* str)
 		while (i < dividendo_size)
 		{
 			conv = conv * 10 + dividendo[i];
+			printf("\nconv vale agora %d\n",conv);
 			if ((newsize != 0) || ((conv / BASE_BIGNUM) != 0))
 			{
 				newsize++;                                   //Incrementamos o tamaño do novo dividendo
 				dividendo[newsize - 1] = conv / BASE_BIGNUM; //Imos gardando o cociente
+				printf("\nO dividendo e %d\n", dividendo[newsize-1]);
 				conv = conv % BASE_BIGNUM;                   //Como conv vai ser o noso seguinte byte, facemos a division enteira e gardamos o resultado como valor de partida
+				printf("\nTras o modulo, conv e %d\n", conv);
 			}
 			i++;
 		}
-		for (i = 0; i < dividendo_size; i++) printf("dividendo[%d]: %d\n", i, dividendo[i]);
 		dividendo_size = newsize;
 		/*dividendo = (unsigned char *)realloc(dividendo, sizeof(unsigned char) * cociente_size); //Este realloc permitirianos aforrar memoria, pero implica realizar multiples reallocs que influen negativamente no rendemento do programa. E mellor liberar o vector ao final.*/
 		num.tam++;                                                                    //Incrementamos o tamaño do numero
