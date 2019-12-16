@@ -317,8 +317,9 @@ bignum str2bignum(char* str)
 
 bignum add(bignum a, bignum b)
 {
-	bignum result, * bignum_maior, * bignum_menor;
+	bignum result, *bignum_maior, *bignum_menor;
 	unsigned char i, acarreo = 0;
+    unsigned short *elemento;
 
 	//Hai que comprobar cal ten o maior tamaño. Tamén poderiamos invocar de novo a esta función cos bignums ao revés, para que a sempre sexa > b, pero sería menos eficiente.
 	if (a.tam >= b.tam)
@@ -336,28 +337,34 @@ bignum add(bignum a, bignum b)
 	{
 		result.sign = a.sign;           //Se os signos son iguais, sumanse os módulos e o signo é o mesmo
 		result.tam = bignum_maior->tam; //A suma pode ter como moito un díxito máis que o maior, que reservaremos posteriormente se nos fai falta
-		result.val = (unsigned char*)malloc(sizeof(*result.val) * result.tam);
+		elemento = (unsigned short*)malloc(sizeof(*elemento) * result.tam);
 
 		for (i = 0; i < bignum_menor->tam; i++)
 		{
-			result.val[i] = (a.val[i] + b.val[i] + acarreo); //A cifra actual que gardamos é a cifra en módulo 10. A suma facémola con a e b, porque non nos importa cal é o maior xa que a suma é conmutativa, e deste xeito nos aforramos o acceso a través dunha dereferenciación, polo cal somos máis eficientes [2]
-			acarreo = result.val[i] / 10;                    //O acarreo é a división enteira por 10
-			result.val[i] = result.val[i] % 10;              //En vez de facer directamente o módulo, para aforrarnos repetir os cálculos, empregamos result.val[i] como un almacén temporal do resultado da multiplicación para calcular o acarreo
+			elemento[i] = (a.val[i] + b.val[i] + acarreo); //A cifra actual que gardamos é a cifra en módulo 256. A suma facémola con a e b, porque non nos importa cal é o maior xa que a suma é conmutativa, e deste xeito nos aforramos o acceso a través dunha dereferenciación, polo cal somos máis eficientes [2]
+			acarreo = elemento[i] / BASE_BIGNUM;                  //O acarreo é a división enteira por 256
+			elemento[i] = elemento[i] % BASE_BIGNUM;              //En vez de facer directamente o módulo, para aforrarnos repetir os cálculos, empregamos elemento[i] como un almacén temporal do resultado da multiplicación para calcular o acarreo
 		}
 		while (i < bignum_maior->tam)
 		{ //Imos sumando o resto de dixitos, que se corresponden aos do maior
-			result.val[i] = (bignum_maior->val[i] + acarreo);
-			acarreo = result.val[i] / 10;
-			result.val[i] = result.val[i] % 10;
+			elemento[i] = (bignum_maior->val[i] + acarreo);
+			acarreo = elemento[i] / BASE_BIGNUM;
+			elemento[i] = elemento[i] % BASE_BIGNUM;
 			i++;
 		}
 
 		if (acarreo) //Se temos un acarreo, precisamos aumentar nunha unidade o tamaño da suma e engadir ese acarreo
 		{
 			result.tam++;
-			result.val = (unsigned char*)realloc(result.val, sizeof(*result.val) * result.tam);
-			result.val[result.tam - 1] = acarreo;
+			elemento = (unsigned short*)realloc(elemento, sizeof(*elemento) * result.tam);
+			elemento[result.tam - 1] = acarreo;
 		}
+
+        result.val = (unsigned char *) malloc(sizeof(*result.val)*result.tam);
+
+        for (i = 0; i < result.tam; i++) {
+            result.val[i] = (unsigned char) elemento[i];
+        }
 	}
 	else
 	{                           //Se os bignums son de signo oposto, haberá que facer unha resta
@@ -373,6 +380,8 @@ bignum add(bignum a, bignum b)
 		}
 	}
 
+    free(elemento);
+
 	return result;
 }
 
@@ -382,6 +391,7 @@ bignum resta(bignum a, bignum b)
 
 	bignum result, * bignum_maior, * bignum_menor;
 	unsigned char i, acarreo = 0;
+    short *elemento;
 
 	//Hai que comprobar cal ten o maior tamaño. Tamén poderiamos invocar de novo a esta función cos bignums ao revés, para que a sempre sexa > b, pero sería menos eficiente.
 	if (comparar(a, b) == menor)
@@ -399,14 +409,14 @@ bignum resta(bignum a, bignum b)
 	{
 		result.sign = a.sign;           //Se os signos do maior e o menor coinciden, facemos a resta dos módulos, e o signo é o mesmo
 		result.tam = bignum_maior->tam; //A resta pode medir como máximo o tamaño do maior
-		result.val = (unsigned char*)malloc(sizeof(*result.val) * result.tam);
+		elemento = (short*)malloc(sizeof(*elemento) * result.tam);
 
 		for (i = 0; i < bignum_menor->tam; i++)
 		{
-			result.val[i] = (bignum_maior->val[i] - bignum_menor->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
-			if (result.val[i] < 0)
+			elemento[i] = (bignum_maior->val[i] - bignum_menor->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
+			if (elemento[i] < 0)
 			{
-				result.val[i] += 10;
+				elemento[i] += BASE_BIGNUM;
 				acarreo = 1;
 			}
 			else
@@ -416,10 +426,10 @@ bignum resta(bignum a, bignum b)
 		}
 		while (i < bignum_maior->tam)
 		{                                                     //Imos restándolle o acarreo ao resto de dixitos, que se corresponden aos do maior
-			result.val[i] = (bignum_maior->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
-			if (result.val[i] < 0)
+			elemento[i] = (bignum_maior->val[i] - acarreo); //A cifra actual que gardamos é a cifra en módulo 10
+			if (elemento[i] < 0)
 			{
-				result.val[i] += 10;
+				elemento[i] += BASE_BIGNUM;
 				acarreo = 1;
 			}
 			else
@@ -429,7 +439,7 @@ bignum resta(bignum a, bignum b)
 			i++;
 		}
 
-		while ((result.val[i - 1] == 0) && (i > 1))
+		while ((elemento[i - 1] == 0) && (i > 1))
 		{
 			i--;
 		}
@@ -437,8 +447,14 @@ bignum resta(bignum a, bignum b)
 		if ((i) != result.tam)
 		{ //Temos que restar ceros, e ainda que este bloque funcionaría independentemente de se hay 0 que borrar ou non, resulta máis eficiente incluílo nun if [3]
 			result.tam = i;
-			result.val = (unsigned char*)realloc(result.val, sizeof(*result.val) * result.tam);
+			elemento = (short*)realloc(elemento, sizeof(*elemento) * result.tam);
 		}
+
+        result.val = (unsigned char*)malloc(sizeof(*result.val)*result.tam);
+
+        for (i = 0; i < result.tam; i++) {
+            result.val[i] = (unsigned char) elemento[i];
+        }
 	}
 	else
 	{                           //Se son de signos distintos, haberá que facer unha suma
