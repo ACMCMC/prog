@@ -249,7 +249,7 @@ bignum str2bignum(char* str)
 	bignum num;
 	num.tam = 0;                                                                     //En principio, non ten tamaño
 	num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
-	unsigned short conv = 0;
+	unsigned short conv = 0; //conv ten que ser un short para poder almacenar valores maiores que 256
 	unsigned char *dividendo = NULL, dividendo_size, newsize; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
 	int i;                                                                //Estas son variables de control
 	if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
@@ -277,11 +277,8 @@ bignum str2bignum(char* str)
 		dividendo[i] = str[i] - '0';
 	}
 
-	for (int k = (printf("\n\n") , 0) ; k < dividendo_size ; k++) (printf("Dividendo[%d]: %d\t",k,dividendo[k]));
-
 	while ((dividendo_size > 3) || ((dividendo_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
 	{
-
 		newsize = 0; //O novo tamaño do dividendo en principio e cero, e imolo ir aumentando segundo engadimos cifras
 		i = 1;
 		conv = dividendo[0]; //Engadimos a primeira cifra do dividendo
@@ -289,14 +286,11 @@ bignum str2bignum(char* str)
 		while (i < dividendo_size)
 		{
 			conv = conv * 10 + dividendo[i];
-			printf("\nconv vale agora %d\n",conv);
 			if ((newsize != 0) || ((conv / BASE_BIGNUM) != 0))
 			{
 				newsize++;                                   //Incrementamos o tamaño do novo dividendo
-				dividendo[newsize - 1] = conv / BASE_BIGNUM; //Imos gardando o cociente
-				printf("\nO dividendo e %d\n", dividendo[newsize-1]);
+				dividendo[newsize - 1] = conv / BASE_BIGNUM; //Imos gardando o cociente, non pasa nada por sobreescribilo porque estamos lendo os valores seguintes
 				conv = conv % BASE_BIGNUM;                   //Como conv vai ser o noso seguinte byte, facemos a division enteira e gardamos o resultado como valor de partida
-				printf("\nTras o modulo, conv e %d\n", conv);
 			}
 			i++;
 		}
@@ -306,7 +300,6 @@ bignum str2bignum(char* str)
 		num.val = (unsigned char*)realloc(num.val, num.tam * sizeof(*num.val)); //Facemos espacio para gardar a nova cifra en base 256
 		num.val[num.tam - 1] = conv;                                                  //Gardamos o resto como a seguinte cifra do noso numero
 	}
-
 
 	num.tam++;                                                                    //A ultima cifra do numero e o dividendo que nos queda na ultima division
 	num.val = (unsigned char*)realloc(num.val, num.tam * sizeof(*num.val)); //Facemos espacio para gardar este ultimo dividendo
