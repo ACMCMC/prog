@@ -78,7 +78,7 @@ comparacion comparar(bignum a, bignum b)
 char* bignum2str(bignum num)
 {
 	int temp;
-	char* str, * b_256 = NULL, * num_act = NULL, * mult = NULL, * mult_term = NULL; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
+	char *str, * b_256 = NULL, * num_act = NULL, * mult = NULL, * mult_term = NULL; //Se o signo e 1 (o num e negativo), engadimos 1 ao tamaño
 	unsigned int i, j, lonx_str = 1, lonx_b_256, carry = 0, lonx_mult, lonx_mult_term, lonx_num_act;
 
 	if (num.sign == negativo)
@@ -101,7 +101,7 @@ char* bignum2str(bignum num)
 
 	for ((lonx_mult = 0, temp = num.val[num.tam - 1]); temp > 0; lonx_mult++)
 	{
-		mult = (char*)realloc(mult, sizeof(char) * (lonx_mult + 1));
+		mult = realloc(mult, sizeof(*mult) * (lonx_mult + 1));
 		mult[lonx_mult] = temp % 10;
 		temp = temp / 10;
 	}
@@ -220,13 +220,18 @@ char* bignum2str(bignum num)
 
 	if (num.sign == negativo)
 	{
-		str = (char*)malloc(sizeof(char) * (lonx_mult + 2));
+		str = malloc(sizeof(char) * (lonx_mult + 2));
 		str[0] = '-';
 		i = 1;
 	}
 	else {
-		str = (char*)malloc(sizeof(char) * (lonx_mult + 1));
+		str = malloc(sizeof(char) * (lonx_mult + 1));
 		i = 0;
+	}
+
+	if (lonx_mult == 0) {
+		lonx_mult++;
+		mult = calloc(lonx_mult, sizeof(*mult));
 	}
 
 	while (i < lonx_mult)
