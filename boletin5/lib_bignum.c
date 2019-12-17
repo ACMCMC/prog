@@ -250,8 +250,8 @@ bignum str2bignum(char* str)
 	num.tam = 0;                                                                     //En principio, non ten tamaño
 	num.val = NULL;                                                                  //Como non ten tamaño, o vector non apunta a nada
 	unsigned short conv = 0; //conv ten que ser un short para poder almacenar valores maiores que 256
-	unsigned char *dividendo = NULL, dividendo_size, newsize; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
-	int i;                                                                //Estas son variables de control
+	unsigned char *dividendo = NULL; //dividendo e un vector de chars que usaremos para realizar as divisions, cociente_size e o tamaño do vector, que ao principio ten a lonxitude da cadea de partida, newsize e unha variable que empregaremos para ir reducindo o tamaño do dividendo, conv e o resto da division que como maximo vai ser 255 (cabe nun char)
+	unsigned int i, dividendo_size, newsize;                                                                //Estas son variables de control
 	if (*str == '-') //Se o numero comeza por -, enton o signo e negativo e reducimos a lonxitude da cadea nunha unidade
 	{
 		num.sign = negativo;
@@ -277,7 +277,7 @@ bignum str2bignum(char* str)
 		dividendo[i] = str[i] - '0';
 	}
 
-	while ((dividendo_size > 3) || ((dividendo_size == 3) && ((dividendo[2] * 100 + dividendo[1] * 10 + dividendo[0]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
+	while ((dividendo_size > 3) || ((dividendo_size == 3) && ((dividendo[0] * 100 + dividendo[1] * 10 + dividendo[2]) >= BASE_BIGNUM))) //Realizamos o bucle mentras o dividendo sexa maior que 256
 	{
 		newsize = 0; //O novo tamaño do dividendo en principio e cero, e imolo ir aumentando segundo engadimos cifras
 		i = 1;
@@ -365,6 +365,8 @@ bignum add(bignum a, bignum b)
         for (i = 0; i < result.tam; i++) {
             result.val[i] = (unsigned char) elemento[i];
         }
+
+    free(elemento);
 	}
 	else
 	{                           //Se os bignums son de signo oposto, haberá que facer unha resta
@@ -380,7 +382,6 @@ bignum add(bignum a, bignum b)
 		}
 	}
 
-    free(elemento);
 
 	return result;
 }
