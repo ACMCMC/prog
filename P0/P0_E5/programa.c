@@ -23,6 +23,8 @@ int main(int argc, char** argv) {
     printf("\nExponente: ");
     scanf("%d", &b);
 
+printf("%p, %p, %p, %p\n", a, a+1, a+2, a+3);
+
     for (i = 0; i < 4; i++) {
         a[i] = potencia(a[i], b);
     }
