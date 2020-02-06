@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
         printf("7-Eliminar matrices\n");
         printf("0-Salir\n");
         printf("Opcion: ");
-        scanf(" %c", opcion);
+        scanf(" %c", &opcion); //scanf(" %c", opcion);
 
         switch (opcion) {
             case '0':

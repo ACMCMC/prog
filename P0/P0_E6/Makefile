@@ -11,3 +11,6 @@ $(OUTPUT): $(OBJS)
 
 %.o: %.c
 	gcc -o $@ -c $< -I $(HEADERS)
+
+clean:
+	-rm $(OBJS)

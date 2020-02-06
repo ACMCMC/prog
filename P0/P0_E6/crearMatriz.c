@@ -12,9 +12,9 @@ matriz* crearMatriz(int filas, int columnas) {
     if (mat != 0) {
         mat->filas = filas;
         mat->columnas = columnas;
-        mat->datos = (float*) malloc(filas * filas * sizeof (float));
+        mat->datos = (float*) malloc(filas * columnas * sizeof (float)); //mat->datos = (float*) malloc(filas * filas * sizeof (float));
         
-        for (i = 0; i < filas * filas; i++) {
+        for (i = 0; i < filas * columnas; i++) { //for (i = 0; i < filas * filas; i++) {
             *((mat->datos) + i) = 0;
         }
     } else
