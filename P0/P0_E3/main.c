@@ -21,26 +21,22 @@
 #include <stdlib.h>
 
 int factorial(int n);
-//int potencia(int n, int m); esta declaracion está mal hecha porque necesitamos devolver un float
-float potencia(int n, int m);
+float potencia(int n, int m); //int potencia(int n, int m); esta declaracion está mal hecha porque necesitamos devolver un float
 
 int main(int argc, char** argv) {
     
     int a, b;
     int f;
-    //int p; p tiene que ser un float
-    float p;
+    float p; //int p; p tiene que ser un float
     
     printf("Introduce dos números enteros: ");
-    //scanf("%f%d", a, &b); tenemos que dar la direccion de memoria de a, y ambos son enteros (%d)
-    scanf("%d%d", &a, &b);
+    scanf("%d%d", &a, &b); //scanf("%f%d", a, &b); tenemos que dar la direccion de memoria de a, y ambos son enteros (%d)
 
     f = factorial(a);
     printf("Factorial(%d) = %d\n", a, f);
     
     p = potencia(a, b);
-    //printf("Potencia(%d,%d) = %d\n", a, b, p); la potencia es un float
-    printf("Potencia(%d,%d) = %f\n", a, b, p);
+    printf("Potencia(%d,%d) = %f\n", a, b, p); //printf("Potencia(%d,%d) = %d\n", a, b, p); la potencia es un float
     
     return (EXIT_SUCCESS);
 }
