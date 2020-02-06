@@ -42,13 +42,13 @@ int main(int argc, char** argv) {
                 break;
             case '1':
                 printf("Introduzca el numero de filas de la matriz 'a': ");
-                scanf("%f", &f);
+                scanf("%d", &f); //scanf("%f", &f);
                 printf("Introduzca el numero de columnas de la matriz 'a': ");
                 scanf("%d", &c);
                 a = crearMatriz(f, c);
 
                 printf("Introduzca el numero de filas de la matriz 'b': ");
-                scanf("%f", &f);
+                scanf("%d", &f); //scanf("%f", &f);
                 printf("Introduzca el numero de columnas de la matriz 'b': ");
                 scanf("%d", &c);
                 b = crearMatriz(f, c);
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
                     for (c = 0; c < b->columnas; c++) {
                         printf("Introduzca el valor de la posicion %dx%d: ", f + 1, c + 1);
                         scanf("%f", &valor);
-                        asignarElemento(f, c, valor, a);
+                        asignarElemento(f, c, valor, b); //asignarElemento(f, c, valor, a);
                     }
 
                 break;
@@ -79,10 +79,10 @@ int main(int argc, char** argv) {
                 printf("Introduce fila y columna (fila columna): ");
                 scanf("%d %d", &f, &c);
                 if (resp == 'a') {
-                    valor = obtenerElemento(f, c, b);
+                    valor = obtenerElemento(f, c, a); //valor = obtenerElemento(f, c, b);
                     printf("El valor de la fila y columna seleccionada es: %f\n", valor);
                 } else if (resp == 'b') {
-                    valor = obtenerElemento(f, c, a);
+                    valor = obtenerElemento(f, c, b); //valor = obtenerElemento(f, c, a);
                     printf("El valor de la fila y columna seleccionada es: %f\n", valor);
                 }
                 break;
