@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
                 a = 0; //La matriz debe apuntar ahora a 0
                 destruirMatriz(b);
                 b = 0; //Lo mismo para b
-                printf("Matrices eliminadas... %p   %p\n",a,b);
+                printf("Matrices eliminadas...\n");
                 break;
             default:
                 printf("Opcion incorrecta\n");
