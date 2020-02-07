@@ -1,4 +1,4 @@
-OUTPUT = out.exe
+OUTPUT = out
 
 C_FILES = asignarElemento.c crearMatriz.c destruirMatriz.c imprimirMatriz.c main.c obtenerElemento.c producto.c suma.c
 
