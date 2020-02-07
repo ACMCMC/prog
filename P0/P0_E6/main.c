@@ -110,8 +110,10 @@ int main(int argc, char** argv) {
                 break;
             case '7':
                 destruirMatriz(a);
+                a = 0; //La matriz debe apuntar ahora a 0
                 destruirMatriz(b);
-                printf("Matrices eliminadas...\n");
+                b = 0; //Lo mismo para b
+                printf("Matrices eliminadas... %p   %p\n",a,b);
                 break;
             default:
                 printf("Opcion incorrecta\n");

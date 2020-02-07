@@ -4,7 +4,7 @@ matriz* producto(matriz *M1, matriz *M2) {
     matriz *aux = 0;
     int i, k, l;
     if (M1 != 0 && M2 != 0) {
-        if (M1->filas != M2->columnas) {
+        if (M1->columnas != M2->filas) { //if (M1->filas != M2->columnas) {
             printf("El numero de columnas de la primera matriz y de filas de la segunda deben ser iguales\n");
             return aux;
         }
@@ -18,7 +18,7 @@ matriz* producto(matriz *M1, matriz *M2) {
                 }
             }
 
-        return aux;
     } else
         printf("Alguna de las matrices no existe\n");
+    return aux; //He movido este return al final del archivo para que devuelva aux en todos los casos (inluso si apunta a NULL)
 }
