@@ -3,6 +3,6 @@ SUBDIRS := $(wildcard */.)
 all: $(SUBDIRS)
 
 $(SUBDIRS):
-        $(MAKE) -C $@
+	$(MAKE) -C $@
 
 .PHONY: all $(SUBDIRS)
