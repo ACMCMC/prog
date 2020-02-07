@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
                 printf("Introduzca el numero de columnas de la matriz 'a': ");
                 scanf("%d", &c);
 
-                destruirMatriz(a); //Si la matriz ya estaba creada de antes, entonces queremos destruirla. Si no estaba creada, la función no hace nada.
+                destruirMatriz(a); //Si la matriz ya estaba creada de antes, entonces queremos destruirla. Si no estaba creada, la función no hace nada. Tampoco necesitamos hacer que apunte después a NULL, porque justo después le vamos a asignar un nuevo valor.
 
                 a = crearMatriz(f, c);
 
@@ -101,12 +101,12 @@ int main(int argc, char** argv) {
             case '5':
                 aux = suma(a, b);
                 imprimirMatriz(aux);
-                destruirMatriz(aux);
+                destruirMatriz(aux); //No necesitamos hacer que aux apunte después a NULL, porque si la volvemos a usar no nos importa el valor que guardaba aux previamente (aux = suma(a, b);)
                 break;
             case '6':
                 aux = producto(a, b);
                 imprimirMatriz(aux);
-                destruirMatriz(aux);
+                destruirMatriz(aux); //Lo mismo que tras la suma
                 break;
             case '7':
                 destruirMatriz(a);
