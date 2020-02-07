@@ -19,7 +19,7 @@ rebuild:
 	$(MAKE) $(OUTPUT)
 
 clean:
-	rm $(OBJS)
+	-rm $(OBJS)
 
-cleanall:
-	rm $(OUTPUT) $(OBJS)
+cleanall: clean
+	rm $(OUTPUT)
