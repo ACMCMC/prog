@@ -1,8 +1,8 @@
 name: Compilar
-on: 
-  push:
-    paths-ignore:
-      - '**.md'
+on: [release]
+  #push:
+  #  paths-ignore:
+  #    - '**.md'
 
 jobs:
   trabajo_compilar:
