@@ -45,12 +45,18 @@ int main(int argc, char** argv) {
                 scanf("%d", &f); //scanf("%f", &f);
                 printf("Introduzca el numero de columnas de la matriz 'a': ");
                 scanf("%d", &c);
+
+                destruirMatriz(a); //Si la matriz ya estaba creada de antes, entonces queremos destruirla. Si no estaba creada, la función no hace nada.
+
                 a = crearMatriz(f, c);
 
                 printf("Introduzca el numero de filas de la matriz 'b': ");
                 scanf("%d", &f); //scanf("%f", &f);
                 printf("Introduzca el numero de columnas de la matriz 'b': ");
                 scanf("%d", &c);
+
+                destruirMatriz(b); //Ídem para b
+
                 b = crearMatriz(f, c);
 
                 break;
@@ -100,7 +106,6 @@ int main(int argc, char** argv) {
             case '6':
                 aux = producto(a, b);
                 imprimirMatriz(aux);
-                destruirMatriz(aux);
                 destruirMatriz(aux);
                 break;
             case '7':
