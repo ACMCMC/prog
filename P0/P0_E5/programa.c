@@ -14,6 +14,7 @@ int potencia(int base, int exponente) {
 int main(int argc, char** argv) {
     int a[4];
     int b;
+    c =654;
 
     unsigned short i;
 
