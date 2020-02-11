@@ -24,7 +24,6 @@ int factorial(int n);
 float potencia(int n, int m); //int potencia(int n, int m); esta declaracion está mal hecha porque necesitamos devolver un float
 
 int main(int argc, char** argv) {
-    c = 4.3;
     int a, b;
     int f;
     float p; //int p; p tiene que ser un float
