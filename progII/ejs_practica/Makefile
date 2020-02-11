@@ -1,6 +1,7 @@
-#Makefile vacío, no es necesario hacer CI a los ejs de prueba
+SUBDIRS := $(wildcard */.)
 
-OUTPUT =
+$(SUBDIRS):
+#No hay problema si el make de los ejercicios de practica falla
+	-$(MAKE) -C $@
 
-.PHONY:
-	echo "No hace falta compilar los ejercicios de prueba"
+.PHONY: $(SUBDIRS)
