@@ -11,4 +11,7 @@ $(OUTPUT): $(OBJS)
 	gcc -o $@ -c $<
 
 clean:
-	-rm $(OUTPUT) $(OBJS)
+	-rm $(OBJS)
+
+cleanall: clean
+	-rm $(OUTPUT)

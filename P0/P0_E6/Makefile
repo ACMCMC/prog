@@ -15,5 +15,5 @@ $(OUTPUT): $(OBJS)
 clean:
 	-rm $(OBJS)
 
-reset:
+cleanall:
 	-rm $(OBJS) $(OUTPUT)
