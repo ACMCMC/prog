@@ -1,8 +1,7 @@
-SUBDIRS := $(wildcard */.)
-
-all: $(SUBDIRS)
+#SUBDIRS := $(wildcard */.)
+SUBDIRS := ./P0
 
 $(SUBDIRS):
-	-$(MAKE) -C $@
+	$(MAKE) -C $@
 
-.PHONY: all $(SUBDIRS)
+.PHONY: $(SUBDIRS)
