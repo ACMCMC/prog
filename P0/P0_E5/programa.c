@@ -14,7 +14,6 @@ int potencia(int base, int exponente) {
 int main(int argc, char** argv) {
     int a[4];
     int b;
-    c =654;
 
     unsigned short i;
 
@@ -24,13 +23,11 @@ int main(int argc, char** argv) {
     printf("\nExponente: ");
     scanf("%d", &b);
 
-printf("%p, %p, %p, %p\n", a, a+1, a+2, a+3);
-
     for (i = 0; i < 4; i++) {
         a[i] = potencia(a[i], b);
     }
 
-    printf("\nResultados: {%d, %d, %d, %d}", *(a), *(a+1), *(a+2), *(a+3));
+    printf("\nResultados: {%d, %d, %d, %d}\n", *(a), *(a+1), *(a+2), *(a+3));
 
     return(EXIT_SUCCESS);
 }

@@ -14,3 +14,6 @@ $(OUTPUT): $(OBJS)
 
 clean:
 	-rm $(OBJS)
+
+reset:
+	-rm $(OBJS) $(OUTPUT)

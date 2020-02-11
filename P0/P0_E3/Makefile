@@ -1,4 +1,4 @@
-OUTPUT = made.exe
+OUTPUT = made
 
 ARCHS = main.c factorial.c potencia.c
 
@@ -22,4 +22,4 @@ clean:
 	-rm $(OBJS)
 
 cleanall: clean
-	rm $(OUTPUT)
+	-rm $(OUTPUT)
