@@ -1,5 +1,4 @@
-#SUBDIRS := $(wildcard */.)
-SUBDIRS := ./progII
+SUBDIRS := $(wildcard */.)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
