@@ -1,32 +1,43 @@
-#include "matrizdinamica.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-int main() {
-    char opcion = 0;
-    matrizD m1;
-    unsigned short nfils, ncols;
-    int i, j;
-
-    printf("a) Crear matriz m1\ns) Salir\nSelecciona a túa opción: ");
-    do {
-        scanf("%c", &opcion);
-    } while (!(opcion == 'a' || opcion == 's'));
-
-    if (opcion == 'a')
+#include "matrizdinamica.h"
+int main(int argc, char **argv)
+{
+    matrizD m1;             /* declaramos la matriz*/
+    short nfil, ncol, i, j; /*variables tamaño y recorrido */
+    TELEMENTO valor;        /*El valor a introducir en la matriz*/
+    char opcion;            /*La variable del menú*/
+    do
     {
-        printf("Creando matriz...\n");
-        printf("Introduza numero de filas e de columnas: \n");
-        scanf("%d %d", &nfils, &ncols);
-
-        crear(&m1, nfils, ncols);
-
-        for (i = 0; i < nfils; i++) {
-        for (i = 0; i < nfils; i++) {
-
+        printf("\n--------------------\n");
+        printf("\na) Crear matriz m1");
+        printf("\ns) Salir");
+        printf("\n--------------------\n");
+        printf("\nOpcion: ");
+        scanf(" %c", &opcion);
+        switch (opcion)
+        {
+        case 'a': /*Crear matriz m1*/
+            printf("Tamanho de la matriz m1 (filas columnas): ");
+            scanf("%hd %hd", &nfil, &ncol);
+            crear(&m1, nfil, ncol);
+            /*Asignar valores a m1*/
+            for (i = 1; i <= nfil; i++)
+            {
+                for (j = 1; j <= ncol; j++)
+                {
+                    printf("m1(%d,%d): ", i, j);
+                    scanf("%f", &valor);
+                    asignar(&m1, i, j, valor);
+                }
+            }
+            break;
+        case 's':
+            printf("Saliendo del programa\n");
+            break;
+        default:
+            printf("Opcion incorrecta\n");
         }
-        }
-    }
-
+    } while (opcion != 's');
     return (EXIT_SUCCESS);
 }
