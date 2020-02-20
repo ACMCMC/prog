@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
+
+typedef struct elem_lista_enlazada {
     int num;
-    elem_lista_enlazada * siguiente;
+    struct elem_lista_enlazada * siguiente;
 } elem_lista_enlazada;
+
+void anadir_en_orden (elem_lista_enlazada * ids, elem_lista_enlazada * ultimoid, int anadir);
 
 typedef struct {
     int libros;
@@ -20,7 +23,7 @@ int main(int argc, char** argv) {
 
     biblioteca * vec_biblios;
     
-    FILE* arch = fopen("b_read_on.txt", "r");
+    FILE* arch = fopen("a_example.txt", "r");
     
     fscanf(arch, "%d %d %d", &tot_libros, &tot_biblios, &dias);
     
@@ -42,15 +45,16 @@ int main(int argc, char** argv) {
         vec_biblios[i].ids = malloc(sizeof(elem_lista_enlazada));
         vec_biblios[i].ultimoid = vec_biblios[i].ids;
         vec_biblios[i].ultimoid->num = num_leido;
+        vec_biblios[i].ultimoid->siguiente = NULL;
         for (int j = 1; j < vec_biblios[i].libros; j++) {
             fscanf(arch, "%d", &num_leido);
-            anadir_en_orden(vec_biblios[i].ids, vec_biblios[i].ultimoid, num_leido);
             printf("Libro %d: %d\n",j,num_leido);
+            anadir_en_orden(vec_biblios[i].ids, vec_biblios[i].ultimoid, num_leido);
         }
     }
 
-    printf("hasta aqui va\n");
 
+    printf("hasta aqui va\n");
     return (EXIT_SUCCESS);
 }
 
@@ -61,11 +65,11 @@ void anadir_en_orden (elem_lista_enlazada * ids, elem_lista_enlazada * ultimoid,
     while( i != NULL ) {
         anterior = i;
         i = i->siguiente;
-        if (i->num >= anadir) {
+        if (i == NULL || (i->num >= anadir)) {
             insertado = malloc(sizeof(elem_lista_enlazada));
             insertado->num = anadir;
             insertado->siguiente = i;
-            anterior->siguiente = &insertado;
+            anterior->siguiente = insertado;
             break;
         }
     }
