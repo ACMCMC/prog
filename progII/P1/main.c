@@ -5,13 +5,16 @@
 void imprimir(matrizD *m1)
 {
     int i, j;
-    for (i = 1; i <= nfilas(m1); i++)
+    if (*m1 != NULL)
     {
-        for (j = 1; j <= ncolumnas(m1); j++)
+        for (i = 1; i <= nfilas(m1); i++)
         {
-            printf("%f\t", recuperar(m1, i, j));
+            for (j = 1; j <= ncolumnas(m1); j++)
+            {
+                printf("%f\t", recuperar(m1, i, j));
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 }
 
@@ -27,6 +30,7 @@ int main(int argc, char **argv)
         printf("\na) Crear matriz m1");
         printf("\nl) Liberar matriz m1");
         printf("\nr) Recuperar elemento");
+        printf("\np) Producto escalar");
         printf("\ns) Salir");
         printf("\n--------------------\n");
         printf("\nOpcion: ");
@@ -74,6 +78,14 @@ int main(int argc, char **argv)
             printf("Introduzca las coordenadas del elemento (fila) (columna): ");
             scanf("%hd %hd", &nfil, &ncol);
             printf("Valor: %f\n", recuperar(&m1, nfil, ncol));
+            break;
+        case 'i':
+            imprimir(&m1);
+            break;
+        case 'p':
+            printf("Introduzca el escalar para hacer la multiplicacion: ");
+            scanf("%f", &valor);
+            prodescalar(&m1, valor);
             break;
         case 's':
             printf("Saliendo del programa\n");

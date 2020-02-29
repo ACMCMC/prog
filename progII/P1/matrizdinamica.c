@@ -63,3 +63,18 @@ short ncolumnas(matrizD *m1)
         return ((*m1)->ncols);
     }
 }
+
+void prodescalar(matrizD *m1, TELEMENTO escalar)
+{
+    int i, j;
+    if (*m1 != NULL)
+    {
+        for (i = 0; i < nfilas(m1); i++)
+        {
+            for (j = 0; j < ncolumnas(m1); j++)
+            {
+                *((*m1)->datos + i * ncolumnas(m1) + j) *= escalar;
+            }
+        }
+    }
+}

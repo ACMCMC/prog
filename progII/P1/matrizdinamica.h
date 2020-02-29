@@ -25,4 +25,6 @@ short nfilas(matrizD *m1);
 
 short ncolumnas(matrizD *m1);
 
+void prodescalar(matrizD *m1, int escalar);
+
 #endif /* MATRIZDINAMICA_H */
