@@ -1,6 +1,6 @@
 OUTPUT = out
 
-C_FILES = main.c
+C_FILES = main.c matrizdinamica.c
 
 OBJS = $(C_FILES:.c=.o)
 

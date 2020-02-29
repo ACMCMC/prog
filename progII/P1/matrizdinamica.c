@@ -27,3 +27,39 @@ void asignar(matrizD *m1, short fila, short columna, TELEMENTO valor)
 {
     *((*m1)->datos + (fila - 1) * (*m1)->ncols + columna - 1) = valor;
 }
+
+void liberar(matrizD *m1)
+{
+    if (*m1 != NULL)
+    {
+        free((*m1)->datos);
+        free(*m1);
+        *m1 == NULL;
+    }
+}
+
+TELEMENTO recuperar(matrizD *m1, short fila, short columna)
+{
+    fila--;
+    columna--;
+    if (*m1 != NULL)
+    {
+        return (*((*m1)->datos + (*m1)->ncols * fila + columna));
+    }
+}
+
+short nfilas(matrizD *m1)
+{
+    if (*m1 != NULL)
+    {
+        return ((*m1)->nfilas);
+    }
+}
+
+short ncolumnas(matrizD *m1)
+{
+    if (*m1 != NULL)
+    {
+        return ((*m1)->ncols);
+    }
+}
