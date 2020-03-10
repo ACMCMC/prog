@@ -34,7 +34,7 @@ void liberar(matrizD *m1)
     {
         free((*m1)->datos);
         free(*m1);
-        *m1 == NULL;
+        *m1 = NULL;
     }
 }
 
@@ -76,5 +76,7 @@ void prodescalar(matrizD *m1, TELEMENTO escalar)
                 *((*m1)->datos + i * ncolumnas(m1) + j) *= escalar;
             }
         }
+    } else {
+        printf("No existe la matriz\n");
     }
 }
