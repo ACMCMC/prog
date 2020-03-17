@@ -6,6 +6,55 @@
 
 typedef enum {TRUE = 1, FALSE = 0} booleano;
 
+TIPOELEMENTOLISTA totalBonificaciones(TLISTA listaBonificaciones) {
+    TNODOLISTA nodoSiguiente = primero(listaBonificaciones);
+    TIPOELEMENTOLISTA suma = (TIPOELEMENTOLISTA) 0, temporal;
+    while (nodoSiguiente != fin(listaBonificaciones)) {
+        recupera(listaBonificaciones, nodoSiguiente, &temporal);
+        suma += temporal;
+        nodoSiguiente = siguiente(listaBonificaciones, nodoSiguiente);
+    }
+    return (suma);
+}
+
+void recaudarBonificaciones(TLISTA *listaBonificaciones, TIPOELEMENTOLISTA dineroARecaudar) {
+    TNODOLISTA nodoSiguiente;
+    TNODOLISTA nodoDelMenorElemento;
+    TIPOELEMENTOLISTA elemento;
+    TIPOELEMENTOLISTA menorElemento;
+    if (totalBonificaciones(*listaBonificaciones) >= dineroARecaudar) { //hay suficiente dinero para recaudar la cantidad introducida
+        while (dineroARecaudar > 0) {
+            nodoSiguiente = primero(*listaBonificaciones);
+            nodoDelMenorElemento = nodoSiguiente;
+            recupera(*listaBonificaciones, nodoDelMenorElemento, &menorElemento);
+            while (nodoSiguiente != fin(*listaBonificaciones)) {
+                recupera(*listaBonificaciones, nodoSiguiente, &elemento);
+                if (elemento > menorElemento) {
+                    nodoDelMenorElemento = nodoSiguiente;
+                    menorElemento = elemento;
+                }
+                nodoSiguiente = siguiente(*listaBonificaciones, nodoSiguiente);
+            }
+            dineroARecaudar = dineroARecaudar - menorElemento;
+            if (dineroARecaudar < 0) {
+                modifica(listaBonificaciones, nodoDelMenorElemento, -1*dineroARecaudar);
+                return;
+            } else {
+                suprime(listaBonificaciones, nodoDelMenorElemento);
+            }
+        }
+    } else {
+        printf("No hay suficientes bonificaciones para recaudar esa cantidad.\n");
+    }
+}
+
+booleano comprobarValorARecaudar(TIPOELEMENTOLISTA v) {
+    if (v > 0) {
+        return(TRUE);
+    } else {
+        return(FALSE);
+    }
+}
 
 booleano comprobarNumeroEntradas(int numeroEntradas) {
     if (numeroEntradas > 0) {
@@ -39,6 +88,7 @@ void imprimirListaBonificaciones(TLISTA listaBonificaciones) {
 int main(int argc, char** argv) {
     char opcion, i;
     TIPOELEMENTOCOLA aux;
+    TIPOELEMENTOLISTA auxLista;
 
     //inicializar la cola y la lista
     TCOLA cola = NULL;
@@ -51,7 +101,7 @@ int main(int argc, char** argv) {
     }
 
     do {
-        printf("\n\nIntroduzca su opcion:\n\ta. Poner un cliente a la cola.\n\tb. Atender al primer cliente de la cola.\n\n\ts. Salir del programa.\n\n\tOPCION: ");
+        printf("\n\nIntroduzca su opcion:\n\ta. Poner un cliente a la cola.\n\tb. Atender al primer cliente de la cola.\n\tc. Cobrar bonificaciones.\n\n\ts. Salir del programa.\n\n\tOPCION: ");
         scanf(" %c",&opcion);
 
         switch (opcion)
@@ -78,6 +128,17 @@ int main(int argc, char** argv) {
                 inserta(&lista, fin(lista), aux*BONIFICACION);
             }
             imprimirListaBonificaciones(lista);
+            break;
+
+        case 'c'://Despachar cliente
+            printf("Cuanto desea cobrar? (max: %f): ", totalBonificaciones(lista));
+            scanf(" %f", &auxLista);
+            if (comprobarValorARecaudar(auxLista) == TRUE) {
+                recaudarBonificaciones(&lista, auxLista);
+                imprimirListaBonificaciones(lista);
+            } else {
+                printf("La cantidad introducida es incorrecta.\n");
+            }
             break;
 
         case 's':
