@@ -17,12 +17,13 @@ TIPOELEMENTOLISTA totalBonificaciones(TLISTA listaBonificaciones) {
     return (suma);
 }
 
-void recaudarBonificaciones(TLISTA *listaBonificaciones, TIPOELEMENTOLISTA dineroARecaudar) {
+void recaudarBonificaciones(TLISTA *listaBonificaciones, TIPOELEMENTOLISTA dineroARecaudar, TIPOELEMENTOLISTA *totalBonificacionesRecaudadas) {
     TNODOLISTA nodoSiguiente;
     TNODOLISTA nodoDelMenorElemento;
     TIPOELEMENTOLISTA elemento;
     TIPOELEMENTOLISTA menorElemento;
     if (totalBonificaciones(*listaBonificaciones) >= dineroARecaudar) { //hay suficiente dinero para recaudar la cantidad introducida
+        *totalBonificacionesRecaudadas += dineroARecaudar;
         while (dineroARecaudar > 0) {
             nodoSiguiente = primero(*listaBonificaciones);
             nodoDelMenorElemento = nodoSiguiente;
@@ -85,10 +86,31 @@ void imprimirListaBonificaciones(TLISTA listaBonificaciones) {
     }
 }
 
+void liberarListaBonificaciones(TLISTA *listaBonificaciones) {
+    /*TNODOLISTA nodoSiguiente, nodoActual = primero(*listaBonificaciones);
+    while (!esVacia(*listaBonificaciones)) {
+        nodoSiguiente = siguiente(*listaBonificaciones, nodoActual);
+        suprime(listaBonificaciones, nodoActual);
+        nodoActual = nodoSiguiente;
+    }*/
+    destruye(listaBonificaciones);
+    *listaBonificaciones = NULL;
+}
+
+void liberarColaEspera(TCOLA *colaEspera) {
+    while (!EsColaVacia(*colaEspera))
+    {
+        EliminarCola(colaEspera);
+    }
+    free(*colaEspera);
+    *colaEspera = NULL;
+}
+
 int main(int argc, char** argv) {
     char opcion, i;
+    unsigned int atendidos = 0, porAtender = 0;
     TIPOELEMENTOCOLA aux;
-    TIPOELEMENTOLISTA auxLista;
+    TIPOELEMENTOLISTA auxLista, totalBonificacionesRecaudadas;
 
     //inicializar la cola y la lista
     TCOLA cola = NULL;
@@ -98,10 +120,11 @@ int main(int argc, char** argv) {
 
     for (i = 1; i < argc; i++) {
         AnadirCola(&cola, (TIPOELEMENTOCOLA) atoi(argv[i])); //Añadimos los clientes que haga falta a la cola
+        porAtender++;
     }
 
     do {
-        printf("\n\nIntroduzca su opcion:\n\ta. Poner un cliente a la cola.\n\tb. Atender al primer cliente de la cola.\n\tc. Cobrar bonificaciones.\n\n\ts. Salir del programa.\n\n\tOPCION: ");
+        printf("\n\nIntroduzca su opcion:\n\ta. Poner un cliente a la cola.\n\tb. Atender al primer cliente de la cola.\n\tc. Cobrar bonificaciones.\n\td. Obtener estadisticas.\n\n\ts. Salir del programa.\n\n\tOPCION: ");
         scanf(" %c",&opcion);
 
         switch (opcion)
@@ -111,6 +134,7 @@ int main(int argc, char** argv) {
             scanf("%d", &aux);
             if (comprobarNumeroEntradas(aux) == TRUE) {
                 AnadirCola(&cola, (TIPOELEMENTOCOLA) aux);
+                porAtender++;
             } else {
                 printf("\nNumero de entradas no valido.");
             }
@@ -123,6 +147,8 @@ int main(int argc, char** argv) {
             } else {
                 PrimeroCola(cola, &aux);
                 EliminarCola(&cola);
+                porAtender--;
+                atendidos++;
                 imprimirPrimeroCola(cola);
                 //insertamos la bonificacion
                 inserta(&lista, fin(lista), aux*BONIFICACION);
@@ -130,22 +156,29 @@ int main(int argc, char** argv) {
             imprimirListaBonificaciones(lista);
             break;
 
-        case 'c'://Despachar cliente
+        case 'c'://Cobrar bonificaciones
             printf("Cuanto desea cobrar? (max: %f): ", totalBonificaciones(lista));
             scanf(" %f", &auxLista);
             if (comprobarValorARecaudar(auxLista) == TRUE) {
-                recaudarBonificaciones(&lista, auxLista);
+                recaudarBonificaciones(&lista, auxLista, &totalBonificacionesRecaudadas);
                 imprimirListaBonificaciones(lista);
             } else {
                 printf("La cantidad introducida es incorrecta.\n");
             }
             break;
 
+        case 'd'://Estadiísticas
+            printf("Atendidos: %d\nEsperando: %d\nRecaudado: %f\nPor recaudar: %f\n", atendidos, porAtender, totalBonificacionesRecaudadas, totalBonificaciones(lista));
+            break;
+
         case 's':
             printf("Realmente desea cerrar el programa? Confirme con \"s\": ");
             scanf(" %c",&opcion);
-            if (opcion == 's')
+            if (opcion == 's'){
                 printf("\nSaliendo del programa...\n");
+                liberarListaBonificaciones(&lista);
+                liberarColaEspera(&cola);
+            }
             break;
         
         default:
