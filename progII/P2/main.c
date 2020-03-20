@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
             }
             break;
 
-        case 'd'://Estadiísticas
+        case 'd'://Estadísticas
             printf("Atendidos: %d\nEsperando: %d\nRecaudado: %f\nPor recaudar: %f\n", atendidos, porAtender, totalBonificacionesRecaudadas, totalBonificaciones(lista));
             break;
 
