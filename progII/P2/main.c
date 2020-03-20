@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
     char opcion, i;
     unsigned int atendidos = 0, porAtender = 0;
     TIPOELEMENTOCOLA aux;
-    TIPOELEMENTOLISTA auxLista, totalBonificacionesRecaudadas;
+    TIPOELEMENTOLISTA auxLista, totalBonificacionesRecaudadas = 0;
 
     //inicializar la cola y la lista
     TCOLA cola = NULL;
