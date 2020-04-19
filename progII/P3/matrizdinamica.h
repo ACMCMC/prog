@@ -31,4 +31,6 @@ void inicializar(matrizP *m);
 
 void trasp(matrizP* result, matrizP m1);
 
+void mult(matrizP* result, matrizP m1, matrizP m2);
+
 #endif /* MATRIZDINAMICA_H */

@@ -13,7 +13,7 @@ typedef STMATRIZ *matrizP; /*puntero a estructura*/
 /*Función crear: asigna memoria y devuelve la asignación a la matriz*/
 void crear(matrizP *m1, short tamf, short tamc)
 {
-    short i;
+    unsigned int i;
     *m1 = (matrizP)malloc(sizeof(STMATRIZ));
     (*m1)->datos = (TELEMENTO *)malloc(tamf * tamc * sizeof(TELEMENTO));
     (*m1)->nfilas = tamf;
@@ -76,15 +76,20 @@ void prodescalar(matrizP *m1, TELEMENTO escalar)
                 *((*m1)->datos + i * ncolumnas(*m1) + j) *= escalar;
             }
         }
-    } else {
+    }
+    else
+    {
         printf("No existe la matriz\n");
     }
 }
 
-void inicializar(matrizP *m) {
-    for (int i = 1; i <= nfilas(*m); i++) {
-        for (int j = 1; j <= ncolumnas(*m); j++) {
-        asignar(m, i, j, 10.0 * (TELEMENTO) rand() / RAND_MAX);
+void inicializar(matrizP *m)
+{
+    for (int i = 1; i <= nfilas(*m); i++)
+    {
+        for (int j = 1; j <= ncolumnas(*m); j++)
+        {
+            asignar(m, i, j, 10.0 * (TELEMENTO)rand() / RAND_MAX);
         }
     }
 }
@@ -97,15 +102,46 @@ void inicializar(matrizP *m) {
     }
 }*/
 
-void trasp(matrizP* result, matrizP m1) {
-    if (ncolumnas(m1) == nfilas(*result) && nfilas(m1) == ncolumnas(*result)) {
+void trasp(matrizP *result, matrizP m1)
+{
+    if (ncolumnas(m1) == nfilas(*result) && nfilas(m1) == ncolumnas(*result))
+    {
         //las dimensiones son correctas, vamos a trasponer la matriz
-    for (int i = 1; i <= nfilas(m1); i++) {
-        for (int j = 1; j <= ncolumnas(m1); j++) {
-        asignar(result, j, i, recuperar(m1, i, j));
+        for (int i = 1; i <= nfilas(m1); i++)
+        {
+            for (int j = 1; j <= ncolumnas(m1); j++)
+            {
+                asignar(result, j, i, recuperar(m1, i, j));
+            }
         }
     }
-    } else {
+    else
+    {
+        printf("Dimensiones incorrectas.\n");
+    }
+}
+
+void mult(matrizP *result, matrizP m1, matrizP m2)
+{
+    TELEMENTO prod_acum;
+    if (ncolumnas(m1) == nfilas(m2) && nfilas(m1) == nfilas(*result) && ncolumnas(m2) == ncolumnas(m2))
+    {
+        //los tamaños son correctos, multiplicamos
+        for (int i = 1; i <= nfilas(*result); i++)
+        {
+            for (int j = 1; j <= ncolumnas(*result); j++)
+            {
+                prod_acum = 0;
+                for (int k = 1; k <= ncolumnas(m1); k++)
+                {
+                    prod_acum += recuperar(m1, i, k) * recuperar(m2, k, j);
+                }
+                asignar(result, i, j, prod_acum);
+            }
+        }
+    }
+    else
+    {
         printf("Dimensiones incorrectas.\n");
     }
 }
