@@ -19,7 +19,7 @@ void asignar(matrizP *m1, short fila, short columna, TELEMENTO valor);
 
 void liberar(matrizP *m1);
 
-TELEMENTO recuperar(matrizP *m1, short fila, short columna);
+TELEMENTO recuperar(matrizP m1, short fila, short columna);
 
 short nfilas(matrizP m1);
 

@@ -38,13 +38,13 @@ void liberar(matrizP *m1)
     }
 }
 
-TELEMENTO recuperar(matrizP *m1, short fila, short columna)
+TELEMENTO recuperar(matrizP m1, short fila, short columna)
 {
     fila--;
     columna--;
-    if (*m1 != NULL)
+    if (m1 != NULL)
     {
-        return (*((*m1)->datos + (*m1)->ncols * fila + columna));
+        return (*(m1->datos + m1->ncols * fila + columna));
     }
 }
 
@@ -98,5 +98,14 @@ void inicializar(matrizP *m) {
 }*/
 
 void trasp(matrizP* result, matrizP m1) {
-    
+    if (ncolumnas(m1) == nfilas(*result) && nfilas(m1) == ncolumnas(*result)) {
+        //las dimensiones son correctas, vamos a trasponer la matriz
+    for (int i = 1; i <= nfilas(m1); i++) {
+        for (int j = 1; j <= ncolumnas(m1); j++) {
+        asignar(result, j, i, recuperar(m1, i, j));
+        }
+    }
+    } else {
+        printf("Dimensiones incorrectas.\n");
+    }
 }
