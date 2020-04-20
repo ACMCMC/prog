@@ -13,7 +13,7 @@ typedef STMATRIZ *matrizP; /*puntero a estructura*/
 /*Función crear: asigna memoria y devuelve la asignación a la matriz*/
 void crear(matrizP *m1, short tamf, short tamc)
 {
-    unsigned int i;
+    long i;
     *m1 = (matrizP)malloc(sizeof(STMATRIZ));
     (*m1)->datos = (TELEMENTO *)malloc(tamf * tamc * sizeof(TELEMENTO));
     (*m1)->nfilas = tamf;
