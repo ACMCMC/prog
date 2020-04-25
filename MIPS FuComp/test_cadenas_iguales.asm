@@ -13,14 +13,15 @@ main:
 	addi $v0, $zero, 8 #codigo de llamada al sistema para leer una cadena
 	syscall #llamamos al sistema
 	
-	la $a0, a #cargamos la dirección de a
-	sw $a0, 0($sp) #la guardamos en sp (es nuestro argumento)
-	la $a0, b #cargamos la dirección de b
-	sw $a0, -4($sp) #la guardamos en sp (es nuestro argumento)
-	subi $sp, $sp, 8 #bajamos el puntero sp dos unidades (hacemos tres huecos, dos argumentos y el retorno)
+	addi $sp, $sp, -12 #bajamos el puntero sp en 12 unidades (hacemos 3 huecos)
+	la $a0, a #cargamos la direccion de a
+	sw $a0, 8($sp) #la guardamos en sp (es nuestro argumento)
+	la $a0, b #cargamos la direccion de b
+	sw $a0, 4($sp) #la guardamos en sp (es nuestro argumento)
+	
 	jal test_equal
 	lw $a0, 0($sp) #a0 = test_equal
-	addi $sp, $sp, 8 #restauramos sp
+	addi $sp, $sp, 12 #restauramos sp
 	
 	addi $v0, $zero, 4 #ponemos v0 en modo print_string
 	
