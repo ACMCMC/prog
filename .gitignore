@@ -6,3 +6,4 @@
 !*.md
 !*.a
 !Makefile
+!*.asm
