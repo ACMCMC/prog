@@ -2,6 +2,6 @@
 SUBDIRS := ./progII
 
 $(SUBDIRS):
-	$(MAKE) -C $@
+	$(MAKE) -C $@ -s
 
 .PHONY: $(SUBDIRS)
