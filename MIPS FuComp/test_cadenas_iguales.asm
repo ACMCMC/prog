@@ -6,6 +6,13 @@ diferentes: .asciiz "Cadenas diferentes"
 
 .text
 .globl main
+
+
+
+	#ESTE PROGRAMA ESTA HECHO PARA EXPERIMENTAR CON LAS PILAS. NO USA EL MODO ESTANDAR DE PASO DE ARGUMENTOS DEL MIPS.
+
+
+
 main:
 	#vamos a leer una cadena
 	la $a0, a #a0 tiene que ser la direccion donde empieza nuestra cadena
