@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 
     matrizP mat;
     matrizP mat_trasp;
-    matrizP mdas1;
+    matrizP m1;
     matrizP m2;
     matrizP result;
     unsigned int n = atoi(argv[1]), n_2 = n / 2;
