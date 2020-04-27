@@ -124,7 +124,7 @@ void trasp(matrizP *result, matrizP m1)
 void mult(matrizP *result, matrizP m1, matrizP m2)
 {
     TELEMENTO prod_acum;
-    if (ncolumnas(m1) == nfilas(m2) && nfilas(m1) == nfilas(*result) && ncolumnas(m2) == ncolumnas(m2))
+    if (nfilas(m1) == nfilas(*result) && ncolumnas(*result) == ncolumnas(m2) && ncolumnas(m1) == nfilas(m2))
     {
         //los tamaños son correctos, multiplicamos
         for (int i = 1; i <= nfilas(*result); i++)
