@@ -146,64 +146,106 @@ void mult(matrizD *result, matrizD m1, matrizD m2)
     }
 }
 
+void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante)
+{
+    int i, j, i_orig, j_orig, /*imax, jmax,*/ j_inic;
+
+    if (nfilas(original) / 2 == nfilas(*submatriz) && ncolumnas(original) / 2 == ncolumnas(*submatriz) && nfilas(original) == ncolumnas(original) && cuadrante > 0 && cuadrante <= 4)
+    {
+        //printf("Cuadrante %d, Resultado: %d\n",cuadrante, cuadrante & 1);
+        if (cuadrante & 1)
+        {
+            //es el cuadrante 1 o el 3, la columna tiene que empezar en 1
+            j_inic = 1;
+            //jmax = ncolumnas(original)/2;
+            //printf("Cuadrante 1 o 3\n");
+        }
+        else
+        {
+            //es el cuadrante 2 o el 4, tiene que empezar en ncolumnas/2 + 1
+            j_inic = ncolumnas(original) / 2 + 1;
+            //jmax = ncolumnas(original);
+        }
+        if (cuadrante <= 2)
+        {
+            //j empezará al principio de la matriz
+            i_orig = 1;
+            //imax = nfilas(original)/2;
+        }
+        else
+        {
+            //j empezará en la mitad
+            i_orig = nfilas(original) / 2 + 1;
+            //imax = nfilas(original);
+        }
+
+        i = 1;
+        j = 1;
+
+        //printf("i_orig vale %d, j_orig vale %d\n",i_orig,j_orig);
+
+        while (i <= (nfilas(original) / 2))
+        {
+            j = 1;
+            j_orig = j_inic;
+            while (j <= (ncolumnas(original) / 2))
+            {
+                //printf("Asignando a [%d,%d] [%d,%d]: %f\n",i,j,i_orig,j_orig,recuperar(original, i_orig, j_orig));
+                asignar(submatriz, i, j, recuperar(original, i_orig, j_orig));
+                j_orig++;
+                j++;
+            }
+            i++;
+            i_orig++;
+        }
+    }
+    else
+    {
+        printf("Tamanos erroneos o cuadrante erroneo\n");
+    }
+}
+
 void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
 {
     int i;
-    matrizD* array_matA;
-    matrizD* array_matB;
+    matrizD *array_matA;
+    matrizD *array_matB;
 
     if (ncolumnas(A) == ncolumnas(B) && ncolumnas(B) == ncolumnas(*result) && ncolumnas(A) == nfilas(A) && nfilas(A) == nfilas(B) && nfilas(B) == nfilas(*result))
     {
         //todo correcto. Se cumple que son matrices cuadradas del mismo tamaño.
         if (ncolumnas(A) <= 2)
         {
-            mult(result,A,B);
+            mult(result, A, B);
         }
         else
         {
             //Divide y vencerás
             //Creamos 8 matrices de tamaño n/2, los cuadrantes de a y b
-            for (i = 0; i < 4; i++) {
-                array_matA = (matrizD*) malloc(sizeof(*array_matA)*4);
-                array_matB = (matrizD*) malloc(sizeof(*array_matA)*4);
-                inicializarSubMatriz(array_matA[i],A,i);
-                inicializarSubMatriz(array_matB[i],A,i);
+            array_matA = (matrizD *)malloc(sizeof(*array_matA) * 4);
+            array_matB = (matrizD *)malloc(sizeof(*array_matA) * 4);
+            for (i = 0; i < 4; i++)
+            {
+                crear(array_matA + i, nfilas(A) / 2, ncolumnas(A) / 2);
+                crear(array_matB + i, nfilas(B) / 2, ncolumnas(B) / 2);
+                inicializarSubMatriz(array_matA + i, A, i + 1);
+                inicializarSubMatriz(array_matB + i, B, i + 1);
+                
+                //printf("Imprimiendo la submatriz: %d\n", i + 1);
+                /*for (int elem_i = 1; elem_i <= nfilas(array_matA[i]); elem_i++)
+                {
+                    for (int j = 1; j <= ncolumnas(array_matA[i]); j++)
+                    {
+                        printf("%f\t", recuperar(array_matA[i], elem_i, j));
+                    }
+                    printf("\n");
+                }*/
             }
         }
     }
     else
     {
-        printf("No son matrices cuadradas del mismo tamaño\n");
-    }
-}
-
-void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante)
-{
-    int i, j, imax, jmax; //i es el 
-
-    if (nfilas(original) == nfilas(*submatriz)/2 && ncolumnas(original) == ncolumnas(*submatriz) && nfilas(original) == ncolumnas(*submatriz)) {
-    if (cuadrante & 2 == 0) {
-        //es el cuadrante 1 o el 3, la columna tiene que empezar en 1
-        j = 1;
-        jmax = ncolumnas(original)/2;
-    } else {
-        //es el cuadrante 2 o el 4, tiene que empezar en ncolumnas/2 + 1
-        j = ncolumnas(original)/2 + 1;
-        jmax = ncolumnas(original);
-    }
-    if (cuadrante <= 2) {
-        //j empezará al principio de la matriz
-        i = 1;
-        imax = nfilas(original)/2;
-    } else {
-        //j empezará en la mitad
-        i = nfilas(original)/2 + 1;
-        imax = nfilas(original);
-    }
-
-    while (i <= imax) {
-
-    }
+        printf("No son matrices cuadradas del mismo tamano\n");
     }
 }
 

@@ -33,9 +33,9 @@ void trasp(matrizD* result, matrizD m1);
 
 void mult(matrizD* result, matrizD m1, matrizD m2);
 
-void mult_divide_venceras(matrizD* result, matrizD A, matrizD B);
-
 void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante);
+
+void mult_divide_venceras(matrizD* result, matrizD A, matrizD B);
 
 void suma(matrizD* result, matrizD A, matrizD B);
 
