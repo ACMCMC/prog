@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 /*Se vuelve a definir el tipo de datos que contiene la matriz*/
 typedef float TELEMENTO;
 /*Implementación del TAD matrizD */
@@ -146,6 +147,21 @@ void mult(matrizD *result, matrizD m1, matrizD m2)
     }
 }
 
+void suma(matrizD *result, matrizD A, matrizD B)
+{
+    int i, j;
+    if (nfilas(A) == nfilas(B) && nfilas(B) == nfilas(*result) && ncolumnas(A) == ncolumnas(B) && ncolumnas(B) == ncolumnas(*result))
+    {
+        for (i = 1; i <= nfilas(*result); i++)
+        {
+            for (j = 1; j <= ncolumnas(*result); j++)
+            {
+                asignar(result, i, j, recuperar(A, i, j) + recuperar(B, i, j));
+            }
+        }
+    }
+}
+
 void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante)
 {
     int i, j, i_orig, j_orig, /*imax, jmax,*/ j_inic;
@@ -207,13 +223,15 @@ void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante)
 
 void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
 {
-    int i;
+    int i, j, cuadrante_a, cuadrante_b, i_suma;
     matrizD *array_matA;
     matrizD *array_matB;
-
-    if (ncolumnas(A) == ncolumnas(B) && ncolumnas(B) == ncolumnas(*result) && ncolumnas(A) == nfilas(A) && nfilas(A) == nfilas(B) && nfilas(B) == nfilas(*result))
+    matrizD *array_matRes;
+    matrizD *array_matResParc;
+    printf("===ncolumnas = %d===\n", ncolumnas(A));
+    if (ncolumnas(A) == ncolumnas(B) && ncolumnas(B) == ncolumnas(*result) && ncolumnas(A) == nfilas(A) && nfilas(A) == nfilas(B) && nfilas(B) == nfilas(*result) && (ncolumnas(A) & ncolumnas(A) - 1) == 0)
     {
-        //todo correcto. Se cumple que son matrices cuadradas del mismo tamaño.
+        //todo correcto. Se cumple que son matrices cuadradas del mismo tamaño. y potencia de 2
         if (ncolumnas(A) <= 2)
         {
             mult(result, A, B);
@@ -223,14 +241,19 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
             //Divide y vencerás
             //Creamos 8 matrices de tamaño n/2, los cuadrantes de a y b
             array_matA = (matrizD *)malloc(sizeof(*array_matA) * 4);
-            array_matB = (matrizD *)malloc(sizeof(*array_matA) * 4);
+            array_matB = (matrizD *)malloc(sizeof(*array_matB) * 4);
+            array_matResParc = (matrizD *)malloc(sizeof(*array_matResParc) * 8);
+            array_matRes = (matrizD *)malloc(sizeof(*array_matRes) * 4);
             for (i = 0; i < 4; i++)
             {
                 crear(array_matA + i, nfilas(A) / 2, ncolumnas(A) / 2);
                 crear(array_matB + i, nfilas(B) / 2, ncolumnas(B) / 2);
                 inicializarSubMatriz(array_matA + i, A, i + 1);
                 inicializarSubMatriz(array_matB + i, B, i + 1);
-                
+                crear(array_matResParc + 2 * i, nfilas(A) / 2, ncolumnas(A) / 2);
+                crear(array_matResParc + 2 * i + 1, nfilas(A) / 2, ncolumnas(A) / 2);
+                crear(array_matRes + i, nfilas(A) / 2, ncolumnas(A) / 2);
+
                 //printf("Imprimiendo la submatriz: %d\n", i + 1);
                 /*for (int elem_i = 1; elem_i <= nfilas(array_matA[i]); elem_i++)
                 {
@@ -241,16 +264,56 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
                     printf("\n");
                 }*/
             }
+
+            for (cuadrante_a = 0; cuadrante_a <= 2; cuadrante_a += 2)
+            {
+                for (cuadrante_b = 0; cuadrante_b <= 1; cuadrante_b++)
+                {
+                    //Hacemos recursivamente esta funcion para multiplicar los cuadrantes que requiere el algoritmo
+                    mult_divide_venceras(array_matResParc + ((2 * cuadrante_a) + (2 * cuadrante_b)), array_matA[cuadrante_a], array_matB[cuadrante_b]);
+                    mult_divide_venceras(array_matResParc + ((2 * cuadrante_a) + (2 * cuadrante_b) + 1), array_matA[cuadrante_a + 1], array_matB[cuadrante_b + 2]);
+                }
+            }
+
+            //Liberamos las matrices de los cuadrantes de a y b
+            for (i = 0; i < 4; i++) {
+                liberar(array_matA+i);
+                liberar(array_matB+i);
+            }
+            free(array_matA);
+            free(array_matB);
+
+            for (i_suma = 0; i_suma < 4; i_suma++)
+            {
+                //De la matriz de resultados parciales, sumamos cada dos resultados adyacentes y lo guardamos en la matriz de matrices de resultados
+                suma(array_matRes + i_suma, array_matResParc[i_suma * 2], array_matResParc[i_suma * 2 + 1]);
+                liberar(array_matResParc + (i_suma * 2));
+                array_matResParc[i_suma * 2] = NULL;    //No es necesario en este caso, porque no lo vamos a volver a usar, pero es buena practica
+                liberar(array_matResParc + ((i_suma * 2) + 1));
+                array_matResParc[(i_suma * 2) + 1] = NULL;
+            }
+            free(array_matResParc);
+
+            for (i_suma = 0; i_suma < 4; i_suma++)
+            {
+                //Asignamos cada matriz de resultados al cuadrante correspondiente
+                for (i = 1; i <= nfilas(array_matRes[i_suma]); i++)
+                {
+                    for (j = 1; j <= ncolumnas(array_matRes[i_suma]); j++)
+                    {
+                        asignar(result, i + ((i_suma >= 2) ? nfilas(*result) / 2 : 0), j + ((i_suma & 1) ? ncolumnas(*result) / 2 : 0), recuperar(array_matRes[i_suma], i, j));
+                    }
+                }
+                liberar(array_matRes + i_suma);
+                array_matRes[i_suma] = NULL;
+            }
+            free(array_matRes);
         }
     }
     else
     {
         printf("No son matrices cuadradas del mismo tamano\n");
     }
-}
-
-void suma(matrizD *result, matrizD A, matrizD B)
-{
 }
 
 int matricesIguales(matrizD m1, matrizD m2)

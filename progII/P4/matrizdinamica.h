@@ -35,9 +35,9 @@ void mult(matrizD* result, matrizD m1, matrizD m2);
 
 void inicializarSubMatriz(matrizD *submatriz, matrizD original, int cuadrante);
 
-void mult_divide_venceras(matrizD* result, matrizD A, matrizD B);
-
 void suma(matrizD* result, matrizD A, matrizD B);
+
+void mult_divide_venceras(matrizD* result, matrizD A, matrizD B);
 
 int matricesIguales(matrizD m1, matrizD m2);
 
