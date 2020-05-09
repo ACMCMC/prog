@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
+#define PRECISION 0.1
 
 /*Se vuelve a definir el tipo de datos que contiene la matriz*/
 typedef float TELEMENTO;
@@ -228,7 +231,9 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
     matrizD *array_matB;
     matrizD *array_matRes;
     matrizD *array_matResParc;
-    printf("===ncolumnas = %d===\n", ncolumnas(A));
+
+    if (A != NULL && B != NULL && result != NULL && *result != NULL) {
+
     if (ncolumnas(A) == ncolumnas(B) && ncolumnas(B) == ncolumnas(*result) && ncolumnas(A) == nfilas(A) && nfilas(A) == nfilas(B) && nfilas(B) == nfilas(*result) && (ncolumnas(A) & ncolumnas(A) - 1) == 0)
     {
         //todo correcto. Se cumple que son matrices cuadradas del mismo tamaño. y potencia de 2
@@ -276,9 +281,10 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
             }
 
             //Liberamos las matrices de los cuadrantes de a y b
-            for (i = 0; i < 4; i++) {
-                liberar(array_matA+i);
-                liberar(array_matB+i);
+            for (i = 0; i < 4; i++)
+            {
+                liberar(array_matA + i);
+                liberar(array_matB + i);
             }
             free(array_matA);
             free(array_matB);
@@ -288,7 +294,7 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
                 //De la matriz de resultados parciales, sumamos cada dos resultados adyacentes y lo guardamos en la matriz de matrices de resultados
                 suma(array_matRes + i_suma, array_matResParc[i_suma * 2], array_matResParc[i_suma * 2 + 1]);
                 liberar(array_matResParc + (i_suma * 2));
-                array_matResParc[i_suma * 2] = NULL;    //No es necesario en este caso, porque no lo vamos a volver a usar, pero es buena practica
+                array_matResParc[i_suma * 2] = NULL; //No es necesario en este caso, porque no lo vamos a volver a usar, pero es buena practica
                 liberar(array_matResParc + ((i_suma * 2) + 1));
                 array_matResParc[(i_suma * 2) + 1] = NULL;
             }
@@ -314,8 +320,38 @@ void mult_divide_venceras(matrizD *result, matrizD A, matrizD B)
     {
         printf("No son matrices cuadradas del mismo tamano\n");
     }
+    } else {
+        printf("Las matrices no están creadas, o el puntero del resultado está establecido a NULL\n");
+    }
 }
 
 int matricesIguales(matrizD m1, matrizD m2)
 {
+    int i, j;
+    if (m1 != NULL && m2 != NULL)
+    {
+        if (nfilas(m1) == nfilas(m2) && ncolumnas(m1) == ncolumnas(m2))
+        {
+            for (i = 1; i <= nfilas(m1); i++)
+            {
+                for (j = 1; j <= ncolumnas(m1); j++)
+                {
+                    if (fabs(recuperar(m1, i, j) - recuperar(m2, i, j)) > PRECISION)
+                    {
+                        return 0; //Hay un elemento diferente
+                    }
+                }
+            }
+            return 1; //Las matrices son iguales
+        }
+        else
+        {
+            return 0; //Las matrices no tienen igual tamaño => Son distintas
+        }
+    }
+    else
+    {
+        printf("Las matrices no estan creadas\n");
+        return 0;
+    }
 }
