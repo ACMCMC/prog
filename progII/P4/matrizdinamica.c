@@ -5,7 +5,7 @@
 #define PRECISION 0.1
 
 /*Se vuelve a definir el tipo de datos que contiene la matriz*/
-typedef float TELEMENTO;
+typedef double TELEMENTO; //tener un double nos ayuda a aumentar la precisión
 /*Implementación del TAD matrizD */
 typedef struct
 {
