@@ -1,6 +1,6 @@
 # Colas con prioridad
 
-En las colas con prioridad, cada elemento lleva asignada una prioridad. Es como si tuviéramos un vector de colas, y entonces fuéramos procesando primero la cola 1, después la 2, luego los elementos de la 3...
+En las colas con prioridad, cada elemento lleva asignada una **prioridad**. Es como si tuviéramos un vector de colas, y entonces fuéramos procesando primero la cola 1, después la 2, luego los elementos de la 3...
 
 ```C
 #include "lib_cola.h"
