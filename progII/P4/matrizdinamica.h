@@ -1,10 +1,3 @@
-/* 
- * File:   matrizdinamica.h
- * Author: mariajose
- *
- * Created on 14 de enero de 2020, 12:43
- */
-
 #ifndef MATRIZDINAMICA_H
 #define MATRIZDINAMICA_H
 
